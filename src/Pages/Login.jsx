@@ -46,11 +46,12 @@ export default function LoginPage() {
       email: data.get("email"),
       password: data.get("password"),
     });
+    const formData = {
+      email: data.get("email"),
+      password: data.get("password")
+    }
     try {
-      await axios.post("http://localhost:8000/api/v1/user/login", {
-        email: data.get("email"),
-        password: data.get("password"),
-      });
+      await axios.post("http://localhost:8000/api/v1/user/login", formData);
       alert("successfully logged in");
       navigate("/");
     } catch (error) {}
