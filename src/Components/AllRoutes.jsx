@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Homepage from './Homepage'
 import Login from '../Pages/Login'
-import Signup from './Signup'
+import Signup from '../Pages/SignUp'
 import Navbar from './Navbar'
 
 function AllRoutes() {

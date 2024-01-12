@@ -3,8 +3,8 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -37,7 +37,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,12 +47,14 @@ export default function LoginPage() {
       password: data.get("password"),
     });
     const formData = {
+      fullName: data.get("fullName"),
+      userName: data.get("userName"),  
       email: data.get("email"),
       password: data.get("password")
     }
     try {
-      await axios.post("http://localhost:8000/api/v1/user/login", formData);
-      alert("successfully logged in");
+      await axios.post("http://localhost:8000/api/v1/user/register", formData);
+      alert("successfully Registered");
       navigate("/");
     } catch (error) {}
   };
@@ -92,7 +94,7 @@ export default function LoginPage() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign Up
             </Typography>
             <Box
               component="form"
@@ -100,6 +102,26 @@ export default function LoginPage() {
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
+                <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="fullName"
+                label="Full Name"
+                name="fullName"
+                autoComplete="fullName"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="userName"
+                label="User Name"
+                name="userName"
+                autoComplete="userName"
+                // autoFocus
+              />
               <TextField
                 margin="normal"
                 required
@@ -108,7 +130,7 @@ export default function LoginPage() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                autoFocus
+                // autoFocus
               />
               <TextField
                 margin="normal"
@@ -120,30 +142,30 @@ export default function LoginPage() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Sign Up
               </Button>
-              <Grid container>
+              {/* <Grid container>
                 <Grid item xs>
-                  {/* <Link href="#" variant="body2">
+                  <Link href="#" variant="body2">
                     Forgot password?
-                  </Link> */}
+                  </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/signup" variant="body2">
+                  <Link href="#" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
-              </Grid>
+              </Grid> */}
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
