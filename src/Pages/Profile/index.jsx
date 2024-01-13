@@ -10,9 +10,17 @@ import {
   TextField,
   Avatar,
   Stack,
-  TextareaAutosize,
+  InputAdornment
 } from "@mui/material";
 import React, { useState } from "react";
+import PersonIcon from '@mui/icons-material/Person';
+import EmailIcon from '@mui/icons-material/Email';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import XIcon from '@mui/icons-material/X';
+import AddLinkIcon from '@mui/icons-material/AddLink';
 
 export default function Profile() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -22,8 +30,8 @@ export default function Profile() {
     setSelectedFile(file);
   };
   return (
-    <Box sx={{ background: 'linear-gradient(#f0f0f0, #e0e0e0)' }}>
-      <Container maxWidth="lg" sx={{ mt: 3}}>
+    <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
+      <Container maxWidth="lg" sx={{ mt: 3 }}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={4} lg={6}>
             <Paper
@@ -73,14 +81,65 @@ export default function Profile() {
             >
               <Typography variant="h4">Personal Details</Typography>
               <Stack spacing={2} sx={{ marginTop: "20px" }}>
-                <TextField label="User Name" />
-                <TextField label="Email" />
-                <TextField label="Full Name" />
-                <TextField label="Linkdin" />
-                <TextField label="Github" />
-                <TextField label="Youtube" />
-                <TextField label="Twitter" />
-                <TextField label="Website" />
+                <TextField
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PersonIcon/>
+                      </InputAdornment>
+                    ),
+                  }}
+                  label="User Name"
+                />
+                <TextField InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <EmailIcon/>
+                      </InputAdornment>
+                    ),
+                  }} label="Email" />
+                <TextField InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountCircleIcon/>
+                      </InputAdornment>
+                    ),
+                  }} label="Full Name" />
+                <TextField InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LinkedInIcon/>
+                      </InputAdornment>
+                    ),
+                  }} label="Linkdin" />
+                <TextField InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <GitHubIcon/>
+                      </InputAdornment>
+                    ),
+                  }} label="Github" />
+                <TextField InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <YouTubeIcon/>
+                      </InputAdornment>
+                    ),
+                  }} label="Youtube" />
+                <TextField InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <XIcon/>
+                      </InputAdornment>
+                    ),
+                  }} label="Twitter" />
+                <TextField InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AddLinkIcon/>
+                      </InputAdornment>
+                    ),
+                  }} label="Website" />
                 <TextField label="bio" multiline rows={2} />
                 <Button variant="contained">Submit</Button>
               </Stack>
