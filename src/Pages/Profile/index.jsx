@@ -10,17 +10,17 @@ import {
   TextField,
   Avatar,
   Stack,
-  InputAdornment
+  InputAdornment,
 } from "@mui/material";
 import React, { useState } from "react";
-import PersonIcon from '@mui/icons-material/Person';
-import EmailIcon from '@mui/icons-material/Email';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import XIcon from '@mui/icons-material/X';
-import AddLinkIcon from '@mui/icons-material/AddLink';
+import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import XIcon from "@mui/icons-material/X";
+import AddLinkIcon from "@mui/icons-material/AddLink";
 
 export default function Profile() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -28,6 +28,12 @@ export default function Profile() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
+  };
+  const commonInputStyle = {
+    "& .MuiInputBase-input": {
+      padding: "10.5px 14px",
+      fontSize: 14,
+    },
   };
   return (
     <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
@@ -82,64 +88,93 @@ export default function Profile() {
               <Typography variant="h4">Personal Details</Typography>
               <Stack spacing={2} sx={{ marginTop: "20px" }}>
                 <TextField
+                  sx={commonInputStyle}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <PersonIcon/>
+                        <PersonIcon />
                       </InputAdornment>
                     ),
                   }}
                   label="User Name"
                 />
-                <TextField InputProps={{
+                <TextField
+                  sx={commonInputStyle}
+                  InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <EmailIcon/>
+                        <EmailIcon />
                       </InputAdornment>
                     ),
-                  }} label="Email" />
-                <TextField InputProps={{
+                  }}
+                  label="Email"
+                />
+                <TextField
+                  sx={commonInputStyle}
+                  InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <AccountCircleIcon/>
+                        <AccountCircleIcon />
                       </InputAdornment>
                     ),
-                  }} label="Full Name" />
-                <TextField InputProps={{
+                  }}
+                  label="Full Name"
+                />
+                <TextField
+                  sx={commonInputStyle}
+                  InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <LinkedInIcon/>
+                        <LinkedInIcon />
                       </InputAdornment>
                     ),
-                  }} label="Linkdin" />
-                <TextField InputProps={{
+                  }}
+                  label="Linkdin"
+                />
+                <TextField
+                  sx={commonInputStyle}
+                  InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <GitHubIcon/>
+                        <GitHubIcon />
                       </InputAdornment>
                     ),
-                  }} label="Github" />
-                <TextField InputProps={{
+                  }}
+                  label="Github"
+                />
+                <TextField
+                  sx={commonInputStyle}
+                  InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <YouTubeIcon/>
+                        <YouTubeIcon />
                       </InputAdornment>
                     ),
-                  }} label="Youtube" />
-                <TextField InputProps={{
+                  }}
+                  label="Youtube"
+                />
+                <TextField
+                  sx={commonInputStyle}
+                  InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <XIcon/>
+                        <XIcon />
                       </InputAdornment>
                     ),
-                  }} label="Twitter" />
-                <TextField InputProps={{
+                  }}
+                  label="Twitter"
+                />
+                <TextField
+                  sx={commonInputStyle}
+                  InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <AddLinkIcon/>
+                        <AddLinkIcon />
                       </InputAdornment>
                     ),
-                  }} label="Website" />
+                  }}
+                  label="Website"
+                />
                 <TextField label="bio" multiline rows={2} />
                 <Button variant="contained">Submit</Button>
               </Stack>
