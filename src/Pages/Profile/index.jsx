@@ -1,3 +1,4 @@
+/* eslint-disable no-new-object */
 /* eslint-disable no-unused-vars */
 import {
   Box,
@@ -21,9 +22,13 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import XIcon from "@mui/icons-material/X";
 import AddLinkIcon from "@mui/icons-material/AddLink";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -34,6 +39,28 @@ export default function Profile() {
       padding: "10.5px 14px",
       fontSize: 14,
     },
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const updateData = {
+      userName: data.get("userName"),
+      email:  data.get("email"),
+      fullName:  data.get("fullName"),
+      github:  data.get("github"),
+      linkedln: data.get("linkedIn"),
+      youtube: data.get("youtube"),
+      website: data.get("website"),
+      twitter: data.get("twitter"),
+      bio: data.get("bio"),
+    };
+    try {
+      await axios.patch("http://localhost:8000/api/v1/user/update-account-details", updateData);
+      alert("successfully Updated");
+      navigate("/")
+      
+    } catch (error) {}
   };
   return (
     <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
@@ -86,98 +113,124 @@ export default function Profile() {
               }}
             >
               <Typography variant="h4">Personal Details</Typography>
-              <Stack spacing={2} sx={{ marginTop: "20px" }}>
-                <TextField
-                  sx={commonInputStyle}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PersonIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  label="User Name"
-                />
-                <TextField
-                  sx={commonInputStyle}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  label="Email"
-                />
-                <TextField
-                  sx={commonInputStyle}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AccountCircleIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  label="Full Name"
-                />
-                <TextField
-                  sx={commonInputStyle}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LinkedInIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  label="Linkdin"
-                />
-                <TextField
-                  sx={commonInputStyle}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <GitHubIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  label="Github"
-                />
-                <TextField
-                  sx={commonInputStyle}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <YouTubeIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  label="Youtube"
-                />
-                <TextField
-                  sx={commonInputStyle}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <XIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  label="Twitter"
-                />
-                <TextField
-                  sx={commonInputStyle}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AddLinkIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  label="Website"
-                />
-                <TextField label="bio" multiline rows={2} />
-                <Button variant="contained">Submit</Button>
-              </Stack>
+              <Box component="form" noValidate onSubmit={handleSubmit}>
+                <Stack spacing={2} sx={{ marginTop: "20px" }}>
+                  <TextField
+                    sx={commonInputStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PersonIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    id="userName"
+                    name="userName"
+                    label="User Name"
+                  />
+                  <TextField
+                    sx={commonInputStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <EmailIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    id="email"
+                    name="email"
+                    label="Email"
+                  />
+                  <TextField
+                    sx={commonInputStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AccountCircleIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    id="fullName"
+                    name="fullName"
+                    label="Full Name"
+                  />
+                  <TextField
+                    sx={commonInputStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LinkedInIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    id="linkedIn"
+                    name="linkedIn"
+                    label="Linkdin"
+                  />
+                  <TextField
+                    sx={commonInputStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <GitHubIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    id="github"
+                    name="github"
+                    label="Github"
+                  />
+                  <TextField
+                    sx={commonInputStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <YouTubeIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    id="youtube"
+                    name="youtube"
+                    label="Youtube"
+                  />
+                  <TextField
+                    sx={commonInputStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <XIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    id="twitter"
+                    name="twitter"
+                    label="Twitter"
+                  />
+                  <TextField
+                    sx={commonInputStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AddLinkIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    id="website"
+                    name="website"
+                    label="Website"
+                  />
+                  <TextField
+                    id="bio"
+                    name="bio"
+                    label="bio"
+                    multiline
+                    rows={2}
+                  />
+                  <Button variant="contained" type="submit">
+                    Submit
+                  </Button>
+                </Stack>
+              </Box>
             </Paper>
           </Grid>
         </Grid>
