@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-function Signup() {
+function TestSignup() {
     const [userForm, setUserForm] = useState({
         username:"",
         email:"",
@@ -49,7 +49,7 @@ function Signup() {
         //         .then(response => response.json())
         //         .then(data => console.log('Response:', data))
         //         .catch(error => console.error('Error:', error));
-            await axios.post("http://localhost:8000/api/v1/user/register",formDataToSend)
+            await axios.post("/api/v1/user/register",formDataToSend)
             
             navigate("/login")
         } catch (error) {
@@ -97,4 +97,4 @@ function Signup() {
   )
 }
 
-export default Signup
+export default TestSignup
