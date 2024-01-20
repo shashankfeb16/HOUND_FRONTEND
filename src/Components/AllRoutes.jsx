@@ -5,6 +5,7 @@ import Login from '../Pages/Login'
 import Signup from '../Pages/SignUp'
 import Navbar from './Navbar'
 import Profile from "../Pages/Profile/index"
+import TestUser from './TestUser'
 
 function AllRoutes() {
   return (
@@ -15,6 +16,7 @@ function AllRoutes() {
             <Route path='/login' element={<Login/>}/>
             <Route path='/signup' element={<Signup/>}/>
             <Route path='/profile' element={<Profile/>}/>
+            <Route path='/user' element={<TestUser/>}/>
         </Routes>
     </>
   )

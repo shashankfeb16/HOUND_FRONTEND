@@ -56,7 +56,7 @@ export default function Profile() {
       bio: data.get("bio"),
     };
     try {
-      await axios.patch("http://localhost:8000/api/v1/user/update-account-details", updateData);
+      await axios.patch("http://localhost:8000/api/v1/user/update-account-details", updateData,{withCredentials: true});
       alert("successfully Updated");
       navigate("/")
       

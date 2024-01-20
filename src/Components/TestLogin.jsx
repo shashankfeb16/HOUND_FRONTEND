@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from "axios";
 import { useNavigate } from 'react-router-dom'
-function Login() {
+function TestLogin() {
     const [loginForm, setLoginForm] = useState({
         email:"",
         password:""
@@ -19,11 +19,25 @@ function Login() {
         e.preventDefault();
 
         try {
-             await axios.post('http://localhost:8000/api/v1/user/login',loginForm)
-             alert("successfully logged in")
-             navigate("/")
+            //const res = await axios.post('/api/v1/user/login',loginForm,{withCredentials: true});
+            //console.log(res.success)
+            //  alert("successfully logged in")
+            //  navigate("/user")
+
+             const res = await fetch('/api/auth/signin', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loginForm),
+              });
+
+              const data = await res.json();
+              if(data.success===true){
+                navigate("/");
+              }
         } catch (error) {
-            
+            console.log(error.message)
         }
     }
   return (
@@ -45,4 +59,4 @@ function Login() {
   )
 }
 
-export default Login
+export default TestLogin

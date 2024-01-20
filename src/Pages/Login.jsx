@@ -51,7 +51,7 @@ export default function LoginPage() {
       password: data.get("password")
     }
     try {
-      await axios.post("http://localhost:8000/api/v1/user/login", formData);
+      await axios.post("http://localhost:8000/api/v1/user/login", formData, {withCredentials: true});
       alert("successfully logged in");
       navigate("/");
     } catch (error) {}
