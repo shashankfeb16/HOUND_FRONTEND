@@ -16,7 +16,9 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Avatar from "@mui/material/Avatar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logOutAPI } from "../Redux/Auth/auth.actions";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -59,6 +61,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const { isAuth } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -81,6 +88,19 @@ export default function PrimarySearchAppBar() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const handleLogout = async () => {
+    try {
+       dispatch(logOutAPI());
+    
+        navigate("/");
+      
+      console.log(isAuth)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(isAuth)
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -215,22 +235,39 @@ export default function PrimarySearchAppBar() {
                 </Link>
               </Typography>
             </MenuItem>
-            <MenuItem>
-              <Link
-                to="/signup"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                SIGNUP
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                to="/login"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                LOGIN
-              </Link>
-            </MenuItem>
+
+            {isAuth && <MenuItem>
+                  <Link
+                    to="/user"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    UserDetails
+                  </Link>
+                </MenuItem>}
+
+            {isAuth ? (
+              <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>
+            ) : (
+              <>
+                <MenuItem>
+                  <Link
+                    to="/signup"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    SIGNUP
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link
+                    to="/login"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    LOGIN
+                  </Link>
+                </MenuItem>
+              </>
+            )}
+
             <IconButton
               size="large"
               edge="end"
