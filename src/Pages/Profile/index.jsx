@@ -62,6 +62,21 @@ export default function Profile() {
       
     } catch (error) {}
   };
+
+  const handleUploadPhoto = async()=>{
+   if(selectedFile){
+    const formData = new FormData();
+    formData.append("profileImage", selectedFile);
+    console.log(formData);
+    try{
+      await axios.post("http://localhost:8000/api/v1/user/upload-images", formData, {withCredentials: true});
+      alert("Profile Photo Uploaded Successfully");
+    }
+    catch(error){
+      alert(error);
+    }
+   }
+  }
   return (
     <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
       <Container maxWidth="lg" sx={{ mt: 3 }}>
@@ -99,7 +114,7 @@ export default function Profile() {
                     {selectedFile ? selectedFile.name : "Choose File"}
                   </Button>
                 </label>
-                <Button variant="contained">Upload</Button>
+                <Button variant="contained" onClick={handleUploadPhoto}>Upload</Button>
               </Stack>
             </Paper>
           </Grid>
