@@ -14,6 +14,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { loginAPI } from "../Redux/Auth/auth.actions";
+import { useDispatch } from "react-redux";
 
 function Copyright(props) {
   return (
@@ -39,6 +41,7 @@ const defaultTheme = createTheme();
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -50,11 +53,19 @@ export default function LoginPage() {
       email: data.get("email"),
       password: data.get("password")
     }
+    // try {
+    //   await axios.post("http://localhost:8000/api/v1/user/login", formData, {withCredentials: true});
+    //   alert("successfully logged in");
+    //   navigate("/");
+    // } catch (error) {}
+
     try {
-      await axios.post("http://localhost:8000/api/v1/user/login", formData, {withCredentials: true});
-      alert("successfully logged in");
+     dispatch(loginAPI(formData))
       navigate("/");
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+    
   };
 
   return (

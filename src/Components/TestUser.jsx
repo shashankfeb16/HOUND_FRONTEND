@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../Redux/Auth/auth.actions';
 function TestUser() {
   axios.defaults.withCredentials = true;
   const navigate = useNavigate()
-  const [user, setUser]= useState()
-
-    const getUser = async()=>{
-        const res = await axios.get("http://localhost:8000/api/v1/user/current-user",{withCredentials: true}) 
-        // console.log(res?.data?.user)
-        // console.log(res?.data?.valid)
-        if(res.data.valid){
-          setUser(res?.data?.user?.username) 
-          // console.log(res?.data?._id)
-          // console.log(res?.data?.valid)
-        }else{
-          navigate("/login")
-        }      
-      }
-      // console.log(user.data.data)
+  // const [user, setUser]= useState()
+  const dispatch  = useDispatch()
+  const {user} =  useSelector(state=>state.auth)
+    // const getUser = async()=>{
+    //     const res = await axios.get("http://localhost:8000/api/v1/user/current-user",{withCredentials: true}) 
+        
+    //     if(res.data.valid){
+    //       setUser(res?.data?.user?.username) 
+    //     }else{
+    //       navigate("/login")
+    //     }      
+    //   }
       useEffect(()=>{
-        getUser();
+       dispatch(getUser());
       },[])
 
       const logoutHandler =async()=>{
@@ -28,9 +27,8 @@ function TestUser() {
           navigate("/login")
       }
   return (
-    // <div>{user}</div>
     <>
-    <div>hello: {user}</div>
+    <div>hello: {user.email}</div>
     <button onClick={logoutHandler}>Logout</button>
     </>
   )

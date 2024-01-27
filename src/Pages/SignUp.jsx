@@ -14,6 +14,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { signUpAPI } from "../Redux/Auth/auth.actions";
+import { useDispatch } from "react-redux";
 
 function Copyright(props) {
   return (
@@ -38,6 +40,7 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUpPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,11 +55,19 @@ export default function SignUpPage() {
       email: data.get("email"),
       password: data.get("password")
     }
+    // try {
+    //   await axios.post("http://localhost:8000/api/v1/user/register", formData);
+    //   alert("successfully Registered");
+    //   navigate("/");
+    // } catch (error) {}
+
     try {
-      await axios.post("http://localhost:8000/api/v1/user/register", formData);
-      alert("successfully Registered");
-      navigate("/");
-    } catch (error) {}
+     signUpAPI(dispatch(formData))
+     
+      navigate("/login");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
