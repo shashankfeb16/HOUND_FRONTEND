@@ -31,6 +31,7 @@ export const authReducer = (state=intialState, {type,payload})=>{
         case AUTH_GETUSER:{
             return {
                 ...state,
+                isAuth:true,
                 user:payload
             }
         }

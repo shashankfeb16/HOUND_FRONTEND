@@ -2,10 +2,11 @@ import React from 'react'
 import Comment from './Comment'
 
 function CommentList({comments,currentUser,handleEdit,handleDelete}) {
+  
   return (
     <div>
         {
-            comments.map((el)=>(
+            comments?.map((el)=>(
                 <Comment
                 key={el._id}
                 comment={el}

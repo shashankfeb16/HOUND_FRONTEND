@@ -7,10 +7,12 @@ import {
 import { composeWithDevTools } from "@redux-devtools/extension";
 import {thunk} from "redux-thunk" 
 import { authReducer } from "./Auth/auth.reducer.js";
+import { blogReducer } from "./blogs/blog.reducer.js";
 
 
   const rootReducer = combineReducers({
-    auth:authReducer
+    auth:authReducer,
+    blog:blogReducer
   })
 
 

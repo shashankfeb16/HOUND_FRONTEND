@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useSelector, useDispatch } from "react-redux";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Box, Button, IconButton, TextareaAutosize } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function Homepage() {
   const {isAuth} = useSelector(state=>state.auth);
@@ -81,11 +82,14 @@ function Homepage() {
 
       {
         data?.map((el)=>(
+         
           <div key={el?._id} style={{width:"400px"}}>
+             <Link to={`/blogs/${el?._id}`}>
               <div style={{display:"flex",flexDirection:"row",border:"1px solid black"}}>
                   <div>
                     <p>Title:{el?.title}</p>
                     <p>Description:-  {el?.description}</p>
+                    {/* <div style={{width:'80%',border: "1px solid black", padding:"40px", margin:"30px",}} dangerouslySetInnerHTML={{ __html: el?.description }}/> */}
                     <p>Author:-  {el?.owner?.userName}</p>
                     </div>
                   <div>
@@ -93,6 +97,7 @@ function Homepage() {
                   
                 </div>
                 </div>
+                </Link>
           </div>
         ))
       }

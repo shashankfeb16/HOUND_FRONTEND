@@ -8,6 +8,7 @@ import Profile from "../Pages/Profile/index"
 import TestUser from './TestUser'
 import Test from './Test'
 import PrivateRoute from './PrivateRoute'
+import TestSingleBlog from './TestSingleBlog'
 
 function AllRoutes() {
   return (
@@ -21,6 +22,8 @@ function AllRoutes() {
             <Route path='/user' element={<PrivateRoute Component={TestUser}/>} />
               {/* <Route path='/user' element={<TestUser/>}/> */}
             <Route path='/test' element={<Test/>}/>
+            {/* <Route path='/blogs/:id' element={<TestSingleBlog/>}/> */}
+            <Route path='/blogs/:id' element={<PrivateRoute Component={TestSingleBlog}/>}/>
         </Routes>
     </>
   )

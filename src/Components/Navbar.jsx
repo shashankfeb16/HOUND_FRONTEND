@@ -91,6 +91,7 @@ export default function PrimarySearchAppBar() {
 
   const handleLogout = async () => {
     try {
+      //  dispatch(logOutAPI(user._id));
        dispatch(logOutAPI());
     
         navigate("/");

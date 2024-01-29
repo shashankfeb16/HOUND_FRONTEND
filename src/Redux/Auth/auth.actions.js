@@ -29,6 +29,7 @@ export const loginAPI =(formData)=>async(dispatch)=>{
 
 export const logOutAPI=()=>async(dispatch)=>{
     try {
+        // await axios.post("http://localhost:8000/api/v1/user/logout",id,{withCredentials: true})
         await axios.post("http://localhost:8000/api/v1/user/logout",{withCredentials: true})
         dispatch({
             type: AUTH_LOGOUT,

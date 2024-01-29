@@ -1,8 +1,11 @@
 import { Button, Card, CardContent, Typography } from '@mui/material'
 import React from 'react'
+import { useSelector } from 'react-redux';
 
 function Comment({comment,onEdit,currentUser,onDelete}) {
-    const isOwner = comment.commentBy === currentUser._id;
+  const {user} = useSelector(state=>state.auth);
+  console.log(comment);
+    const isOwner = comment.commentBy._id === user._id;
   return (
     <Card>
         <CardContent>
