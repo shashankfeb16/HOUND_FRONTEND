@@ -3,6 +3,8 @@ import JoditEditor from "jodit-react";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import axios from "axios";
 
+const API_KEY = "50938726ed5b1dc3e275abc4759bf1bc";
+
 function CreateBlog({ placeholder }) {
   const editor = useRef(null);
   const [content, setContent] = useState("");
@@ -12,9 +14,26 @@ function CreateBlog({ placeholder }) {
       readonly: false,
       placeholder: placeholder || "Start typing...",
       height: "500px",
-      uploader: {
-        insertImageAsBase64URI: true,
-      },
+      // uploader: {
+      //   // insertImageAsBase64URI: true,
+      //   url: "https://api.imgbb.com/1/upload",
+      //   format: "json",
+      //   method: "POST",
+      //   headers: {
+      //     Authorization: `Bearer ${API_KEY}`,
+      //   },
+      //   isSuccess: function (resp) {
+      //     return resp.success === true;
+      //   },
+      //   getMsg: function (resp) {
+      //     return resp.message;
+      //   },
+      //   process: function (resp) {
+      //     // Customize the HTML output for the uploaded image
+      //     return `<img style="float:right; margin: 10px;width:300px; height: 200px;" src="${resp.data.url}" alt="${resp.data.name}">`;
+      //   },
+      //   files: "files[0]",
+      // },
     }),
     [placeholder]
   );
