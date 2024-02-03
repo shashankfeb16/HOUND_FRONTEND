@@ -62,7 +62,7 @@ export default function SignUpPage() {
     // } catch (error) {}
 
     try {
-     signUpAPI(dispatch(formData))
+     dispatch(signUpAPI(formData))
      
       navigate("/login");
     } catch (error) {

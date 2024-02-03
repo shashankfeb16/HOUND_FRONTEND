@@ -1,11 +1,17 @@
-import { GET_Blog_COMMENTS, GET_LIKE_STATUS, GET_SINGLE_BLOG_DETAILS, POST_Blog_COMMENTS, UPDATE_LIKES } from "./blog.types"
+import { GET_BLOGS, GET_Blog_COMMENTS, GET_CURRENTUSER_BLOGS, GET_LIKE_STATUS, GET_SINGLE_BLOG_DETAILS,  POST_Blog_COMMENTS_FAILURE,  POST_Blog_COMMENTS_REQUEST,  POST_Blog_COMMENTS_SUCCESS, UPDATE_LIKES } from "./blog.types"
 
 
 const intialState={
     blogData:{},
-    allBlogs:[],
+    blogs:[],
+    currentUserBlogs:[],
+    count:null,
+    totalPages:null,
+    currentPage :null,
     comments:[],
-    like:false
+    like:false,
+    loading:false,
+    error:false,
 }
 
 
@@ -18,18 +24,47 @@ export const blogReducer =(state=intialState,{type,payload}) =>{
                 blogData: payload
             }
         }
-        case GET_Blog_COMMENTS: {
+        case GET_BLOGS:{
             return{
                 ...state,
-                comments: payload
+                blogs: payload.blogs,
+                count: payload.count,
+                currentPage: payload.currentPage,
+                totalPages: payload.totalPages
             }
         }
-        case POST_Blog_COMMENTS: {
+        case GET_CURRENTUSER_BLOGS:{
             return{
                 ...state,
-                comments: payload
+                currentUserBlogs:payload
             }
         }
+        // case GET_Blog_COMMENTS: {
+        //     return{
+        //         ...state,
+        //         comments: payload
+        //     }
+        // }
+        // case POST_Blog_COMMENTS_REQUEST: {
+        //     return{
+        //         ...state,
+        //         loading: true
+        //     }
+        // }
+        // case POST_Blog_COMMENTS_SUCCESS: {
+        //     return{
+        //         ...state,
+        //         comments: [...state.comments, payload],
+        //         loading: false
+        //     }
+        // }
+        // case POST_Blog_COMMENTS_FAILURE: {
+        //     return{
+        //         ...state,
+        //         loading: false,
+        //         error:payload
+        //     }
+        // }
         case UPDATE_LIKES: {
             return{
                 ...state,

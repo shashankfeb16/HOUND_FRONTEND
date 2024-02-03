@@ -18,7 +18,10 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import Avatar from "@mui/material/Avatar";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logOutAPI } from "../Redux/Auth/auth.actions";
+import { getUser, logOutAPI } from "../Redux/Auth/auth.actions";
+import PersonIcon from '@mui/icons-material/Person';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { persistor } from "../Redux/store.js";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -92,15 +95,21 @@ export default function PrimarySearchAppBar() {
   const handleLogout = async () => {
     try {
       //  dispatch(logOutAPI(user._id));
-       dispatch(logOutAPI());
-    
-        navigate("/");
+      dispatch(logOutAPI());
+      persistor.purge();
+       navigate("/");
       
       console.log(isAuth)
     } catch (error) {
       console.log(error);
+    } finally {
+      
     }
   };
+
+  // React.useEffect(()=>{
+  //   dispatch(getUser());
+  //  },[dispatch])
   console.log(isAuth)
 
   const menuId = "primary-search-account-menu";
@@ -119,6 +128,7 @@ export default function PrimarySearchAppBar() {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      style={{ marginTop: '48px' }}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
@@ -141,6 +151,7 @@ export default function PrimarySearchAppBar() {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
+      style={{ marginTop: '32px' }}
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
@@ -195,11 +206,11 @@ export default function PrimarySearchAppBar() {
           </IconButton> */}
           <Typography
             variant="h6"
-            noWrap
+            
             component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            sx={{ display: {  sm: "block" } }}
           >
-            MUI
+            HOUND
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -245,6 +256,14 @@ export default function PrimarySearchAppBar() {
                     UserDetails
                   </Link>
                 </MenuItem>}
+                {isAuth && <MenuItem>
+                  <Link
+                    to="/createBlog"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    Create Blog
+                  </Link>
+                </MenuItem>}
 
             {isAuth ? (
               <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>
@@ -279,10 +298,12 @@ export default function PrimarySearchAppBar() {
               color="inherit"
             >
               {/* <AccountCircle /> */}
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              {user?.profileImage ? (<Avatar alt="Remy Sharp" src={user.profileImage} />):(<AccountCircleIcon style={{ fontSize: 30 }} />)}
+              {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            
             <IconButton
               size="large"
               aria-label="show more"

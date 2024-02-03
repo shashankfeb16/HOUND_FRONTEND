@@ -1,6 +1,9 @@
 import { Avatar, Box, Button, Container, Grid, IconButton, Typography } from '@mui/material'
 import { Facebook, Twitter, GitHub, LinkedIn } from '@mui/icons-material';
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../Redux/Auth/auth.actions';
+import { getCurrentUserBlogs } from '../Redux/blogs/blog.action';
 
 
 const data =[
@@ -22,6 +25,14 @@ const data =[
 ]
 
 function Test() {
+    const dispatch  = useDispatch()
+    const {user} =  useSelector(state=>state.auth)
+    const {currentUserBlogs} =  useSelector(state=>state.blog)
+
+    useEffect(()=>{
+        dispatch(getUser());
+        dispatch(getCurrentUserBlogs())
+       },[dispatch])
   return (
     <>
     <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
@@ -29,7 +40,7 @@ function Test() {
     <Grid sx={{ pt: 3 }}>
         <Box sx={{ display: 'flex', justifyContent:"center", gap:"25px", alignItems:"center", pb:"30px" }}>
             <Box>
-                <Avatar alt="User Avatar" src="" sx={{ width: 100, height: 100 }} />
+                <Avatar alt="User Avatar" src={user?.profileImage} sx={{ width: 100, height: 100 }} />
             </Box>
             <Box sx={{ display: 'flex',alignItems:"center"}}>
                 <Box>
@@ -73,10 +84,11 @@ function Test() {
     <Box sx={{display:"flex",justifyContent:"center", alignItems:"center",  mt:"1rem"}}>
         <Box >
         <Typography variant="h6">Recent Posts</Typography>
-        {data?.map((el)=>(
-            <Box key={el.id} sx={{display:"flex", flexDirection:"column"}}>
+        {currentUserBlogs?.map((el,index)=>(
+            <Box key={el._id} sx={{display:"flex", flexDirection:"row",gap:"20px"}}>
+                <Typography variant="subtitle">Blog {index+1}</Typography>
                 <Typography variant='subtitle'>{el.title}</Typography>
-                <Typography variant='subtitle'>{el.date}</Typography>
+                <Typography variant='subtitle'>{new Date(el.updatedAt).toLocaleDateString()}</Typography>
             </Box>
         ))}
         </Box>

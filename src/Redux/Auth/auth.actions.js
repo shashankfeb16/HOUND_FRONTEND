@@ -1,5 +1,6 @@
 import axios from "axios"
 import { AUTH_GETUSER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP } from "./auth.types.js"
+import { persistor } from "../store.js"
 
 export const loginAPI =(formData)=>async(dispatch)=>{
     try {
@@ -34,6 +35,7 @@ export const logOutAPI=()=>async(dispatch)=>{
         dispatch({
             type: AUTH_LOGOUT,
         })
+        persistor.purge();
     } catch (error) {
         console.log(error.message)
     }
