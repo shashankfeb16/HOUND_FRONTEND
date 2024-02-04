@@ -4,16 +4,20 @@ import { Facebook, Twitter, GitHub, LinkedIn } from '@mui/icons-material';
 import { currentFollowStatus, follow, getUserData, unfollow } from '../Redux/Auth/auth.actions.js'
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link,useNavigate } from 'react-router-dom';
 
 function VisitedUser() {
     const {visitedUser} = useSelector(state=>state.auth)
+    const {user} =  useSelector(state=>state.auth)
     const {blogs} =  useSelector(state=>state.blog)
     const dispatch  = useDispatch()
     const [followStatus,setFollowStatus] = useState(null)
     const { id } = useParams();
+    const navigate = useNavigate()
     // console.log(id);
     // console.log(blogs);
-
+    const isSelfUserPage = user._id === id
+    console.log(isSelfUserPage)
         const currentStatus = async()=>{
             const res = await currentFollowStatus(id)
             // console.log(res)
@@ -33,28 +37,28 @@ function VisitedUser() {
 
     const handleUnFollow =async()=>{
         try {
-            console.log("status before unFollow",followStatus)
+            // console.log("status before unFollow",followStatus)
             let data = await unfollow(id)
             console.log(data)
-            // if(data){
                 setFollowStatus(data)
-            //     // console.log("status after unFollow",followStatus)
-            //     // currentStatus(id)
-            // }
         } catch (error) {
             console.log(error.message)
         } 
-        // console.log("status after unFollow",followStatus)
     }
     useEffect(() =>{
         dispatch(getUserData(id))
         currentStatus(id)
     },[id,dispatch,followStatus])
-    
+    const handleBack = () => {
+        navigate(-1)
+      }
     // console.log(visitedUser)
   return (
     <>
      <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
+     <div>
+            <Button onClick={handleBack}>back</Button>
+        </div>
     <Container maxWidth="lg">
     <Grid sx={{ pt: 3 }}>
         <Box sx={{ display: 'flex', justifyContent:"center", gap:"25px", alignItems:"center", pb:"30px" }}>
@@ -73,12 +77,22 @@ function VisitedUser() {
                     </Box>
                 </Box>
                 <Box sx={{pl:"30px"}}>
-                    {followStatus ? 
+                    {isSelfUserPage  ? (<></>) : (<>{followStatus ? 
                             (<Button variant='contained' onClick={handleUnFollow}> UnFollow</Button>)
                             : (<Button variant='contained' onClick={handleFollow}> Follow</Button>)
-                        }
+                        }</>)}
+
+
+                    {/* {followStatus ? 
+                            (<Button variant='contained' onClick={handleUnFollow}> UnFollow</Button>)
+                            : (<Button variant='contained' onClick={handleFollow}> Follow</Button>)
+                        } */}
                     
-                    {/* <Button variant='contained'> Update</Button> */}
+                   {isSelfUserPage ? (
+                    <Link to="/profile">
+                        <Button variant='contained'> Update</Button>
+                    </Link>
+                   ):<></>} 
                 </Box>
             </Box>
         </Box>
@@ -114,7 +128,7 @@ function VisitedUser() {
         {blogs?.map((el,index)=>(
             <Box key={el._id} sx={{display:"flex", flexDirection:"row",gap:"20px"}}>
                 <Typography variant="subtitle">Blog {index+1}</Typography>
-                <Typography variant='subtitle'>{el.title}</Typography>
+              <Link to={`/blogs/${el._id}`}>  <Typography variant='subtitle'>{el.title}</Typography></Link>
                 <Typography variant='subtitle'>{new Date(el.updatedAt).toLocaleDateString()}</Typography>
             </Box>
         ))}

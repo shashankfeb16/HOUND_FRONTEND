@@ -12,14 +12,14 @@ function TestSingleBlog() {
     const {blogData,like} = useSelector(state=>state.blog)
     // const {loading,comments,error} = useSelector(state=>state.blog)
     // const {like} = useSelector(state=>state.blog)
-    console.log(like)
+    console.log(like)   //result : true
     
     const navigate = useNavigate()
       
     const {user} =  useSelector(state=>state.auth)
     const [isLiked, setIsLiked] = useState(like);
     
-    console.log("current lIke state",isLiked)
+    console.log("current lIke state",isLiked) //result : false
     const [allLikes, setAllLikes] = useState(blogData.totalLikes);
     const [content, setNewContent] = useState('');
     const [commentsData, setcommentsData] = useState([]);
@@ -71,12 +71,27 @@ function TestSingleBlog() {
     }
 
     useEffect(() => {
-        dispatch(getSingleBlogData(id))
-        // dispatch(getBlogComments(id))
-        dispatch(getLikeStatus(id))
-        // setIsLiked(like);
-        fetchComments()
-    },[dispatch,id,isLiked,allLikes])
+        const fetchData = async() => {
+            setLoading(true)
+            try{
+                 dispatch(getSingleBlogData(id))
+                 dispatch(getLikeStatus(id))
+                 await fetchComments()
+                 setIsLiked(like)
+            } catch(error){
+                console.log(error.message)
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchData()
+
+
+        // dispatch(getSingleBlogData(id))
+        // dispatch(getLikeStatus(id))
+        // fetchComments()
+    },[dispatch,id,isLiked,allLikes,like])
     console.log(commentsData)
 
     if(blogData.length===0){
@@ -130,8 +145,20 @@ function TestSingleBlog() {
         }
 
       } 
+      const handleBack = () => {
+        navigate(-1)
+      }
+
+      if(loading) {
+           return (<>
+                <h1>Loading.....</h1>
+            </>)
+      }
   return (
     <div>
+        <div>
+            <Button onClick={handleBack}>back</Button>
+        </div>
         <div>
             <h1>{blogData.title}</h1>
             <div style={{width:'70%',border: "1px solid black", padding:"40px", margin:"30px",}} dangerouslySetInnerHTML={{ __html: blogData?.description }}/>

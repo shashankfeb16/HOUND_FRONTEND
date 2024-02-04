@@ -45,7 +45,7 @@ function Test() {
             <Box sx={{ display: 'flex',alignItems:"center"}}>
                 <Box>
                     <Box>
-                        <Typography variant="h5">Shashank N</Typography>
+                        <Typography variant="h5">{user?.fullName}</Typography>
                         <Typography variant="subtitle1">Full Stack Web Developer</Typography>
                     </Box>
                 </Box>

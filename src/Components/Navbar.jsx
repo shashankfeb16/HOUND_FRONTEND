@@ -204,13 +204,15 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton> */}
+          
           <Typography
             variant="h6"
             
             component="div"
             sx={{ display: {  sm: "block" } }}
           >
-            HOUND
+            <Link to="/">HOUND</Link>
+            
           </Typography>
           <Search>
             <SearchIconWrapper>
