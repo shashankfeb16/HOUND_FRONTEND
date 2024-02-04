@@ -20,7 +20,7 @@ function TestUser() {
     //   }
       useEffect(()=>{
        dispatch(getUser());
-      },[])
+      },[dispatch])
 
       const logoutHandler =async()=>{
           await axios.post("http://localhost:8000/api/v1/user/logout",{withCredentials: true})

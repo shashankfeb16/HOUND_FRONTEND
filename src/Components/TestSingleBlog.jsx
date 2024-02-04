@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { deleteBlog, deleteComment, getBlogComments, getLikeStatus, getSingleBlogData, likeAndUnlike, postComment } from '../Redux/blogs/blog.action'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import CommentList from './CommentList';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import {Box, Button, IconButton, TextareaAutosize,CircularProgress  } from '@mui/material';
@@ -25,14 +25,15 @@ function TestSingleBlog() {
     const [commentsData, setcommentsData] = useState([]);
     const [loading, setLoading] = useState(false);
     
-    console.log(user)
+    // console.log(user)
   
     console.log(blogData)
+    console.log(blogData.owner)
     
     
     const dispatch = useDispatch()
     const { id } = useParams();
-    console.log(id)
+    // console.log(id)
 
     const fetchComments =useCallback(async()=>{
         
@@ -128,13 +129,16 @@ function TestSingleBlog() {
             setLoading(false)
         }
 
-      }
+      } 
   return (
     <div>
         <div>
             <h1>{blogData.title}</h1>
             <div style={{width:'70%',border: "1px solid black", padding:"40px", margin:"30px",}} dangerouslySetInnerHTML={{ __html: blogData?.description }}/>
-            <p>Likes:{blogData.totalLikes}</p>
+            <Link to={`/user/${blogData?.owner?._id}`} style={{textDecoration:'none'}}>
+                <h3>Owner: {blogData?.owner?.userName}</h3>
+            </Link>
+            <p>Likes:{blogData?.totalLikes}</p>
                 <div>
                     <IconButton onClick={handleLikeClick}>
                         <FavoriteIcon style={{ color: isLiked ? 'red' : 'grey' }}/>

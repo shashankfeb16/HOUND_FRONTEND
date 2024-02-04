@@ -1,10 +1,11 @@
-import { AUTH_GETUSER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP } from "./auth.types.js";
+import { AUTH_GETUSER, AUTH_GET_VISITED_USER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP } from "./auth.types.js";
 
 const intialState={
     loading: false,
     error: false,
     isAuth: false,
-    user:{}
+    user:{},
+    visitedUser:{}
 }
 
 export const authReducer = (state=intialState, {type,payload})=>{
@@ -33,6 +34,12 @@ export const authReducer = (state=intialState, {type,payload})=>{
                 ...state,
                 isAuth:true,
                 user:payload
+            }
+        }
+        case AUTH_GET_VISITED_USER:{
+            return {
+                ...state,
+                visitedUser:payload.user
             }
         }
        default:{
