@@ -14,8 +14,9 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { loginAPI } from "../Redux/Auth/auth.actions";
+import { getUser, loginAPI } from "../Redux/Auth/auth.actions";
 import { useDispatch } from "react-redux";
+import { persistor } from "../Redux/store";
 
 function Copyright(props) {
   return (
@@ -64,6 +65,8 @@ export default function LoginPage() {
       navigate("/");
     } catch (error) {
       console.log(error);
+    } finally {
+      // dispatch(getUser());
     }
     
   };

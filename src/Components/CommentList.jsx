@@ -1,17 +1,19 @@
 import React from 'react'
 import Comment from './Comment'
 
-function CommentList({comments,currentUser,handleEdit,handleDelete}) {
+function CommentList({comments,currentUser,onEdit,onDelete,blogId}) {
+  
   return (
     <div>
         {
-            comments.map((el)=>(
+            comments?.map((el)=>(
                 <Comment
                 key={el._id}
                 comment={el}
                 currentUser={currentUser}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                blogId={blogId}
                 />
             ))
         }

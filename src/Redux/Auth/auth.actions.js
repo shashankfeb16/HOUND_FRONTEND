@@ -1,5 +1,6 @@
 import axios from "axios"
-import { AUTH_GETUSER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP } from "./auth.types.js"
+import { AUTH_GETUSER, AUTH_GET_VISITED_USER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP } from "./auth.types.js"
+import { persistor } from "../store.js"
 
 export const loginAPI =(formData)=>async(dispatch)=>{
     try {
@@ -29,10 +30,12 @@ export const loginAPI =(formData)=>async(dispatch)=>{
 
 export const logOutAPI=()=>async(dispatch)=>{
     try {
+        // await axios.post("http://localhost:8000/api/v1/user/logout",id,{withCredentials: true})
         await axios.post("http://localhost:8000/api/v1/user/logout",{withCredentials: true})
         dispatch({
             type: AUTH_LOGOUT,
         })
+        persistor.purge();
     } catch (error) {
         console.log(error.message)
     }
@@ -50,6 +53,48 @@ export const getUser=()=>async(dispatch)=>{
         
     } catch (error) {
         
+    }
+}
+
+export const getUserData=(userId)=>async(dispatch)=>{
+    try {
+        const response = await axios.get(`http://localhost:8000/api/v1/user/userdata/${userId}`,{withCredentials: true})
+        console.log(response.data)
+        dispatch({
+            type :AUTH_GET_VISITED_USER,
+            payload: response.data
+        })
+        return response.data
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export const follow =async(userId)=>{
+    try {
+        const response = await axios.post(`http://localhost:8000/api/v1/user/userdata/${userId}`,{withCredentials: true})
+        // console.log(response.data.userStatus)
+        return response.data.userStatus
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+export const unfollow =async(userId)=>{
+    try {
+        const response = await axios.delete(`http://localhost:8000/api/v1/user/userdata/${userId}`,{withCredentials: true})
+        console.log(response.data.userStatus)
+        return response.data.userStatus
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export const currentFollowStatus = async(userId)=>{
+    try {
+        const response = await axios.get(`http://localhost:8000/api/v1/user/userdata/${userId}/follow-status`,{withCredentials: true})
+        return response
+    } catch (error) {
+        console.log(error.message)
     }
 }
 

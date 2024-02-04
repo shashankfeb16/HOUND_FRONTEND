@@ -24,10 +24,13 @@ import XIcon from "@mui/icons-material/X";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../../Redux/Auth/auth.actions";
 
 export default function Profile() {
   const [selectedFile, setSelectedFile] = useState(null);
-
+  const { user } = useSelector((state) => state.auth);
+  const dispatch  = useDispatch()
   const navigate = useNavigate();
 
   const handleFileChange = (event) => {
@@ -74,6 +77,8 @@ export default function Profile() {
     }
     catch(error){
       alert(error);
+    }finally{
+      dispatch(getUser());
     }
    }
   }
@@ -91,7 +96,18 @@ export default function Profile() {
             >
               <Typography variant="h4">Upload Photo</Typography>
               <Stack spacing={2}>
-                <Avatar
+                {user?.profileImage ? (<Avatar
+                  alt={"Remy Sharp"}
+                  src={user?.profileImage}
+                  sx={{
+                    width: 120,
+                    height: 120,
+                    mt: 2,
+                    "& .MuiAvatar-root": {
+                      margin: "0 auto",
+                    },
+                  }}
+                />):(<Avatar
                   alt="Remy Sharp"
                   src="/static/images/avatar/2.jpg"
                   sx={{
@@ -102,7 +118,19 @@ export default function Profile() {
                       margin: "0 auto",
                     },
                   }}
-                />
+                />)}
+                {/* <Avatar
+                  alt="Remy Sharp"
+                  src="/static/images/avatar/2.jpg"
+                  sx={{
+                    width: 120,
+                    height: 120,
+                    mt: 2,
+                    "& .MuiAvatar-root": {
+                      margin: "0 auto",
+                    },
+                  }}
+                /> */}
                 <label htmlFor="file-input">
                   <input
                     id="file-input"

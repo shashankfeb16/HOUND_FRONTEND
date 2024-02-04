@@ -2,19 +2,27 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useSelector, useDispatch } from "react-redux";
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Box, Button, IconButton, TextareaAutosize } from '@mui/material';
+import { Box, Button, IconButton, Pagination, Stack, TextareaAutosize } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { getAllBlogs } from '../Redux/blogs/blog.action';
+import { getUser } from '../Redux/Auth/auth.actions';
 
 function Homepage() {
   const {isAuth} = useSelector(state=>state.auth);
-  const [data, setData]= useState([])
+  const { blogs, count, totalPages, currentPage } = useSelector(state => state.blog);
+  console.log( isAuth )
+  // const [data, setData]= useState([])
+  const dispatch = useDispatch()
   const [user, setUser]= useState({})
+  const [page, setPage] = useState(1);
   const [isLiked, setIsLiked] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const getData = async()=>{
-        const res = await axios.get("http://localhost:8000/api/v1/blog/allBlogs")
-        setData(res.data.blogs)
-        console.log(res)
-  }
+  // const getData = async()=>{
+  //       const res = await axios.get("http://localhost:8000/api/v1/blog/allBlogs")
+  //       setData(res.data.blogs)
+  //       console.log(res)
+  // }
+
     const handleLikeClick = () => {
       setIsLiked(!isLiked);
     };
@@ -24,12 +32,19 @@ function Homepage() {
       setNewComment("")
     }
 
+    const handlePageChange=(newPage) => {
+      setPage(newPage)
+      console.log(newPage)
+    }
+
   
   useEffect(()=>{
-    getData()
-    // getUser()
+    // getData(page)
+    dispatch(getAllBlogs(page));
+    // dispatch(getUser());
+    // (isAuth && dispatch(getUser()))
     // console.log(data)
-  },[])
+  },[dispatch,page])
 
   // const cookieValue = document.cookie.split('; ').find((row) => row.startsWith('accessToken='))?.split('=')[1]
 
@@ -48,7 +63,7 @@ function Homepage() {
   return (
     <>
     {/* <Navbar/> */}
-    <div style={{display:"flex",alignItems:"center"}}>
+    {/* <div style={{display:"flex",alignItems:"center"}}>
         <h3>John dsouza</h3>
         <p>blog date</p>
     </div>
@@ -73,30 +88,43 @@ function Homepage() {
        onClick={()=>postComment()}>
         Post Comment
        </Button>
-    </Box>
-
+    </Box> */}
+    {/* <p>try:{blogs}</p> */}
 
 
 
 
       {
-        data?.map((el)=>(
-          <div key={el?._id} style={{width:"400px"}}>
-              <div style={{display:"flex",flexDirection:"row",border:"1px solid black"}}>
-                  <div>
-                    <p>Title:{el?.title}</p>
-                    <p>Description:-  {el?.description}</p>
-                    <p>Author:-  {el?.owner?.userName}</p>
+        blogs?.map((el)=>(
+         
+          <div key={el?._id} style={{width:"80%",margin:'auto',marginTop:"50px"}}>
+             <Link to={`/blogs/${el?._id}`} style={{textDecoration:"none",color:'black'}} >
+              <div key={el?._id} style={{border:"1px solid black", marginBottom:"30px"}}>
+                  <div style={{margin:"30px"}}>
+                    <h3>Title: {el?.title}</h3>
+                    {/* <p>Description:-  {el?.description}</p> */}
+                    <div style={{width:'80%', padding:"20px",maxHeight:"250px",overflow:"hidden"}} dangerouslySetInnerHTML={{ __html: el?.description }}/>
+                    <p>{el?.totalLikes} Likes</p>
                     </div>
-                  <div>
+                    
+                  <div style={{display:"flex",margin:"30px"}}>
                     <img style={{width:"50px", height:"50px"}} src={el?.owner?.profileImage} alt="" />
-                  
+                    <p>Author:-  {el?.owner?.userName}</p>
                 </div>
                 </div>
+                </Link>
           </div>
         ))
       }
 
+<Stack spacing={2} justifyContent="center" alignItems="center" mt={3}>
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={(event,value)=>setPage(value)}
+          color="primary"
+        />
+      </Stack>
     
     </>
   )

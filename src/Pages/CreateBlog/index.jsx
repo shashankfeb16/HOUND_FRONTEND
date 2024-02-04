@@ -2,13 +2,15 @@ import React, { useState, useRef, useMemo } from "react";
 import JoditEditor from "jodit-react";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const API_KEY = "50938726ed5b1dc3e275abc4759bf1bc";
+// const API_KEY = "50938726ed5b1dc3e275abc4759bf1bc";
 
 function CreateBlog({ placeholder }) {
   const editor = useRef(null);
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
+  const navigate = useNavigate()
   const config = useMemo(
     () => ({
       readonly: false,
@@ -51,6 +53,8 @@ function CreateBlog({ placeholder }) {
    }
    catch(error){
     alert(error);
+   }finally{
+    navigate("/")
    }
   }
   return (
