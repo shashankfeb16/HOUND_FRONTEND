@@ -11,6 +11,7 @@ import PrivateRoute from './PrivateRoute'
 import CreateBlog from '../Pages/CreateBlog'
 import TestSingleBlog from './TestSingleBlog'
 import VisitedUser from './VisitedUser'
+import UpdateBlog from '../Pages/UpdateBlog'
 
 function AllRoutes() {
   return (
@@ -23,6 +24,7 @@ function AllRoutes() {
             <Route path='/profile' element={<PrivateRoute Component={Profile}/>} />
             {/* <Route path='/profile' element={<Profile/>}/> */}
             <Route path='/createBlog' element={<PrivateRoute Component={CreateBlog}/>} />
+            <Route path='/updateBlog/:blogId' element={<PrivateRoute Component={UpdateBlog}/>} />
             {/* <Route path='/createBlog' element={<CreateBlog/>}/> */}
             <Route path='/user/:id' element={<PrivateRoute Component={VisitedUser}/>} />
             {/* <Route path='/user/:id' element={<VisitedUser/>}/> */}
