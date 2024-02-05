@@ -26,6 +26,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../Redux/Auth/auth.actions";
+import { getInitials } from "./utils";
 
 export default function Profile() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -167,7 +168,7 @@ export default function Profile() {
               <Typography variant="h4">Upload Photo</Typography>
               <Stack spacing={2}>
                 {user?.profileImage ? (<Avatar
-                  alt={"Remy Sharp"}
+                  alt={getInitials(exisitingUser?.fullName)}
                   src={user?.profileImage}
                   sx={{
                     width: 120,
@@ -178,7 +179,7 @@ export default function Profile() {
                     },
                   }}
                 />):(<Avatar
-                  alt="Remy Sharp"
+                  alt={getInitials(exisitingUser?.fullName)}
                   src="/static/images/avatar/2.jpg"
                   sx={{
                     width: 120,
