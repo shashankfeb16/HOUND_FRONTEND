@@ -173,7 +173,7 @@ function TestSingleBlog() {
                 </div>
                 {isBlogOwner && 
                     <Box>
-                        <Button variant="contained"
+                        <Button onClick={()=> navigate(`/updateBlog/${id}`)} variant="contained"
                 color="primary">Edit</Button>
                         <Button onClick={handleDelete}>Delete</Button>
                     </Box>
