@@ -129,14 +129,31 @@ export const likeAndUnlike =(blogId)=>async(dispatch)=>{
     }
 }
 
-export const getLikeStatus =(blogId)=>async(dispatch)=>{
+// export const getLikeStatus =(blogId)=>async(dispatch)=>{
+//     try {
+//         const response = await axios.get(`http://localhost:8000/api/v1/blog/currrent-blog/${blogId}`,{withCredentials: true})
+//         console.log(response.data)
+//         dispatch({
+//             type: GET_LIKE_STATUS,
+//             payload: response?.data
+//         })
+//         return response?.data
+//     } catch (error) {
+//         console.log(error.message)
+//     }
+// }
+
+
+//trial controller
+export const getLikeStatus =async(blogId)=>{
     try {
         const response = await axios.get(`http://localhost:8000/api/v1/blog/currrent-blog/${blogId}`,{withCredentials: true})
         console.log(response.data)
-        dispatch({
-            type: GET_LIKE_STATUS,
-            payload: response?.data
-        })
+        // dispatch({
+        //     type: GET_LIKE_STATUS,
+        //     payload: response?.data
+        // })
+        return response?.data
     } catch (error) {
         console.log(error.message)
     }

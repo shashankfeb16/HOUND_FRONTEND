@@ -1,5 +1,5 @@
 import axios from "axios"
-import { AUTH_GETUSER, AUTH_GET_VISITED_USER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP } from "./auth.types.js"
+import { AUTH_GETUSER, AUTH_GET_VISITED_USER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP, AUTH_UPDATE_USER } from "./auth.types.js"
 import { persistor } from "../store.js"
 
 export const loginAPI =(formData)=>async(dispatch)=>{
@@ -98,6 +98,30 @@ export const currentFollowStatus = async(userId)=>{
     }
 }
 
+export const userFollowerAndFollowing = async(userId)=>{
+    try {
+        const response = await axios.get(`http://localhost:8000/api/v1/user/userdata/${userId}/followdata`,{withCredentials: true})
+        console.log(response.data)
+        return response
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
+export const updateUserData = (updateData)=>async(dispatch)=>{
+    try {
+        const response = await axios.patch(`http://localhost:8000/api/v1/user/update-account-details`,updateData,{withCredentials: true})
+        console.log(response.data.user)
+        dispatch({
+            type: AUTH_UPDATE_USER,
+            payload: response.data.user
+        })
+        return response
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 
 // export const logoutHandler =async()=>{

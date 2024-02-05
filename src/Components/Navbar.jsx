@@ -130,8 +130,8 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
       style={{ marginTop: '48px' }}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <Link to="/profile" style={{textDecoration:"none", color:"inherit"}}><MenuItem onClick={handleMenuClose}> Profile </MenuItem></Link> 
+      <Link to="/my-account" style={{textDecoration:"none", color:"inherit"}}><MenuItem onClick={handleMenuClose}>My account</MenuItem></Link>
     </Menu>
   );
 
@@ -211,7 +211,7 @@ export default function PrimarySearchAppBar() {
             component="div"
             sx={{ display: {  sm: "block" } }}
           >
-            <Link to="/">HOUND</Link>
+            <Link to="/" style={{textDecoration:"none", color:"inherit"}}>HOUND</Link>
             
           </Typography>
           <Search>
