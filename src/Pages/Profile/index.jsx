@@ -53,7 +53,7 @@ export default function Profile() {
       email:  exisitingUser?.email,
       fullName:  exisitingUser?.fullName,
       github:  exisitingUser?.github,
-      linkedln: data.get("linkedIn"),
+      linkedln: exisitingUser?.linkedIn,
       youtube: exisitingUser?.youtube,
       website: exisitingUser?.website,
       twitter: exisitingUser?.twitter,
@@ -116,6 +116,12 @@ export default function Profile() {
       setExistingUser((prevValues) => ({
         ...prevValues,
         github: value,
+      }));
+    }
+    if (name === "linkedIn") {
+      setExistingUser((prevValues) => ({
+        ...prevValues,
+        linkedIn: value,
       }));
     }
     if (name === "youtube") {
@@ -279,6 +285,8 @@ export default function Profile() {
                     id="linkedIn"
                     name="linkedIn"
                     label="Linkdin"
+                    value={exisitingUser?.linkedln}
+                    onChange={handleInputChange}
                   />
                   <TextField
                     sx={commonInputStyle}
