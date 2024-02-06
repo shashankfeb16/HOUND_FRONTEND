@@ -13,7 +13,7 @@ import {
   Stack,
   InputAdornment,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -26,11 +26,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../Redux/Auth/auth.actions";
+import { getInitials } from "./utils";
 
 export default function Profile() {
   const [selectedFile, setSelectedFile] = useState(null);
   const { user } = useSelector((state) => state.auth);
-  const dispatch  = useDispatch()
+  const [exisitingUser, setExistingUser] = useState(null);
+  // const dispatch  = useDispatch()
   const navigate = useNavigate();
 
   const handleFileChange = (event) => {
@@ -48,15 +50,15 @@ export default function Profile() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const updateData = {
-      userName: data.get("userName"),
-      email:  data.get("email"),
-      fullName:  data.get("fullName"),
-      github:  data.get("github"),
-      linkedln: data.get("linkedIn"),
-      youtube: data.get("youtube"),
-      website: data.get("website"),
-      twitter: data.get("twitter"),
-      bio: data.get("bio"),
+      userName: exisitingUser?.userName,
+      email:  exisitingUser?.email,
+      fullName:  exisitingUser?.fullName,
+      github:  exisitingUser?.github,
+      linkedln: exisitingUser?.linkedIn,
+      youtube: exisitingUser?.youtube,
+      website: exisitingUser?.website,
+      twitter: exisitingUser?.twitter,
+      bio: exisitingUser?.bio,
     };
     try {
       await axios.patch("http://localhost:8000/api/v1/user/update-account-details", updateData,{withCredentials: true});
@@ -77,11 +79,80 @@ export default function Profile() {
     }
     catch(error){
       alert(error);
-    }finally{
-      dispatch(getUser());
     }
    }
   }
+
+  const getUser = async () =>{
+    try {
+      const res = await axios.get("http://localhost:8000/api/v1/user/current-user",{withCredentials: true});
+      console.log(res);
+      const {data} = res;
+      setExistingUser(data?.user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "userName") {
+      setExistingUser((prevValues) => ({
+        ...prevValues,
+        userName: value,
+      }));
+    }
+    if (name === "email") {
+      setExistingUser((prevValues) => ({
+        ...prevValues,
+        email: value,
+      }));
+    }
+    if (name === "fullName") {
+      setExistingUser((prevValues) => ({
+        ...prevValues,
+        fullName: value,
+      }));
+    }
+    if (name === "github") {
+      setExistingUser((prevValues) => ({
+        ...prevValues,
+        github: value,
+      }));
+    }
+    if (name === "linkedIn") {
+      setExistingUser((prevValues) => ({
+        ...prevValues,
+        linkedIn: value,
+      }));
+    }
+    if (name === "youtube") {
+      setExistingUser((prevValues) => ({
+        ...prevValues,
+        youtube: value,
+      }));
+    }
+    if (name === "twitter") {
+      setExistingUser((prevValues) => ({
+        ...prevValues,
+        twitter: value,
+      }));
+    }
+    if (name === "website") {
+      setExistingUser((prevValues) => ({
+        ...prevValues,
+        website: value,
+      }));
+    }
+    if (name === "bio") {
+      setExistingUser((prevValues) => ({
+        ...prevValues,
+        bio: value,
+      }));
+    }
+  };
+  useEffect(()=>{
+    getUser();
+  },[]);
   return (
     <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
       <Container maxWidth="lg" sx={{ mt: 3 }}>
@@ -97,7 +168,7 @@ export default function Profile() {
               <Typography variant="h4">Upload Photo</Typography>
               <Stack spacing={2}>
                 {user?.profileImage ? (<Avatar
-                  alt={"Remy Sharp"}
+                  alt={getInitials(exisitingUser?.fullName)}
                   src={user?.profileImage}
                   sx={{
                     width: 120,
@@ -108,7 +179,7 @@ export default function Profile() {
                     },
                   }}
                 />):(<Avatar
-                  alt="Remy Sharp"
+                  alt={getInitials(exisitingUser?.fullName)}
                   src="/static/images/avatar/2.jpg"
                   sx={{
                     width: 120,
@@ -170,6 +241,8 @@ export default function Profile() {
                     id="userName"
                     name="userName"
                     label="User Name"
+                    value={exisitingUser?.userName}
+                    onChange={handleInputChange}
                   />
                   <TextField
                     sx={commonInputStyle}
@@ -183,6 +256,8 @@ export default function Profile() {
                     id="email"
                     name="email"
                     label="Email"
+                    value={exisitingUser?.email}
+                    onChange={handleInputChange}
                   />
                   <TextField
                     sx={commonInputStyle}
@@ -196,6 +271,8 @@ export default function Profile() {
                     id="fullName"
                     name="fullName"
                     label="Full Name"
+                    value={exisitingUser?.fullName}
+                    onChange={handleInputChange}
                   />
                   <TextField
                     sx={commonInputStyle}
@@ -209,6 +286,8 @@ export default function Profile() {
                     id="linkedIn"
                     name="linkedIn"
                     label="Linkdin"
+                    value={exisitingUser?.linkedln}
+                    onChange={handleInputChange}
                   />
                   <TextField
                     sx={commonInputStyle}
@@ -222,6 +301,8 @@ export default function Profile() {
                     id="github"
                     name="github"
                     label="Github"
+                    value={exisitingUser?.github}
+                    onChange={handleInputChange}
                   />
                   <TextField
                     sx={commonInputStyle}
@@ -235,6 +316,8 @@ export default function Profile() {
                     id="youtube"
                     name="youtube"
                     label="Youtube"
+                    value={exisitingUser?.youtube}
+                    onChange={handleInputChange}
                   />
                   <TextField
                     sx={commonInputStyle}
@@ -248,6 +331,8 @@ export default function Profile() {
                     id="twitter"
                     name="twitter"
                     label="Twitter"
+                    value={exisitingUser?.twitter}
+                    onChange={handleInputChange}
                   />
                   <TextField
                     sx={commonInputStyle}
@@ -261,6 +346,8 @@ export default function Profile() {
                     id="website"
                     name="website"
                     label="Website"
+                    value={exisitingUser?.website}
+                    onChange={handleInputChange}
                   />
                   <TextField
                     id="bio"
@@ -268,6 +355,8 @@ export default function Profile() {
                     label="bio"
                     multiline
                     rows={2}
+                    value={exisitingUser?.bio}
+                    onChange={handleInputChange}
                   />
                   <Button variant="contained" type="submit">
                     Submit
