@@ -109,7 +109,7 @@ export default function PrimarySearchAppBar() {
 
   // React.useEffect(()=>{
   //   dispatch(getUser());
-  //  },[dispatch])
+  //  },[])
   console.log(isAuth)
 
   const menuId = "primary-search-account-menu";

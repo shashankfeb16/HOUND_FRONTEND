@@ -44,15 +44,19 @@ export const logOutAPI=()=>async(dispatch)=>{
 export const getUser=()=>async(dispatch)=>{
     try {
         const response = await axios.get("http://localhost:8000/api/v1/user/current-user",{withCredentials: true}) 
+        // if(response.data.valid===true) {
+        //     return window.location.reload();
+        // }else{
         dispatch({
             type: AUTH_GETUSER,
             payload: response.data.user
         })
+    
         console.log(response.data.user)
         return response.data.user
         
     } catch (error) {
-        
+        console.log(error.message)
     }
 }
 
@@ -60,10 +64,14 @@ export const getUserData=(userId)=>async(dispatch)=>{
     try {
         const response = await axios.get(`http://localhost:8000/api/v1/user/userdata/${userId}`,{withCredentials: true})
         console.log(response.data)
+        if(response.data.valid===true) {
+            return window.location.reload();
+        }else{
         dispatch({
             type :AUTH_GET_VISITED_USER,
             payload: response.data
         })
+    }
         return response.data
     } catch (error) {
         console.log(error.message)
@@ -117,6 +125,16 @@ export const updateUserData = (updateData)=>async(dispatch)=>{
             type: AUTH_UPDATE_USER,
             payload: response.data.user
         })
+        return response
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
+export const updateUserImage=async(formData)=>{
+    try {
+        const response = await axios.post("http://localhost:8000/api/v1/user/upload-images", formData, {withCredentials: true});
         return response
     } catch (error) {
         console.log(error.message)

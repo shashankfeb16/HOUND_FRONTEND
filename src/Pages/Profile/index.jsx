@@ -36,7 +36,10 @@ function Profile() {
     const fetchData=async()=>{
         try {
             const res = await userFollowerAndFollowing()
-            console.log(res.data)
+            // console.log(res.data)
+            // if(res.data.valid===true) {
+            //     return window.location.reload();
+            // }
             setFollowersData(res.data.followers)
             setFollowingData(res.data.following)
         } catch (error) {
@@ -74,11 +77,15 @@ function Profile() {
                     <Box>
                         <Typography variant="h5">{user?.fullName}</Typography>
                         <Typography variant="subtitle1">Full Stack Web Developer</Typography>
+                        <Box>
+                                <Typography variant="h6">Followers: {user?.followersCount}</Typography>
+                                <Typography variant="h6">Following: {user?.followingCount}</Typography>
+                            </Box>
                     </Box>
                 </Box>
                 <Box sx={{pl:"30px"}}>
                     {/* <Button variant='contained'> Follow</Button> */}
-                    <Link to="/profile">
+                    <Link to="/my-account">
                         <Button variant='contained'> Update</Button>
                     </Link>
                 </Box>
@@ -106,7 +113,7 @@ function Profile() {
         <Box sx={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
             <Typography variant="h6">About Me</Typography>
             <Box>
-                <Typography variant="subtitle">I love Writing Code </Typography>
+                <Typography variant="subtitle">{user?.bio }</Typography>
             </Box>
         </Box>
     </Grid>
@@ -121,21 +128,27 @@ function Profile() {
                     </Box>
                 ))}
         </Box>
-        <Box sx={{display:"flex",gap:"30px"}}>
+        <Box sx={{display:"flex",gap:"30px", justifyContent:"center",textAlign:"center"}}>
             <Box>
             <Typography variant="h6">Followers</Typography>
                 {followersData?.map((el)=>(
-                    <Box key={el?.follower._id}>
+
+                   <Link to={`/user/${el?.follower._id}`} style={{color:"inherit", textDecoration:"none"}} >  <Box key={el?.follower._id} sx={{display:"flex",alignItems:"center",mb:"10px",padding:"5px",gap:"10px", borderBottom:"1px solid black"}}>
+                        <Avatar src={el?.follower?.profileImage} alt={el?.follower?.fullName} sx={{ width: 36, height: 36 }}/>
                         <Typography>{el?.follower?.fullName}</Typography>
                     </Box>
+                    </Link>
                 ))}
             </Box>
             <Box>
                 <Typography variant="h6">Following</Typography>
                 {followingData?.map((el)=>(
-                        <Box key={el?.following._id}>
+                        <Link to={`/user/${el?.following._id}`} style={{color:"inherit", textDecoration:"none"}} > 
+                        <Box key={el?.following._id}  sx={{display:"flex",alignItems:"center",mb:"10px",padding:"5px",gap:"10px", borderBottom:"1px solid black"}}>
+                            <Avatar src={el?.following?.profileImage} alt={el?.following?.fullName} sx={{ width: 36, height: 36 }} />
                             <Typography>{el?.following?.fullName}</Typography>
                         </Box>
+                        </Link>
                     ))}
             </Box>
         </Box>

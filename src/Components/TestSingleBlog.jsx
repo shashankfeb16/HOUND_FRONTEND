@@ -50,8 +50,9 @@ function TestSingleBlog() {
         }
     },[id])
 
-    const isBlogOwner = blogData?.owner === user?._id
-    // console.log(blogData,user._id)
+    const isBlogOwner = blogData?.owner?._id === user?._id
+    console.log("isBlogOwner",isBlogOwner)
+    // console.log(blogData?.owner._id,user?._id)
     
     const handleDelete=async()=>{
         try {
@@ -202,7 +203,7 @@ function TestSingleBlog() {
                 </div>
                 {isBlogOwner && 
                     <Box>
-                        <Button variant="contained"
+                        <Button onClick={()=> navigate(`/updateBlog/${id}`)} variant="contained"
                 color="primary">Edit</Button>
                         <Button onClick={handleDelete}>Delete</Button>
                     </Box>
@@ -226,7 +227,7 @@ function TestSingleBlog() {
        {/* {error && <div>Error: {error}</div>} */}
        {loading ? (<CircularProgress />) :(<CommentList 
         comments={commentsData}
-        currentUser={user._id}
+        currentUser={user?._id}
         onDelete={handleDeleteComment}
         blogId={id}
         onEdit ={handleUpdateComment}

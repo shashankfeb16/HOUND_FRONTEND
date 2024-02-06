@@ -25,7 +25,7 @@ import AddLinkIcon from "@mui/icons-material/AddLink";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, updateUserData } from "../../Redux/Auth/auth.actions";
+import { getUser, updateUserData, updateUserImage } from "../../Redux/Auth/auth.actions";
 
 export default function MyAccount() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -73,7 +73,8 @@ export default function MyAccount() {
     formData.append("profileImage", selectedFile);
     console.log(formData);
     try{
-      await axios.post("http://localhost:8000/api/v1/user/upload-images", formData, {withCredentials: true});
+      // await axios.post("http://localhost:8000/api/v1/user/upload-images", formData, {withCredentials: true});
+      await updateUserImage(formData)
       alert("Profile Photo Uploaded Successfully");
     }
     catch(error){

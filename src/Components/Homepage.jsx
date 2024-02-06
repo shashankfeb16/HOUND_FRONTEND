@@ -6,14 +6,15 @@ import { Box, Button, IconButton, Pagination, Stack, TextareaAutosize } from '@m
 import { Link } from 'react-router-dom';
 import { getAllBlogs } from '../Redux/blogs/blog.action';
 import { getUser } from '../Redux/Auth/auth.actions';
+import styled from "styled-components"
 
 function Homepage() {
-  const {isAuth} = useSelector(state=>state.auth);
+  const {isAuth,user} = useSelector(state=>state.auth);
   const { blogs, count, totalPages, currentPage } = useSelector(state => state.blog);
   console.log( isAuth )
   // const [data, setData]= useState([])
   const dispatch = useDispatch()
-  const [user, setUser]= useState({})
+  // const [user, setUser]= useState({})
   const [page, setPage] = useState(1);
   const [isLiked, setIsLiked] = useState(false);
   const [newComment, setNewComment] = useState('');
@@ -97,9 +98,26 @@ function Homepage() {
       {
         blogs?.map((el)=>(
          
+          // <div key={el?._id} style={{width:"80%",margin:'auto',marginTop:"50px"}}>
+          //    <Link to={`/blogs/${el?._id}`} style={{textDecoration:"none",color:'black'}} >
+          //     <div key={el?._id} style={{border:"1px solid black", marginBottom:"30px"}}>
+          //         <div style={{margin:"30px"}}>
+          //           <h3>Title: {el?.title}</h3>
+          //           {/* <p>Description:-  {el?.description}</p> */}
+          //           <div style={{width:'80%', padding:"20px",maxHeight:"250px",overflow:"hidden"}} dangerouslySetInnerHTML={{ __html: el?.description }}/>
+          //           <p>{el?.totalLikes} Likes</p>
+          //           </div>
+                    
+          //         <div style={{display:"flex",margin:"30px"}}>
+          //           <img style={{width:"50px", height:"50px"}} src={el?.owner?.profileImage} alt="" />
+          //           <p>Author:-  {el?.owner?.userName}</p>
+          //       </div>
+          //       </div>
+          //       </Link>
+          // </div>
           <div key={el?._id} style={{width:"80%",margin:'auto',marginTop:"50px"}}>
              <Link to={`/blogs/${el?._id}`} style={{textDecoration:"none",color:'black'}} >
-              <div key={el?._id} style={{border:"1px solid black", marginBottom:"30px"}}>
+              <OuterContainerStyles key={el?._id} style={{padding: "30px 0px"}}>
                   <div style={{margin:"30px"}}>
                     <h3>Title: {el?.title}</h3>
                     {/* <p>Description:-  {el?.description}</p> */}
@@ -108,10 +126,10 @@ function Homepage() {
                     </div>
                     
                   <div style={{display:"flex",margin:"30px"}}>
-                    <img style={{width:"50px", height:"50px"}} src={el?.owner?.profileImage} alt="" />
+                    <img style={{width:"50px", height:"50px",  borderRadius: "50%",}} src={el?.owner?.profileImage} alt="" />
                     <p>Author:-  {el?.owner?.userName}</p>
                 </div>
-                </div>
+                </OuterContainerStyles>
                 </Link>
           </div>
         ))
@@ -130,4 +148,14 @@ function Homepage() {
   )
 }
 
-export default Homepage
+export default Homepage;
+
+const OuterContainerStyles = styled.div`
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-top: ${(props) => props.marginTop ?? "0px"};
+  margin-bottom: ${(props) => props.marginBottom ?? "0px"};
+`;

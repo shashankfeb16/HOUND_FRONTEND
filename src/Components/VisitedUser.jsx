@@ -70,10 +70,10 @@ function VisitedUser() {
                     <Box>
                         <Typography variant="h5">{visitedUser?.fullName}</Typography>
                         <Typography variant="subtitle1">Full Stack Web Developer</Typography>
-                        <Box>
-                        <Typography variant="h6">Followers: {visitedUser?.followersCount}</Typography>
-                        <Typography variant="h6">Following: {visitedUser?.followingCount}</Typography>
-                        </Box>
+                            <Box>
+                                <Typography variant="h6">Followers: {visitedUser?.followersCount}</Typography>
+                                <Typography variant="h6">Following: {visitedUser?.followingCount}</Typography>
+                            </Box>
                     </Box>
                 </Box>
                 <Box sx={{pl:"30px"}}>
@@ -89,7 +89,7 @@ function VisitedUser() {
                         } */}
                     
                    {isSelfUserPage ? (
-                    <Link to="/profile">
+                    <Link to="/my-account">
                         <Button variant='contained'> Update</Button>
                     </Link>
                    ):<></>} 
