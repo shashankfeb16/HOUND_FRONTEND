@@ -6,12 +6,13 @@ import Signup from '../Pages/SignUp'
 import Navbar from './Navbar'
 import Profile from "../Pages/Profile/index"
 import TestUser from './TestUser'
-import Test from './Test'
+// import Test from './Test'
 import PrivateRoute from './PrivateRoute'
 import CreateBlog from '../Pages/CreateBlog'
 import TestSingleBlog from './TestSingleBlog'
 import VisitedUser from './VisitedUser'
 import UpdateBlog from '../Pages/UpdateBlog'
+import MyAccount from '../Pages/MyAccount'
 
 function AllRoutes() {
   return (
@@ -30,7 +31,7 @@ function AllRoutes() {
             {/* <Route path='/user/:id' element={<VisitedUser/>}/> */}
             <Route path='/user' element={<PrivateRoute Component={TestUser}/>} />
               {/* <Route path='/user' element={<TestUser/>}/> */}
-            <Route path='/test' element={<Test/>}/>
+            <Route path='/my-account' element={<MyAccount/>}/>
             {/* <Route path='/blogs/:id' element={<TestSingleBlog/>}/> */}
             <Route path='/blogs/:id' element={<PrivateRoute Component={TestSingleBlog}/>}/>
         </Routes>

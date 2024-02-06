@@ -28,7 +28,7 @@ function TestUser() {
       }
   return (
     <>
-    <div>hello: {user.email}</div>
+    <div>hello: {user?.email}</div>
     <button onClick={logoutHandler}>Logout</button>
     </>
   )

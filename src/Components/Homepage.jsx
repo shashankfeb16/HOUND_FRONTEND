@@ -9,12 +9,12 @@ import { getUser } from '../Redux/Auth/auth.actions';
 import styled from "styled-components"
 
 function Homepage() {
-  const {isAuth} = useSelector(state=>state.auth);
+  const {isAuth,user} = useSelector(state=>state.auth);
   const { blogs, count, totalPages, currentPage } = useSelector(state => state.blog);
   console.log( isAuth )
   // const [data, setData]= useState([])
   const dispatch = useDispatch()
-  const [user, setUser]= useState({})
+  // const [user, setUser]= useState({})
   const [page, setPage] = useState(1);
   const [isLiked, setIsLiked] = useState(false);
   const [newComment, setNewComment] = useState('');

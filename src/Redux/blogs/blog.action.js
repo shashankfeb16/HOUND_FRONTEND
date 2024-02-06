@@ -4,11 +4,16 @@ import { GET_BLOGS, GET_Blog_COMMENTS, GET_CURRENTUSER_BLOGS, GET_LIKE_STATUS, G
 
 export const getAllBlogs =(page)=> async(dispatch) =>{
     try {
-        const response = await axios.get(`http://localhost:8000/api/v1/blog/allBlogs?page=${page}&limit=10`)
+        const response = await axios.get(`http://localhost:8000/api/v1/blog/allBlogs?page=${page}&limit=5`)
+        if(response.data.valid===true) {
+            return window.location.reload();
+        } else{
+        
         dispatch({
             type: GET_BLOGS,
             payload: response.data
         })
+    }
         console.log(response.data)
         return response;
     } catch (error) {
@@ -45,10 +50,15 @@ export const getSingleBlogData=(blogId)=>async(dispatch)=>{
     try {
         const response = await axios.get(`http://localhost:8000/api/v1/blog/allBlogs/${blogId}`,{withCredentials: true})
         // console.log(response.data)
-        dispatch({
-            type: GET_SINGLE_BLOG_DETAILS,
-            payload: response.data
-        })
+
+        if(response.data.valid===true) {
+            return window.location.reload();
+        } else{
+            dispatch({
+                type: GET_SINGLE_BLOG_DETAILS,
+                payload: response.data
+            })
+        }
     } catch (error) {
         console.log(error.message)
     }
@@ -129,16 +139,52 @@ export const likeAndUnlike =(blogId)=>async(dispatch)=>{
     }
 }
 
-export const getLikeStatus =(blogId)=>async(dispatch)=>{
+// export const getLikeStatus =(blogId)=>async(dispatch)=>{
+//     try {
+//         const response = await axios.get(`http://localhost:8000/api/v1/blog/currrent-blog/${blogId}`,{withCredentials: true})
+//         console.log(response.data)
+//         dispatch({
+//             type: GET_LIKE_STATUS,
+//             payload: response?.data
+//         })
+//         return response?.data
+//     } catch (error) {
+//         console.log(error.message)
+//     }
+// }
+
+
+//trial controller
+export const getLikeStatus =async(blogId)=>{
     try {
         const response = await axios.get(`http://localhost:8000/api/v1/blog/currrent-blog/${blogId}`,{withCredentials: true})
         console.log(response.data)
-        dispatch({
-            type: GET_LIKE_STATUS,
-            payload: response?.data
-        })
+        // dispatch({
+        //     type: GET_LIKE_STATUS,
+        //     payload: response?.data
+        // })
+        return response?.data
     } catch (error) {
         console.log(error.message)
     }
 }
 
+
+export const postBlog =async(data)=>{
+    try {
+        const response = await axios.post("http://localhost:8000/api/v1/blog/create",data,{withCredentials: true})
+        return response?.data;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export const updateBlog =async(blogId,data)=>{
+    try {
+        const response = await axios.patch(`http://localhost:8000/api/v1/blog/update/${blogId}`, data, {withCredentials: true});
+        console.log(response?.data)
+        return response?.data
+    } catch (error) {
+        console.log(error.message)
+    }
+}

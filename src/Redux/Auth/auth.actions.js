@@ -1,5 +1,5 @@
 import axios from "axios"
-import { AUTH_GETUSER, AUTH_GET_VISITED_USER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP } from "./auth.types.js"
+import { AUTH_GETUSER, AUTH_GET_VISITED_USER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP, AUTH_UPDATE_USER } from "./auth.types.js"
 import { persistor } from "../store.js"
 
 export const loginAPI =(formData)=>async(dispatch)=>{
@@ -44,15 +44,19 @@ export const logOutAPI=()=>async(dispatch)=>{
 export const getUser=()=>async(dispatch)=>{
     try {
         const response = await axios.get("http://localhost:8000/api/v1/user/current-user",{withCredentials: true}) 
+        // if(response.data.valid===true) {
+        //     return window.location.reload();
+        // }else{
         dispatch({
             type: AUTH_GETUSER,
             payload: response.data.user
         })
+    
         console.log(response.data.user)
         return response.data.user
         
     } catch (error) {
-        
+        console.log(error.message)
     }
 }
 
@@ -60,10 +64,14 @@ export const getUserData=(userId)=>async(dispatch)=>{
     try {
         const response = await axios.get(`http://localhost:8000/api/v1/user/userdata/${userId}`,{withCredentials: true})
         console.log(response.data)
+        if(response.data.valid===true) {
+            return window.location.reload();
+        }else{
         dispatch({
             type :AUTH_GET_VISITED_USER,
             payload: response.data
         })
+    }
         return response.data
     } catch (error) {
         console.log(error.message)
@@ -98,6 +106,40 @@ export const currentFollowStatus = async(userId)=>{
     }
 }
 
+export const userFollowerAndFollowing = async(userId)=>{
+    try {
+        const response = await axios.get(`http://localhost:8000/api/v1/user/userdata/${userId}/followdata`,{withCredentials: true})
+        console.log(response.data)
+        return response
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
+export const updateUserData = (updateData)=>async(dispatch)=>{
+    try {
+        const response = await axios.patch(`http://localhost:8000/api/v1/user/update-account-details`,updateData,{withCredentials: true})
+        console.log(response.data.user)
+        dispatch({
+            type: AUTH_UPDATE_USER,
+            payload: response.data.user
+        })
+        return response
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
+export const updateUserImage=async(formData)=>{
+    try {
+        const response = await axios.post("http://localhost:8000/api/v1/user/upload-images", formData, {withCredentials: true});
+        return response
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 
 // export const logoutHandler =async()=>{

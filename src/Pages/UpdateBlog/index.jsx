@@ -3,6 +3,7 @@ import JoditEditor from "jodit-react";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { updateBlog } from "../../Redux/blogs/blog.action";
 
 // const API_KEY = "50938726ed5b1dc3e275abc4759bf1bc";
 
@@ -60,8 +61,12 @@ function UpdateBlog({ placeholder }) {
       description: content
     }
    try{
-    await axios.patch(`http://localhost:8000/api/v1/blog/update/${blogId}`, data, {withCredentials: true});
-    alert("Blog Updated Successfully");
+    // await axios.patch(`http://localhost:8000/api/v1/blog/update/${blogId}`, data, {withCredentials: true});
+    const res= await updateBlog(blogId, data);
+    if(res.sucess===true){
+      alert("Blog Updated Successfully");
+    }
+    
    }
    catch(error){
     alert(error);

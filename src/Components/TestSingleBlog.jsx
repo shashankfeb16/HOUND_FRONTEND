@@ -15,7 +15,8 @@ function TestSingleBlog() {
     console.log(like)   //result : true
     
     const navigate = useNavigate()
-      
+    const dispatch = useDispatch()  
+    const { id } = useParams();
     const {user} =  useSelector(state=>state.auth)
     const [isLiked, setIsLiked] = useState(like);
     
@@ -24,17 +25,18 @@ function TestSingleBlog() {
     const [content, setNewContent] = useState('');
     const [commentsData, setcommentsData] = useState([]);
     const [loading, setLoading] = useState(false);
-    
-    // console.log(user)
+    const [likeLoading, setLikeLoading] = useState(false);
+    // const newLikeStatus = dispatch(getLikeStatus(id));
+    // console.log("newLikeStatus",newLikeStatus)
   
-    console.log(blogData)
-    console.log(blogData.owner)
+    // console.log(blogData)
+    // console.log(blogData.owner)
     
     
-    const dispatch = useDispatch()
-    const { id } = useParams();
+    
+   
     // console.log(id)
-
+    
     const fetchComments =useCallback(async()=>{
         
         try {
@@ -48,8 +50,9 @@ function TestSingleBlog() {
         }
     },[id])
 
-    const isBlogOwner = blogData?.owner === user?._id
-    console.log(blogData,user._id)
+    const isBlogOwner = blogData?.owner?._id === user?._id
+    console.log("isBlogOwner",isBlogOwner)
+    // console.log(blogData?.owner._id,user?._id)
     
     const handleDelete=async()=>{
         try {
@@ -75,24 +78,42 @@ function TestSingleBlog() {
             setLoading(true)
             try{
                  dispatch(getSingleBlogData(id))
-                 dispatch(getLikeStatus(id))
-                 await fetchComments()
-                 setIsLiked(like)
+                 
             } catch(error){
                 console.log(error.message)
             } finally {
                 setLoading(false);
             }
         }
-
         fetchData()
-
-
+        // dispatch(getLikeStatus(id))
+        // fetchComments()
+        // setIsLiked(like)
         // dispatch(getSingleBlogData(id))
         // dispatch(getLikeStatus(id))
         // fetchComments()
-    },[dispatch,id,isLiked,allLikes,like])
-    console.log(commentsData)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[id,allLikes])
+    // console.log(commentsData)
+
+    const getStatus = async() => {
+        try {
+            const data = await getLikeStatus(id)
+            setIsLiked(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getStatus()
+        // dispatch(getLikeStatus(id))
+        // setIsLiked(like)
+    },[]);
+
+    useEffect(() => {
+        fetchComments()
+    },[]);
 
     if(blogData.length===0){
         return (<>
@@ -104,6 +125,7 @@ function TestSingleBlog() {
         if(!user){
             alert("Login to like the blog")
         }
+        setLikeLoading(true)
         setIsLiked(!isLiked);
         try {
             await dispatch(likeAndUnlike(id))
@@ -114,6 +136,8 @@ function TestSingleBlog() {
            
         } catch (error) {
             console.error(error.message)
+        } finally {
+            setLikeLoading(false)
         }
       };
 
@@ -151,9 +175,15 @@ function TestSingleBlog() {
 
       if(loading) {
            return (<>
-                <h1>Loading.....</h1>
+                <CircularProgress/>
             </>)
       }
+
+//       if(likeLoading) {
+//         return (<>
+//              <CircularProgress/>
+//          </>)
+//    }
   return (
     <div>
         <div>
@@ -197,7 +227,7 @@ function TestSingleBlog() {
        {/* {error && <div>Error: {error}</div>} */}
        {loading ? (<CircularProgress />) :(<CommentList 
         comments={commentsData}
-        currentUser={user._id}
+        currentUser={user?._id}
         onDelete={handleDeleteComment}
         blogId={id}
         onEdit ={handleUpdateComment}

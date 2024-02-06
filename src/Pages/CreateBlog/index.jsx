@@ -3,6 +3,7 @@ import JoditEditor from "jodit-react";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { postBlog } from "../../Redux/blogs/blog.action";
 
 // const API_KEY = "50938726ed5b1dc3e275abc4759bf1bc";
 
@@ -48,7 +49,8 @@ function CreateBlog({ placeholder }) {
       description: content
     }
    try{
-    await axios.post("http://localhost:8000/api/v1/blog/create", data, {withCredentials: true});
+    // await axios.post("http://localhost:8000/api/v1/blog/create", data, {withCredentials: true});
+    await postBlog(data)
     alert("Blog Created Successfully");
    }
    catch(error){
