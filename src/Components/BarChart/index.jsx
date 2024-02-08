@@ -5,46 +5,53 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TextField, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import axios from "axios";
+import moment from "moment";
 
-function BarChart({ contData, handleDateChange, selectedDate }) {
+function BarChart({ contData}) {
   const chartContainer = useRef(null);
-  useEffect(() => {
-    const currentDate = new Date();
-    const daysInMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1,
-      0,
-    ).getDate();
-    const likesData = Array.from({ length: daysInMonth }, (_, day) => ({
-      x: day,
-      y: Math.random() * 1000,
-    }));
-    const commentsData = Array.from({ length: daysInMonth }, (_, day) => ({
-        x: day,
-        y: Math.random() * 1000,
-      }));
-    // const contributionData = contData.map((dataPoint, day) => ({
-    //   x: Number(dataPoint.name),
-    //   y: dataPoint.y,
-    // }));
-    // let contributionData;
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [likesAndCommentData, setLikesAndCommentData] = useState(null);
 
-    // if (contData.length > 0) {
-    //   contributionData = contData.map((dataPoint, day) => ({
-    //     x: Number(dataPoint.name),
-    //     y: dataPoint.y,
-    //     z: dataPoint.receiptCount || 0,
-    //   }));
-    // }
-    // else {
-    //   contributionData = Array.from({ length: daysInMonth }, (_, day) => ({
-    //     x: day,
-    //     y: Math.random() * 1000,
-    //     z: 0,
-    //   }));
-    // }
-    // console.log(contributionData);
-    // Create the chart
+  const constructQueryParameters = (
+    firstDate,
+    lastDate,
+  ) => {
+    const queryParams = [];
+    if (firstDate && lastDate) {
+      const formattedFirstDate = moment(firstDate.$d).format("YYYY-MM-DD");
+      const formattedLastDate = moment(lastDate.$d).format("YYYY-MM-DD");
+      queryParams.push(`from=${formattedFirstDate}`);
+      queryParams.push(`to=${formattedLastDate}`);
+    }
+
+    return queryParams.join("&");
+  };
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    if (date) {
+      const firstDayOfMonth = dayjs(date).startOf("month");
+      const lastDayOfMonth = dayjs(date).endOf("month");
+      getLikesAndComments(firstDayOfMonth, lastDayOfMonth);
+    }
+  };
+
+  const getLikesAndComments = async(firstDate, lastDate) =>{
+    try {
+        const res = await axios.get(`http://localhost:8000/api/v1/user/current-user/likesAndComments?${constructQueryParameters(firstDate, lastDate)}`, {withCredentials: true});
+        console.log(res);
+        setLikesAndCommentData(res?.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
+    getLikesAndComments();
+  },[]);
+  const likesCount = likesAndCommentData?.map((e)=> e?.likeCount);
+  const commentcount = likesAndCommentData?.map((e)=> e?.commentCount);
+  useEffect(() => {
+    const daysInMonth = dayjs(selectedDate)?.daysInMonth();
     Highcharts.chart(chartContainer.current, {
       chart: {
         type: "column",
@@ -66,7 +73,7 @@ function BarChart({ contData, handleDateChange, selectedDate }) {
       },
       xAxis: {
         categories: Array.from({ length: daysInMonth }, (_, day) =>
-          day.toString(),
+        (day + 1).toString(),
         ),
         title: {
           text: "Days",
@@ -94,7 +101,7 @@ function BarChart({ contData, handleDateChange, selectedDate }) {
       series: [
         {
           name: "Likes",
-          data: likesData,
+          data: likesCount,
           
         //   color: {
         //     linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -106,11 +113,11 @@ function BarChart({ contData, handleDateChange, selectedDate }) {
         },
         {
             name: 'Comments',
-            data: commentsData,
+            data: commentcount,
         }
       ],
     });
-  }, [contData]);
+  }, [likesAndCommentData]);
 
   return (
     <div
@@ -130,14 +137,13 @@ function BarChart({ contData, handleDateChange, selectedDate }) {
         <Typography
           style={{ fontSize: "14px", fontWeight: 500, color: "#444" }}
         >
-          {/* National Level */}
         </Typography>
       </div>
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "flex-end", // Align items to the right
+          alignItems: "flex-end",
           paddingRight: "24px",
           marginBottom: "24px",
         }}
@@ -150,8 +156,8 @@ function BarChart({ contData, handleDateChange, selectedDate }) {
             onChange={(newDate) => handleDateChange(newDate)}
             disableFuture
             renderInput={(params) => <TextField {...params} />}
-            views={["year", "month"]} // Show only year and month
-            format="MMMM YYYY" // Format for display
+            views={["year", "month"]}
+            format="MMMM YYYY"
             slotProps={{ textField: { size: "small" } }}
             sx={{ width: "190px", height: "46px", marginTop: "24px" }}
           />
