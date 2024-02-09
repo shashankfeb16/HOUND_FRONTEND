@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser, userFollowerAndFollowing } from '../../Redux/Auth/auth.actions';
 import { getCurrentUserBlogs } from '../../Redux/blogs/blog.action';
 import { Link, useNavigate } from 'react-router-dom';
+import BarChart from '../../Components/BarChart';
+import styled from 'styled-components';
 
 
 const data =[
@@ -156,9 +158,21 @@ function Profile() {
 
     </Container>
     </Box>
+   <OuterContainerStyles marginTop="25px">
+    <BarChart/>
+   </OuterContainerStyles>
     </>
   )
 }
 
 export default Profile
 
+const OuterContainerStyles = styled.div`
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-top: ${(props) => props.marginTop ?? "0px"};
+  margin-bottom: ${(props) => props.marginBottom ?? "0px"};
+`;
