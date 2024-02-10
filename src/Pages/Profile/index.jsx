@@ -7,6 +7,7 @@ import { getCurrentUserBlogs } from '../../Redux/blogs/blog.action';
 import { Link, useNavigate } from 'react-router-dom';
 import BarChart from '../../Components/BarChart';
 import styled from 'styled-components';
+import PieChart from '../../Components/PieChart';
 
 function Profile() {
     const dispatch  = useDispatch()
@@ -43,13 +44,15 @@ function Profile() {
        const handleBack = () => {
         navigate(-1)
       }
+    console.log("followers Data", followersData);
+    console.log("following Data", followingData);
   return (
     <>
     <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
         <Box>
             <Button onClick={handleBack}>back</Button>
         </Box>
-    <Container maxWidth="lg">
+    <Box>
     <Grid sx={{ pt: 3 }}>
         <Box sx={{ display: 'flex', justifyContent:"center", gap:"25px", alignItems:"center", pb:"30px" }}>
             <Box>
@@ -109,9 +112,9 @@ function Profile() {
                         <Table sx={{ minWidth: 650 }}  stickyHeader aria-label="sticky table">
                         <TableHead >
                             <TableRow >
-                            <TableCell sx={{backgroundColor:"black", color:"white", borderRight:"1px solid white"}}>Sr No</TableCell>
-                            <TableCell sx={{backgroundColor:"black", color:"white",borderRight:"1px solid white"}}>Blog Title</TableCell>
-                            <TableCell sx={{backgroundColor:"black", color:"white",borderRight:"1px solid white"}}>Published Date</TableCell>
+                            <TableCell sx={{backgroundColor:"#87CEEB", color:"black", borderRight:"1px solid white"}}>S.No</TableCell>
+                            <TableCell sx={{backgroundColor:"#87CEEB", color:"black",borderRight:"1px solid white"}}>Blog Title</TableCell>
+                            <TableCell sx={{backgroundColor:"#87CEEB", color:"black",borderRight:"1px solid white"}}>Published Date</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -149,7 +152,8 @@ function Profile() {
         </Box>
         
     </Box>
-    <Box sx={{display:"flex",gap:"30px", justifyContent:"center",textAlign:"center"}}>
+    <Box sx={{display:"flex",gap:"30px", justifyContent: "space-around", marginTop: "25px", paddingBottom: "25px"}}>
+            <Box>
             <Box>
             <Typography variant="h6">Followers</Typography>
             <Paper style={{ width: 250, maxHeight: 200, overflow: 'auto' }}>
@@ -176,9 +180,11 @@ function Profile() {
                     ))}
                  </Paper>   
             </Box>
+            </Box>
+            <PieChart followers={user?.followersCount} following={user?.followingCount}/>
         </Box>
 
-    </Container>
+    </Box>
     </Box>
    <OuterContainerStyles marginTop="25px">
     <BarChart/>

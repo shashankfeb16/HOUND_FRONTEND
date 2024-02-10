@@ -10,7 +10,7 @@ import moment from "moment";
 
 function BarChart({ contData}) {
   const chartContainer = useRef(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(dayjs().startOf("month"));
   const [likesAndCommentData, setLikesAndCommentData] = useState(null);
 
   const constructQueryParameters = (
@@ -38,15 +38,23 @@ function BarChart({ contData}) {
 
   const getLikesAndComments = async(firstDate, lastDate) =>{
     try {
-        const res = await axios.get(`http://localhost:8000/api/v1/user/current-user/likesAndComments?${constructQueryParameters(firstDate, lastDate)}`, {withCredentials: true});
-        console.log(res);
+        if(firstDate && lastDate){
+          const res = await axios.get(`http://localhost:8000/api/v1/user/current-user/likesAndComments?${constructQueryParameters(firstDate, lastDate)}`, {withCredentials: true});
+          console.log(res);
         setLikesAndCommentData(res?.data)
+        }
     } catch (error) {
       console.log(error);
     }
   }
+  const getData = ()=>{
+    const firstDayOfMonth = dayjs(selectedDate).startOf("month");
+    const lastDayOfMonth = dayjs(selectedDate).endOf("month");
+    getLikesAndComments(firstDayOfMonth, lastDayOfMonth);
+  }
   useEffect(()=>{
     getLikesAndComments();
+    getData();
   },[]);
   const likesCount = likesAndCommentData?.map((e)=> e?.likeCount);
   const commentcount = likesAndCommentData?.map((e)=> e?.commentCount);
