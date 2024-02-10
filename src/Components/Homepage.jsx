@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useSelector, useDispatch } from "react-redux";
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Box, Button, IconButton, Pagination, Stack, TextareaAutosize } from '@mui/material';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
+import CommentIcon from '@mui/icons-material/Comment';
+import { Box, Button, IconButton, Pagination, Stack, TextareaAutosize, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { getAllBlogs } from '../Redux/blogs/blog.action';
 import { getUser } from '../Redux/Auth/auth.actions';
 import styled from "styled-components"
+import moment from 'moment';
 
 function Homepage() {
   const {isAuth,user} = useSelector(state=>state.auth);
@@ -121,13 +125,34 @@ function Homepage() {
                   <div style={{margin:"30px"}}>
                     <h3>Title: {el?.title}</h3>
                     {/* <p>Description:-  {el?.description}</p> */}
-                    <div style={{width:'80%', padding:"20px",maxHeight:"250px",overflow:"hidden"}} dangerouslySetInnerHTML={{ __html: el?.description }}/>
-                    <p>{el?.totalLikes} Likes</p>
+                    <div style={{width:'80%', padding:"20px",maxHeight:"300px",overflow:"hidden"}} dangerouslySetInnerHTML={{ __html: el?.description }}/>
+                      {/* <div style={{display:"flex",gap:"2%",}}> 
+                      
+                          <span style={{display:"flex",alignItems:"center", fontSize:"20px"}}>  <FavoriteBorderIcon /> {el?.totalLikes} </span>
+                          
+                          <span style={{display:"flex",alignItems:"center"}}><TextsmsOutlinedIcon/> <p>{el?.commentsCount}</p></span>
+                      </div> */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <Typography variant="body2" color="textSecondary">
+                            {el?.totalLikes} Likes
+                            </Typography>
+
+                            <Typography variant="body2" color="textSecondary">
+                            {el?.commentsCount} Comments
+                            </Typography>
+                          </div>
                     </div>
                     
                   <div style={{display:"flex",margin:"30px"}}>
                     <img style={{width:"50px", height:"50px",  borderRadius: "50%",}} src={el?.owner?.profileImage} alt="" />
-                    <p>Author:-  {el?.owner?.userName}</p>
+                    <div style={{ marginLeft: '15px'}}>
+                    <Typography variant="body1">
+                      Author: {el?.owner?.userName}
+                    </Typography>
+                    <Typography variant='subtitle2' color="textSecondary">
+                   Published {moment(el?.createdAt).fromNow()}
+                    </Typography>
+                    </div>
                 </div>
                 </OuterContainerStyles>
                 </Link>

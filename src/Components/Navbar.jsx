@@ -10,9 +10,11 @@ import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
+import LogoutIcon from '@mui/icons-material/Logout';
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
+import PortraitOutlinedIcon from '@mui/icons-material/PortraitOutlined';
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Avatar from "@mui/material/Avatar";
@@ -22,6 +24,8 @@ import { getUser, logOutAPI } from "../Redux/Auth/auth.actions";
 import PersonIcon from '@mui/icons-material/Person';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { persistor } from "../Redux/store.js";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -64,6 +68,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  axios.defaults.withCredentials = true;
   const { isAuth } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.auth);
   console.log(user);
@@ -96,19 +101,25 @@ export default function PrimarySearchAppBar() {
     try {
       //  dispatch(logOutAPI(user._id));
       dispatch(logOutAPI());
-      persistor.purge();
+      if(!isAuth){
+       persistor.purge();
        navigate("/");
+      }
       
-      console.log(isAuth)
+      
+      
     } catch (error) {
       console.log(error);
     } finally {
-      
+      console.log(isAuth)
     }
   };
 
-  // React.useEffect(()=>{
-  //   dispatch(getUser());
+  // useEffect(()=>{
+  //   if(isAuth) {
+  //     dispatch(getUser());
+  //   }
+   
   //  },[])
   console.log(isAuth)
 
@@ -130,8 +141,63 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
       style={{ marginTop: '48px' }}
     >
-      <Link to="/profile" style={{textDecoration:"none", color:"inherit"}}><MenuItem onClick={handleMenuClose}> Profile </MenuItem></Link> 
-      <Link to="/my-account" style={{textDecoration:"none", color:"inherit"}}><MenuItem onClick={handleMenuClose}>My account</MenuItem></Link>
+
+
+      
+      {/* <Link to="/profile" style={{textDecoration:"none", color:"inherit"}}><MenuItem onClick={handleMenuClose}> Profile </MenuItem></Link> 
+      <Link to="/my-account" style={{textDecoration:"none", color:"inherit"}}><MenuItem onClick={handleMenuClose}>My account</MenuItem></Link> */}
+      
+      {isAuth && (   <Box>
+                {/* <MenuItem onClick={handleProfileMenuOpen}>
+                    <IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="primary-search-account-menu"
+                      aria-haspopup="true"
+                      color="inherit"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                  <p>Profile</p>
+                </MenuItem> */}
+                <Link to="/profile" style={{textDecoration:"none", color:"inherit"}}>
+                  <MenuItem onClick={handleMenuClose}><IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="primary-search-account-menu"
+                      aria-haspopup="true"
+                      color="inherit"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                  <p>Profile</p></MenuItem>
+                  </Link>
+                  <Link to="/my-account" style={{textDecoration:"none", color:"inherit"}}>
+                  <MenuItem onClick={handleMenuClose}><IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="primary-search-account-menu"
+                      aria-haspopup="true"
+                      color="inherit"
+                    >
+                      < PortraitOutlinedIcon />
+                    </IconButton>
+                  <p>My Account</p></MenuItem>
+                  </Link>
+                <MenuItem onClick={handleLogout}>
+                    <IconButton
+                        size="large"
+                        aria-label="account of current user"
+                        aria-controls="primary-search-account-menu"
+                        aria-haspopup="true"
+                        color="inherit"
+                      >
+                      <LogoutIcon />
+                    </IconButton>
+                  <p>Logout</p></MenuItem>
+              </Box>
+            )}
+    
     </Menu>
   );
 
@@ -151,40 +217,67 @@ export default function PrimarySearchAppBar() {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
-      style={{ marginTop: '32px' }}
+      style={{ marginTop: '43px' }}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+
+      
+{isAuth ? (   <Box>
+                {/* <MenuItem onClick={handleProfileMenuOpen}>
+                    <IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="primary-search-account-menu"
+                      aria-haspopup="true"
+                      color="inherit"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                  <p>Profile</p>
+                </MenuItem> */}
+                <Link to="/profile" style={{textDecoration:"none", color:"inherit"}}>
+                  <MenuItem onClick={handleMenuClose}><IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="primary-search-account-menu"
+                      aria-haspopup="true"
+                      color="inherit"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                  <p>Profile</p></MenuItem>
+                  </Link>
+                <MenuItem onClick={handleLogout}>
+                    <IconButton
+                        size="large"
+                        aria-label="account of current user"
+                        aria-controls="primary-search-account-menu"
+                        aria-haspopup="true"
+                        color="inherit"
+                      >
+                      <LogoutIcon />
+                    </IconButton>
+                  <p>Logout</p></MenuItem>
+              </Box>
+            ) : (
+              <Box>
+                <MenuItem>
+                  <Link
+                    to="/signup"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    SIGNUP
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link
+                    to="/login"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    LOGIN
+                  </Link>
+                </MenuItem>
+              </Box>
+            )}
     </Menu>
   );
 
@@ -267,7 +360,7 @@ export default function PrimarySearchAppBar() {
                   </Link>
                 </MenuItem>}
 
-            {isAuth ? (
+            {/* {isAuth ? (
               <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>
             ) : (
               <>
@@ -288,6 +381,27 @@ export default function PrimarySearchAppBar() {
                   </Link>
                 </MenuItem>
               </>
+            )} */}
+
+            {!isAuth && (
+              <>
+              <MenuItem>
+                <Link
+                  to="/signup"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  SIGNUP
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  LOGIN
+                </Link>
+              </MenuItem>
+            </>
             )}
 
             <IconButton

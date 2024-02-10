@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Container, Grid, IconButton, Typography } from '@mui/material'
+import { Avatar, Box, Button, Container, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import { Facebook, Twitter, GitHub, LinkedIn } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,25 +7,6 @@ import { getCurrentUserBlogs } from '../../Redux/blogs/blog.action';
 import { Link, useNavigate } from 'react-router-dom';
 import BarChart from '../../Components/BarChart';
 import styled from 'styled-components';
-
-
-const data =[
-    {
-        id:1,
-        title:'Post 1',
-        date:"21-1-2024"
-    },
-    {
-        id:2,
-        title:'Post 2',
-        date:"2-5-2023"
-    },
-    {
-        id:3,
-        title:'Post 3',
-        date:"21-1-2023"
-    }
-]
 
 function Profile() {
     const dispatch  = useDispatch()
@@ -78,10 +59,10 @@ function Profile() {
                 <Box>
                     <Box>
                         <Typography variant="h5">{user?.fullName}</Typography>
-                        <Typography variant="subtitle1">Full Stack Web Developer</Typography>
-                        <Box>
-                                <Typography variant="h6">Followers: {user?.followersCount}</Typography>
-                                <Typography variant="h6">Following: {user?.followingCount}</Typography>
+                        {/* <Typography variant="subtitle1">Full Stack Web Developer</Typography> */}
+                        <Box sx={{ display: 'flex',gap:"15px"}}>
+                                <Typography variant="subtitle1">Followers: {user?.followersCount}</Typography>
+                                <Typography variant="subtitle1">Following: {user?.followingCount}</Typography>
                             </Box>
                     </Box>
                 </Box>
@@ -120,30 +101,71 @@ function Profile() {
         </Box>
     </Grid>
     <Box sx={{display:"flex",justifyContent:"center", alignItems:"center",  mt:"1rem",gap:"50px"}}>
-        <Box >
-            <Typography variant="h6">Recent Posts</Typography>
+        <Box sx={{textAlign:"center"}}>
+            <Typography variant="h6" >Recent Posts</Typography>
+                {/* {currentUserBlogs?.map((el,index)=>( */}
+
+                    <TableContainer component={Paper} sx={{ maxHeight: 440,  overflow: 'hidden' }}>
+                        <Table sx={{ minWidth: 650 }}  stickyHeader aria-label="sticky table">
+                        <TableHead >
+                            <TableRow >
+                            <TableCell sx={{backgroundColor:"black", color:"white", borderRight:"1px solid white"}}>Sr No</TableCell>
+                            <TableCell sx={{backgroundColor:"black", color:"white",borderRight:"1px solid white"}}>Blog Title</TableCell>
+                            <TableCell sx={{backgroundColor:"black", color:"white",borderRight:"1px solid white"}}>Published Date</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
                 {currentUserBlogs?.map((el,index)=>(
-                    <Box key={el._id} sx={{display:"flex", flexDirection:"row",gap:"20px"}}>
-                        <Typography variant="subtitle">Blog {index+1}</Typography>
-                        <Link to={`/blogs/${el._id}`}>   <Typography variant='subtitle'>{el.title}</Typography></Link>
-                        <Typography variant='subtitle'>{new Date(el.updatedAt).toLocaleDateString()}</Typography>
-                    </Box>
-                ))}
+                            <TableRow
+                                key={el._id}
+                                // sx={{ '&:last-child td, &:last-child th': { border: 0 },}}
+                            >
+                                <TableCell component="th" scope="row">
+                                  {index+1}
+                                </TableCell>
+                                <TableCell ><Link style={{color:"inherit", textDecoration:"none"}} to={`/blogs/${el._id}`}>{el.title}</Link></TableCell>
+                                <TableCell >{new Date(el.updatedAt).toLocaleDateString()}</TableCell>
+                            </TableRow>
+                            ))}
+                        </TableBody>
+                        </Table>
+                        </TableContainer>
+
+                    
+
+
+
+
+
+
+                        <>
+                    {/* // <Box key={el._id} sx={{display:"flex", flexDirection:"row",gap:"20px"}}>
+                    //     <Typography variant="subtitle">Blog {index+1}</Typography>
+                    //     <Link to={`/blogs/${el._id}`}>   <Typography variant='subtitle'>{el.title}</Typography></Link>
+                    //     <Typography variant='subtitle'>{new Date(el.updatedAt).toLocaleDateString()}</Typography>
+                    // </Box> */}
+                    </>
+                {/* ))} */}
         </Box>
-        <Box sx={{display:"flex",gap:"30px", justifyContent:"center",textAlign:"center"}}>
+        
+    </Box>
+    <Box sx={{display:"flex",gap:"30px", justifyContent:"center",textAlign:"center"}}>
             <Box>
             <Typography variant="h6">Followers</Typography>
+            <Paper style={{ width: 250, maxHeight: 200, overflow: 'auto' }}>
                 {followersData?.map((el)=>(
-
-                   <Link to={`/user/${el?.follower._id}`} style={{color:"inherit", textDecoration:"none"}} >  <Box key={el?.follower._id} sx={{display:"flex",alignItems:"center",mb:"10px",padding:"5px",gap:"10px", borderBottom:"1px solid black"}}>
+                   <Link to={`/user/${el?.follower._id}`} style={{color:"inherit", textDecoration:"none"}} > 
+                    <Box key={el?.follower._id} sx={{display:"flex",alignItems:"center",mb:"10px",padding:"5px",gap:"10px", borderBottom:"1px solid black"}}>
                         <Avatar src={el?.follower?.profileImage} alt={el?.follower?.fullName} sx={{ width: 36, height: 36 }}/>
                         <Typography>{el?.follower?.fullName}</Typography>
                     </Box>
                     </Link>
                 ))}
+                </Paper>
             </Box>
             <Box>
                 <Typography variant="h6">Following</Typography>
+                <Paper style={{ width: 250, maxHeight: 200, overflow: 'auto' }}>
                 {followingData?.map((el)=>(
                         <Link to={`/user/${el?.following._id}`} style={{color:"inherit", textDecoration:"none"}} > 
                         <Box key={el?.following._id}  sx={{display:"flex",alignItems:"center",mb:"10px",padding:"5px",gap:"10px", borderBottom:"1px solid black"}}>
@@ -152,9 +174,9 @@ function Profile() {
                         </Box>
                         </Link>
                     ))}
+                 </Paper>   
             </Box>
         </Box>
-    </Box>
 
     </Container>
     </Box>
