@@ -20,20 +20,27 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import XIcon from "@mui/icons-material/X";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import axios from "axios";
 import { getInitials } from "./utils";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, updateUserData, updateUserImage } from "../../Redux/Auth/auth.actions";
+import { getUser, logOutAPI, updateUserData, updateUserImage } from "../../Redux/Auth/auth.actions";
+import { persistor } from "../../Redux/store";
 
 export default function MyAccount() {
   const [selectedFile, setSelectedFile] = useState(null);
-  const { user } = useSelector((state) => state.auth);
+  const { user,isAuth } = useSelector((state) => state.auth);
   const dispatch  = useDispatch()
   const navigate = useNavigate();
   const [exisitingUser, setExistingUser] = useState(null);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -88,9 +95,31 @@ export default function MyAccount() {
    }
   }
 
+  const handleSubmitPassword = async(e)=>{
+    e.preventDefault();
+    console.log(oldPassword, newPassword)
+    const data = {oldPassword, newPassword}
+
+    try{
+       const res=  await axios.post("http://localhost:8000/api/v1/user/current-user/change-password",data,{withCredentials: true})
+      console.log(res);
+      dispatch(getUser());
+      // if(res.data.sucess===true){
+        alert("Password Changed")
+        dispatch(logOutAPI());
+        // if(isAuth===false){
+          persistor.purge();
+          navigate("/login")
+        // }
+      // }
+    }catch(error){
+      console.log(error.message)
+    }
+   }
 
 
-  const getUser = async () =>{
+
+  const getUser1 = async () =>{
     try {
       const res = await axios.get("http://localhost:8000/api/v1/user/current-user",{withCredentials: true});
       console.log(res);
@@ -158,7 +187,7 @@ export default function MyAccount() {
     }
   };
   useEffect(()=>{
-    getUser();
+    getUser1();
   },[]);
   return (
     <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
@@ -223,6 +252,61 @@ export default function MyAccount() {
                 <Button variant="contained" onClick={handleUploadPhoto}>Upload</Button>
               </Stack>
             </Paper>
+
+            <Paper
+              sx={{
+                p: 2,
+                mt: 2,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Typography variant="h4">Change Password</Typography>
+              <Box
+                 component="form"
+                 onSubmit={handleSubmitPassword}
+                 noValidate
+                 sx={{display:"flex",flexDirection:"column",}}
+                 >
+                  <TextField
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end" onClick={()=>setShowOldPassword(!showOldPassword)}>
+                        {showOldPassword ?  <VisibilityOffIcon /> : <VisibilityIcon />}
+                      </InputAdornment>
+                    ),
+                  }}
+                  type={showOldPassword ? "text" : "password"}
+                  label="Current Password"
+                  variant="outlined"
+                  margin="normal"
+                  id="old-password"
+                  value={oldPassword}
+                  onChange={(e)=>setOldPassword(e.target.value)}
+                  />
+                  <TextField
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end" onClick={()=>setShowNewPassword(!showNewPassword)}>
+                        {showNewPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                      </InputAdornment>
+                    ),
+                  }}
+                  type={showNewPassword ? "text" : "password"}
+                  label="New Password"
+                  variant="outlined"
+                  margin="normal"
+                  id="new-password"
+                  value={newPassword}
+                  onChange={(e)=>setNewPassword(e.target.value)}
+                  />
+                  <Button 
+                  sx={{mt:"10px"}} 
+                  variant="contained" 
+                  type="submit"
+                  >Update Password</Button>
+                </Box>
+              </Paper>
           </Grid>
           <Grid item xs={12} md={4} lg={6}>
             <Paper

@@ -13,9 +13,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { getUser, loginAPI } from "../Redux/Auth/auth.actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { persistor } from "../Redux/store";
 
 function Copyright(props) {
@@ -43,6 +43,11 @@ const defaultTheme = createTheme();
 export default function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isAuth } = useSelector((state) => state.auth);
+
+  if(isAuth) {
+    return <Navigate to='/' />
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

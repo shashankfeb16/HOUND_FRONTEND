@@ -13,13 +13,13 @@ import { authReducer } from "./Auth/auth.reducer.js";
 import { blogReducer } from "./blogs/blog.reducer.js";
 
 const encryptor = encryptTransform ({
-  secretKey: 'hsbvkhbskhjvbkhjsvbsbvbbskvbk,shbv', // Replace with a strong secret key
+  secretKey: 'hsbvkhbskhjvbkhjsvbsbvbbskvbkshbv', // Replace with a strong secret key
     whitelist: ['authReducer'],
 });
 const persistConfig = {
   key: 'root',
   storage,
-  transforms: [encryptor], // Use redux-persist-transform-encrypt
+  // transforms: [encryptor], // Use redux-persist-transform-encrypt
 };
 
 

@@ -21,7 +21,7 @@ function TestSingleBlog() {
     const [isLiked, setIsLiked] = useState(like);
     
     console.log("current lIke state",isLiked) //result : false
-    const [allLikes, setAllLikes] = useState(blogData.totalLikes);
+    const [allLikes, setAllLikes] = useState(blogData?.totalLikes);
     const [content, setNewContent] = useState('');
     const [commentsData, setcommentsData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -115,7 +115,7 @@ function TestSingleBlog() {
         fetchComments()
     },[]);
 
-    if(blogData.length===0){
+    if(blogData?.length===0){
         return (<>
             <h1>Blogs Not available</h1>
         </>)
@@ -190,7 +190,7 @@ function TestSingleBlog() {
             <Button onClick={handleBack}>back</Button>
         </div>
         <div>
-            <h1>{blogData.title}</h1>
+            <h1>{blogData?.title}</h1>
             <div style={{width:'70%',border: "1px solid black", padding:"40px", margin:"30px",}} dangerouslySetInnerHTML={{ __html: blogData?.description }}/>
             <Link to={`/user/${blogData?.owner?._id}`} style={{textDecoration:'none'}}>
                 <h3>Owner: {blogData?.owner?.userName}</h3>
