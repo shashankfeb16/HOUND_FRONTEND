@@ -5,12 +5,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { postBlog } from "../../Redux/blogs/blog.action";
 
-// const API_KEY = "50938726ed5b1dc3e275abc4759bf1bc";
 
 function CreateBlog({ placeholder }) {
   const editor = useRef(null);
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
+  const attachmentInputRef = useRef(null);
   const navigate = useNavigate()
   const config = useMemo(
     () => ({
@@ -18,29 +18,44 @@ function CreateBlog({ placeholder }) {
       placeholder: placeholder || "Start typing...",
       height: "500px",
       resize: 'auto'
-      // uploader: {
-      //   // insertImageAsBase64URI: true,
-      //   url: "https://api.imgbb.com/1/upload",
-      //   format: "json",
-      //   method: "POST",
-      //   headers: {
-      //     Authorization: `Bearer ${API_KEY}`,
-      //   },
-      //   isSuccess: function (resp) {
-      //     return resp.success === true;
-      //   },
-      //   getMsg: function (resp) {
-      //     return resp.message;
-      //   },
-      //   process: function (resp) {
-      //     // Customize the HTML output for the uploaded image
-      //     return `<img style="float:right; margin: 10px;width:300px; height: 200px;" src="${resp.data.url}" alt="${resp.data.name}">`;
-      //   },
-      //   files: "files[0]",
-      // },
     }),
     [placeholder]
   );
+  const handleButtonAttach = () => {
+    attachmentInputRef.current.click();
+  };
+  const handleAttachments = async (event) => {
+    const allowedFileTypes = [
+      "application/msword",
+      "application/vnd.ms-excel",
+      "application/pdf",
+      "text/plain",
+      "text/csv",
+      "application/xml",
+      "text/xml",
+      "image/png",
+      "image/webp",
+      "image/jpeg",
+    ];
+    const file = event.target.files[0];
+    if (file) {
+      if (!allowedFileTypes.includes(file.type)) {
+        alert("Selected file format is not supported");
+        return;
+      }
+      try {
+        const formData = new FormData();
+        formData.append("image", file);
+        const res = await axios.post("http://localhost:8000/api/v1/blog/uploadJodit-images",formData);
+        console.log(res?.data);
+        setContent(prevContent => `${prevContent}<img src="${res.data}" alt="Uploaded Image" />`);
+      } catch (error) {
+        alert("Error uploading file. Please try again.")
+      }
+    } else {
+      alert("No file selected.")
+    }
+  };
   const handleChangeTitle = (e) =>{
     setTitle(e.target.value);
   }
@@ -71,6 +86,13 @@ function CreateBlog({ placeholder }) {
           tabIndex={1}
           onBlur={(newContent) => setContent(newContent)}
         />
+         <Button variant="outlined" onClick={handleButtonAttach} sx={{width: "15%"}}>Upload File</Button>
+            <input
+              type="file"
+              onChange={handleAttachments}
+              ref={attachmentInputRef}
+              style={{ display: "none" }}
+            />
         <Box sx={{display: "flex", justifyContent: "flex-end"}}>
             <Button variant="contained" onClick={handlePublish}>Publish</Button>
         </Box>
