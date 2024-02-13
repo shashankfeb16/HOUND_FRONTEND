@@ -5,12 +5,14 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import CommentIcon from '@mui/icons-material/Comment';
-import { Box, Button, IconButton, Pagination, Stack, TextareaAutosize, Typography } from '@mui/material';
+import { Box, Button, Grid, IconButton, Pagination, Stack, TextareaAutosize, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { getAllBlogs } from '../Redux/blogs/blog.action';
 import { getUser } from '../Redux/Auth/auth.actions';
 import styled from "styled-components"
 import moment from 'moment';
+import { Category } from '@mui/icons-material';
+import NoBlogFound from './NoBlogFound';
 
 function Homepage() {
   const {isAuth,user} = useSelector(state=>state.auth);
@@ -20,36 +22,31 @@ function Homepage() {
   const dispatch = useDispatch()
   // const [user, setUser]= useState({})
   const [page, setPage] = useState(1);
+  const [category, setCategory] = useState('');
   const [isLiked, setIsLiked] = useState(false);
+  const [isActive, setIsActive] = useState(false);
   const [newComment, setNewComment] = useState('');
   // const getData = async()=>{
   //       const res = await axios.get("http://localhost:8000/api/v1/blog/allBlogs")
   //       setData(res.data.blogs)
   //       console.log(res)
   // }
-
-    const handleLikeClick = () => {
-      setIsLiked(!isLiked);
-    };
-
-    const postComment = () => {
-      console.log(newComment)
-      setNewComment("")
-    }
-
-    const handlePageChange=(newPage) => {
-      setPage(newPage)
-      console.log(newPage)
-    }
-
+  const handleChangeCategory = (cat)=>{
+    setCategory(cat)
+    setIsActive(!isActive);
+  }
   
   useEffect(()=>{
     // getData(page)
-    dispatch(getAllBlogs(page));
+    dispatch(getAllBlogs(page,category));
     // dispatch(getUser());
     // (isAuth && dispatch(getUser()))
     // console.log(data)
-  },[dispatch,page])
+  },[dispatch,page,category])
+
+  if(blogs.length<= 0 ){
+    return <NoBlogFound/>
+  }
 
   // const cookieValue = document.cookie.split('; ').find((row) => row.startsWith('accessToken='))?.split('=')[1]
 
@@ -67,37 +64,15 @@ function Homepage() {
 
   return (
     <>
-    {/* <Navbar/> */}
-    {/* <div style={{display:"flex",alignItems:"center"}}>
-        <h3>John dsouza</h3>
-        <p>blog date</p>
-    </div>
-    <div style={{width:'60%',border: "1px solid black", padding:"40px", margin:"30px",}} dangerouslySetInnerHTML={{ __html: test }}/>
-    <div>10<IconButton onClick={handleLikeClick}>
-      <FavoriteIcon style={{ color: isLiked ? 'red' : 'grey' }}/>
-      </IconButton></div>
-
-
-
-    <Box>
-      <TextareaAutosize 
-       placeholder="Write your comment..."
-       minRows={3}
-       style={{ maxWidth: '400px' }}
-       value={newComment}
-       onChange={(e) => setNewComment(e.target.value)}
-        />
-       <Button
-       variant="contained"
-       color="primary"
-       onClick={()=>postComment()}>
-        Post Comment
-       </Button>
-    </Box> */}
-    {/* <p>try:{blogs}</p> */}
-
-
-
+      <Box sx={{display:"flex",alignItems:"center",width:"80%",margin:"auto",mt:3}}>
+        <Typography>CATEGORIES:-</Typography>
+        <Grid container justifyContent="space-around" sx={{ mt: { xs: 2, md: 0 } }}  >
+          <Button variant={category === '' ? 'contained' : 'text'} color="primary"  onClick={()=>handleChangeCategory('')}>All</Button>
+          <Button variant={category === 'Travel' ? 'contained' : 'text'} onClick={()=>handleChangeCategory('Travel')}>Travel</Button>
+          <Button variant={category === 'Coding' ? 'contained' : 'text'} onClick={()=>handleChangeCategory('Coding')}>Coding</Button>
+          <Button sx={{ mx: 1, mt: { xs: 1, md: 0 } }} variant={category === 'Food' ? 'contained' : 'text'} onClick={()=>handleChangeCategory('Food')}>Food</Button>
+        </Grid>
+      </Box>
 
       {
         blogs?.map((el)=>(
@@ -132,14 +107,14 @@ function Homepage() {
                           
                           <span style={{display:"flex",alignItems:"center"}}><TextsmsOutlinedIcon/> <p>{el?.commentsCount}</p></span>
                       </div> */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <Typography variant="body2" color="textSecondary">
-                            {el?.totalLikes} Likes
-                            </Typography>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px',marginLeft:"20px",marginTop:"10px" }}>
+                              <Typography variant="body2" color="textSecondary">
+                              {el?.totalLikes} Likes
+                              </Typography>
 
-                            <Typography variant="body2" color="textSecondary">
-                            {el?.commentsCount} Comments
-                            </Typography>
+                              <Typography variant="body2" color="textSecondary">
+                              {el?.commentsCount} Comments
+                              </Typography>
                           </div>
                     </div>
                     

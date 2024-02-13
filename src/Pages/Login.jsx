@@ -17,6 +17,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { getUser, loginAPI } from "../Redux/Auth/auth.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { persistor } from "../Redux/store";
+import { toast } from "react-toastify";
 
 function Copyright(props) {
   return (
@@ -59,6 +60,10 @@ export default function LoginPage() {
       email: data.get("email"),
       password: data.get("password")
     }
+    if (!formData.email || !formData.password) {
+      alert("Please fill in both email and password.");
+      return;
+    }
     // try {
     //   await axios.post("http://localhost:8000/api/v1/user/login", formData, {withCredentials: true});
     //   alert("successfully logged in");
@@ -66,13 +71,19 @@ export default function LoginPage() {
     // } catch (error) {}
 
     try {
-     dispatch(loginAPI(formData))
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      // dispatch(getUser());
-    }
+      const result = await dispatch(loginAPI(formData));
+        if(result.error){
+          toast.warn(result.error);
+          // alert(result.error)
+          navigate("/login")
+        }else{
+          toast.success("Successfully logged in");
+          // alert("Successfully logged in")
+          navigate("/")
+        }
+     } catch (error) {
+        console.log(error);
+     } 
     
   };
 

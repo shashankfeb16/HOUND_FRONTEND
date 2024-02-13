@@ -13,11 +13,12 @@ import TestSingleBlog from './TestSingleBlog'
 import VisitedUser from './VisitedUser'
 import UpdateBlog from '../Pages/UpdateBlog'
 import MyAccount from '../Pages/MyAccount'
+import Footer from './Footer'
 
 function AllRoutes() {
   return (
     <>
-    <Navbar/>
+    <Navbar />
         <Routes>
             <Route path='/' element={<Homepage/>}/>
             <Route path='/login' element={<Login/>}/>
@@ -35,6 +36,7 @@ function AllRoutes() {
             {/* <Route path='/blogs/:id' element={<TestSingleBlog/>}/> */}
             <Route path='/blogs/:id' element={<PrivateRoute Component={TestSingleBlog}/>}/>
         </Routes>
+      <Footer/>
     </>
   )
 }

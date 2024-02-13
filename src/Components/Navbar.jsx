@@ -26,6 +26,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { persistor } from "../Redux/store.js";
 import { useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -101,6 +102,7 @@ export default function PrimarySearchAppBar() {
     try {
       //  dispatch(logOutAPI(user._id));
       dispatch(logOutAPI());
+      toast.success(`User logged out successfully`);
       if(!isAuth){
        persistor.purge();
        navigate("/");
@@ -336,7 +338,7 @@ export default function PrimarySearchAppBar() {
               <Typography>
                 <Link
                   to="/"
-                  style={{ textDecoration: "none", color: "inherit" }}
+                  style={{ textDecoration: "none", color: "inherit", fontSize: 18, fontWeight: 400 }}
                 >
                   HOME
                 </Link>
@@ -346,7 +348,7 @@ export default function PrimarySearchAppBar() {
             {isAuth && <MenuItem>
                   <Link
                     to="/user"
-                    style={{ textDecoration: "none", color: "inherit" }}
+                    style={{ textDecoration: "none", color: "inherit",fontSize: 18, fontWeight: 400 }}
                   >
                     UserDetails
                   </Link>
@@ -354,9 +356,9 @@ export default function PrimarySearchAppBar() {
                 {isAuth && <MenuItem>
                   <Link
                     to="/createBlog"
-                    style={{ textDecoration: "none", color: "inherit" }}
+                    style={{ textDecoration: "none", color: "inherit",fontSize: 18, fontWeight: 400 }}
                   >
-                    Create Blog
+                    Post Blog
                   </Link>
                 </MenuItem>}
 

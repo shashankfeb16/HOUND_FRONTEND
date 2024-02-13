@@ -16,6 +16,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { signUpAPI } from "../Redux/Auth/auth.actions";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 function Copyright(props) {
   return (
@@ -46,14 +47,21 @@ export default function SignUpPage() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      fullName: data.get("fullName"),
+      userName: data.get("userName"),  
       email: data.get("email"),
-      password: data.get("password"),
+      password: data.get("password")
     });
     const formData = {
       fullName: data.get("fullName"),
       userName: data.get("userName"),  
       email: data.get("email"),
       password: data.get("password")
+    }
+
+    if (!formData.email || !formData.password || !formData.fullName || !formData.userName) {
+      toast.error("Please fill in all fields.");
+      return;
     }
     // try {
     //   await axios.post("http://localhost:8000/api/v1/user/register", formData);
@@ -62,9 +70,14 @@ export default function SignUpPage() {
     // } catch (error) {}
 
     try {
-     dispatch(signUpAPI(formData))
-     
-      navigate("/login");
+      const result = await dispatch(signUpAPI(formData))
+      if(result.error){
+        toast.error(result.error)
+        navigate("/signup")
+      }else{
+        toast.success("Successfully Registered")
+        navigate("/login")
+      }
     } catch (error) {
       console.log(error.message);
     }

@@ -1,9 +1,10 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import JoditEditor from "jodit-react";
-import { Box, Button, Stack, TextField } from "@mui/material";
+import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { updateBlog } from "../../Redux/blogs/blog.action";
+import { toast } from "react-toastify";
 
 // const API_KEY = "50938726ed5b1dc3e275abc4759bf1bc";
 
@@ -11,6 +12,7 @@ function UpdateBlog({ placeholder }) {
   const editor = useRef(null);
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
+  const [category, setCategory] = useState('');
   const navigate = useNavigate();
   const { blogId } = useParams();
   const config = useMemo(
@@ -44,6 +46,9 @@ function UpdateBlog({ placeholder }) {
   const handleChangeTitle = (e) =>{
     setTitle(e.target.value);
   }
+  const handleChangeCategory = (e) =>{
+    setCategory(e.target.value);
+  }
 
   const getSingleBlog = async () =>{
     try{
@@ -51,6 +56,7 @@ function UpdateBlog({ placeholder }) {
        console.log(response);
        setContent(response?.data?.description);
        setTitle(response?.data?.title);
+       setCategory(response?.data?.category)
     } catch(err){
         console.log(err)
     }
@@ -58,20 +64,21 @@ function UpdateBlog({ placeholder }) {
   const handlePublish = async() =>{
     const data = {
       title: title,
-      description: content
+      description: content,
+      category: category
     }
    try{
     // await axios.patch(`http://localhost:8000/api/v1/blog/update/${blogId}`, data, {withCredentials: true});
     const res= await updateBlog(blogId, data);
     if(res.sucess===true){
-      alert("Blog Updated Successfully");
+      toast.success("Blog Updated Successfully");
     }
     
    }
    catch(error){
     alert(error);
    }finally{
-    navigate("/")
+    navigate(`/blogs/${blogId}`)
    }
   }
   useEffect(()=>{
@@ -81,6 +88,24 @@ function UpdateBlog({ placeholder }) {
     <Box>
       <Stack spacing={2} sx={{ padding: "30px" }}>
         <TextField label="Enter Blog Title" sx={{width: "80%"}} value={title} onChange={(e)=>handleChangeTitle(e)}/>
+        <FormControl required sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel id="demo-simple-select-required-label">Category</InputLabel>
+        <Select
+          labelId="demo-simple-select-required-label"
+          id="demo-simple-select-required"
+          value={category}
+          label="Category *"
+          onChange={(e)=>handleChangeCategory(e)}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={"Food"}>Food</MenuItem>
+          <MenuItem value={"Travel"}>Travel</MenuItem>
+          <MenuItem value={"Coding"}>Coding</MenuItem>
+        </Select>
+        <FormHelperText>Required</FormHelperText>
+      </FormControl>
         <JoditEditor
           ref={editor}
           value={content}

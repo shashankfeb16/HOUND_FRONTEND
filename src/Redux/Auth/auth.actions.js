@@ -7,25 +7,38 @@ export const loginAPI =(formData)=>async(dispatch)=>{
     try {
         const response = await axios.post("http://localhost:8000/api/v1/user/login", formData, {withCredentials: true})
         console.log(response)
-        dispatch({
-            type: AUTH_LOGIN,
-            payload: response.data.LoggedInUser
-        })
-        return response.data.LoggedInUser
+        if(response.status===200){
+            dispatch({
+                type: AUTH_LOGIN,
+                payload: response.data.LoggedInUser
+            })
+            return {data:response.data.LoggedInUser, error:null}
+        }else{
+            console.log(response)
+            return { data:null, error:response}
+        }
     } catch (error) {
-        console.log(error.message)
+        console.log(error.response.data.error)
+        return { data: null, error: error.response.data.error };
     }
 }
 
     export const signUpAPI =(formData)=>async(dispatch)=>{
         try {
             const response = await axios.post("http://localhost:8000/api/v1/user/register", formData);
-            dispatch({
-                type: AUTH_SIGNUP,
-            })
-            return response
+            if(response.status===201){
+                dispatch({
+                    type: AUTH_SIGNUP,
+                })
+                console.log(response)
+                return {data:response, error:null}
+            }else{
+                console.log(response)
+                return { data:null, error:response}
+            }
         } catch (error) {
             console.log(error.message)
+            return { data: null, error: error.response.data.error };
         }
     }
 

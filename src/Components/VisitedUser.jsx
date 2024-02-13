@@ -5,6 +5,7 @@ import { currentFollowStatus, follow, getUserData, unfollow } from '../Redux/Aut
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link,useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function VisitedUser() {
     const {visitedUser} = useSelector(state=>state.auth)
@@ -31,6 +32,7 @@ function VisitedUser() {
         if(data){
             setFollowStatus(data)
             // currentStatus(id)
+            toast.success("followed successfully")
         }
         // console.log(data)
     }
@@ -41,6 +43,7 @@ function VisitedUser() {
             let data = await unfollow(id)
             console.log(data)
                 setFollowStatus(data)
+                toast.success("Unfollowed successfully")
         } catch (error) {
             console.log(error.message)
         } 

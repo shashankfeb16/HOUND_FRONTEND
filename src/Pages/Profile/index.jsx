@@ -152,36 +152,44 @@ function Profile() {
         </Box>
         
     </Box>
-    <Box sx={{display:"flex",gap:"30px", justifyContent: "space-around", marginTop: "25px", paddingBottom: "25px"}}>
-            <Box>
-            <Box>
-            <Typography variant="h6">Followers</Typography>
-            <Paper style={{ width: 250, maxHeight: 200, overflow: 'auto' }}>
-                {followersData?.map((el)=>(
-                   <Link to={`/user/${el?.follower._id}`} style={{color:"inherit", textDecoration:"none"}} > 
-                    <Box key={el?.follower._id} sx={{display:"flex",alignItems:"center",mb:"10px",padding:"5px",gap:"10px", borderBottom:"1px solid black"}}>
-                        <Avatar src={el?.follower?.profileImage} alt={el?.follower?.fullName} sx={{ width: 36, height: 36 }}/>
-                        <Typography>{el?.follower?.fullName}</Typography>
-                    </Box>
-                    </Link>
-                ))}
-                </Paper>
+    <Box sx={{display:"flex", justifyContent: "space-around", marginTop: "25px", paddingBottom: "25px"}}>
+            <Box sx={{display:"flex",gap:"30px",textAlign:"center"}}>
+                <Box>
+                    <Typography variant="h6">Followers</Typography>
+                    <Paper style={{ width: 250, height: 200, overflow: 'auto',padding:"10px" }}>
+                        {followersData?.map((el)=>(
+                        <Link to={`/user/${el?.follower._id}`} style={{color:"inherit", textDecoration:"none"}} > 
+                            <Box key={el?.follower._id} sx={{display:"flex",alignItems:"center",mb:"10px",padding:"10px",gap:"10px",boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;",":hover": {
+          backgroundColor: "#87CEEB",
+          color: "black",
+        }}}>
+                                <Avatar src={el?.follower?.profileImage} alt={el?.follower?.fullName} sx={{ width: 36, height: 36 }}/>
+                                <Typography>{el?.follower?.fullName}</Typography>
+                            </Box>
+                            </Link>
+                        ))}
+                        </Paper>
+                </Box>
+                <Box>
+                    <Typography variant="h6">Following</Typography>
+                    <Paper style={{ width: 250, height: 200, overflow: 'auto',padding:"10px"  }}>
+                    {followingData?.map((el)=>(
+                            <Link to={`/user/${el?.following._id}`} style={{color:"inherit", textDecoration:"none"}} > 
+                            <Box key={el?.following._id}  sx={{display:"flex",alignItems:"center",mb:"10px",padding:"10px",gap:"10px",boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px",":hover": {
+          backgroundColor: "#87CEEB",
+          color: "black",
+        },}}>
+                                <Avatar src={el?.following?.profileImage} alt={el?.following?.fullName} sx={{ width: 36, height: 36 }} />
+                                <Typography>{el?.following?.fullName}</Typography>
+                            </Box>
+                            </Link>
+                        ))}
+                    </Paper>   
+                </Box>
             </Box>
-            <Box>
-                <Typography variant="h6">Following</Typography>
-                <Paper style={{ width: 250, maxHeight: 200, overflow: 'auto' }}>
-                {followingData?.map((el)=>(
-                        <Link to={`/user/${el?.following._id}`} style={{color:"inherit", textDecoration:"none"}} > 
-                        <Box key={el?.following._id}  sx={{display:"flex",alignItems:"center",mb:"10px",padding:"5px",gap:"10px", borderBottom:"1px solid black"}}>
-                            <Avatar src={el?.following?.profileImage} alt={el?.following?.fullName} sx={{ width: 36, height: 36 }} />
-                            <Typography>{el?.following?.fullName}</Typography>
-                        </Box>
-                        </Link>
-                    ))}
-                 </Paper>   
+            <Box >
+                 <PieChart followers={user?.followersCount} following={user?.followingCount}/>
             </Box>
-            </Box>
-            <PieChart followers={user?.followersCount} following={user?.followingCount}/>
         </Box>
 
     </Box>
