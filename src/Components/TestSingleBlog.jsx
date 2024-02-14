@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import CommentList from './CommentList';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
-import {Box, Button, IconButton, TextareaAutosize,CircularProgress, Avatar, Typography, TextField  } from '@mui/material';
+import {Box, Button, IconButton,CircularProgress, Avatar, Typography, TextField  } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios'
@@ -51,7 +51,6 @@ function TestSingleBlog() {
         } catch (error) {
             console.log(error) 
         }finally{
-            setLoading(false)
         }
     },[id])
 
@@ -80,14 +79,13 @@ function TestSingleBlog() {
 
     useEffect(() => {
         const fetchData = async() => {
-            setLoading(true)
             try{
+                
                  dispatch(getSingleBlogData(id))
                  
             } catch(error){
                 console.log(error.message)
             } finally {
-                setLoading(false);
             }
         }
         fetchData()
@@ -159,12 +157,10 @@ function TestSingleBlog() {
 
       const handlePost = async (event) => {
         event.preventDefault();
-        // console.log(newComment)
             if(!content){
                 toast.error("Please enter a comment")
                 return
             }
-        setLoading(true)
         try {
             const data = await postComment(id,{content})
             console.log(data)
@@ -174,30 +170,11 @@ function TestSingleBlog() {
         } catch (error) {
             console.error(error.message)
         }finally {
-            setLoading(false)
         }
 
       } 
-      const handleBack = () => {
-        navigate(-1)
-      }
-
-      if(loading) {
-           return (<>
-                <CircularProgress/>
-            </>)
-      }
-
-//       if(likeLoading) {
-//         return (<>
-//              <CircularProgress/>
-//          </>)
-//    }
   return (
     <div>
-        <div>
-            <Button onClick={handleBack}>back</Button>
-        </div>
         <div style={{width:"80%",margin:'auto',marginTop:"50px"}}>
             <div style={{padding:'30px 0px', background:"#fff", boxShadow:"0px 0px 12px 0px rgba(0, 0, 0, 0.1)"}}>
                     <Typography style={{fontSize:"35px", marginLeft:"30px"}}>{blogData?.title}</Typography>
@@ -261,6 +238,7 @@ function TestSingleBlog() {
                                 Post Comment
                         </Button>
                 </Box>
+                <Typography sx={{marginLeft:3, marginsTop:1}}>Comments {blogData?.commentsCount}</Typography>
                 {/* {error && <div>Error: {error}</div>} */}
                 {loading ? (<CircularProgress />) :(<CommentList 
                     comments={commentsData}

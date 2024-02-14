@@ -1,9 +1,12 @@
 import axios from "axios"
-import { GET_BLOGS, GET_Blog_COMMENTS, GET_CURRENTUSER_BLOGS, GET_LIKE_STATUS, GET_SINGLE_BLOG_DETAILS, POST_Blog_COMMENTS, POST_Blog_COMMENTS_FAILURE, POST_Blog_COMMENTS_REQUEST, POST_Blog_COMMENTS_SUCCESS, UPDATE_LIKES } from "./blog.types"
+import { GET_BLOGS, GET_Blog_COMMENTS, GET_CURRENTUSER_BLOGS, GET_LIKE_STATUS, GET_SINGLE_BLOG_DETAILS, POST_Blog_COMMENTS, POST_Blog_COMMENTS_FAILURE, POST_Blog_COMMENTS_REQUEST, POST_Blog_COMMENTS_SUCCESS, START_LOADING, STOP_LOADING, UPDATE_LIKES } from "./blog.types"
 
 
 export const getAllBlogs =(page,category)=> async(dispatch) =>{
     try {
+        dispatch({
+            type: START_LOADING
+        })
         const response = await axios.get(`http://localhost:8000/api/v1/blog/allBlogs?page=${page}&limit=5&category=${category}`)
         if(response.data.valid===true) {
             return window.location.reload();
@@ -18,6 +21,10 @@ export const getAllBlogs =(page,category)=> async(dispatch) =>{
         return response;
     } catch (error) {
         console.log(error.message)
+    } finally{
+        dispatch({
+            type: STOP_LOADING
+        })
     }
 }
 

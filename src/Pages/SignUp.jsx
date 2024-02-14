@@ -10,6 +10,8 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
@@ -17,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { signUpAPI } from "../Redux/Auth/auth.actions";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { useState } from "react";
+import { InputAdornment } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -43,6 +47,8 @@ const defaultTheme = createTheme();
 export default function SignUpPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [password, setPassword] = useState('');
+  const [showPassword, setshowPassword] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -157,14 +163,22 @@ export default function SignUpPage() {
                 // autoFocus
               />
               <TextField
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" sx={{cursor:"pointer"}} onClick={()=>setshowPassword(!showPassword)}>
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </InputAdornment>
+                ),
+              }}
                 margin="normal"
                 required
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
+                onChange={(e)=>setPassword(e.target.value)}
               />
               {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
