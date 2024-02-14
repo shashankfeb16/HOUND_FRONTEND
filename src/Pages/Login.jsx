@@ -10,6 +10,8 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
@@ -17,6 +19,9 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { getUser, loginAPI } from "../Redux/Auth/auth.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { persistor } from "../Redux/store";
+import { toast } from "react-toastify";
+import { InputAdornment } from "@mui/material";
+import { useState } from "react";
 
 function Copyright(props) {
   return (
@@ -44,6 +49,8 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuth } = useSelector((state) => state.auth);
+  const [password, setPassword] = useState('');
+  const [showPassword, setshowPassword] = useState(false);
 
   if(isAuth) {
     return <Navigate to='/' />
@@ -59,6 +66,10 @@ export default function LoginPage() {
       email: data.get("email"),
       password: data.get("password")
     }
+    if (!formData.email || !formData.password) {
+      alert("Please fill in both email and password.");
+      return;
+    }
     // try {
     //   await axios.post("http://localhost:8000/api/v1/user/login", formData, {withCredentials: true});
     //   alert("successfully logged in");
@@ -66,13 +77,19 @@ export default function LoginPage() {
     // } catch (error) {}
 
     try {
-     dispatch(loginAPI(formData))
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      // dispatch(getUser());
-    }
+      const result = await dispatch(loginAPI(formData));
+        if(result.error){
+          toast.warn(result.error);
+          // alert(result.error)
+          navigate("/login")
+        }else{
+          toast.success("Successfully logged in");
+          // alert("Successfully logged in")
+          navigate("/")
+        }
+     } catch (error) {
+        console.log(error);
+     } 
     
   };
 
@@ -130,14 +147,23 @@ export default function LoginPage() {
                 autoFocus
               />
               <TextField
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" sx={{cursor:"pointer"}} onClick={()=>setshowPassword(!showPassword)}>
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </InputAdornment>
+                ),
+              }}
                 margin="normal"
                 required
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
+                value={password}
                 autoComplete="current-password"
+                onChange={(e)=>setPassword(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}

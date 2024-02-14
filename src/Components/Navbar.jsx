@@ -6,26 +6,22 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from '@mui/icons-material/Logout';
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
 import PortraitOutlinedIcon from '@mui/icons-material/PortraitOutlined';
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Avatar from "@mui/material/Avatar";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUser, logOutAPI } from "../Redux/Auth/auth.actions";
-import PersonIcon from '@mui/icons-material/Person';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { persistor } from "../Redux/store.js";
 import { useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -101,6 +97,7 @@ export default function PrimarySearchAppBar() {
     try {
       //  dispatch(logOutAPI(user._id));
       dispatch(logOutAPI());
+      toast.success(`User logged out successfully`);
       if(!isAuth){
        persistor.purge();
        navigate("/");
@@ -336,7 +333,7 @@ export default function PrimarySearchAppBar() {
               <Typography>
                 <Link
                   to="/"
-                  style={{ textDecoration: "none", color: "inherit" }}
+                  style={{ textDecoration: "none", color: "inherit", fontSize: 18, fontWeight: 400 }}
                 >
                   HOME
                 </Link>
@@ -346,7 +343,7 @@ export default function PrimarySearchAppBar() {
             {isAuth && <MenuItem>
                   <Link
                     to="/user"
-                    style={{ textDecoration: "none", color: "inherit" }}
+                    style={{ textDecoration: "none", color: "inherit",fontSize: 18, fontWeight: 400 }}
                   >
                     UserDetails
                   </Link>
@@ -354,9 +351,9 @@ export default function PrimarySearchAppBar() {
                 {isAuth && <MenuItem>
                   <Link
                     to="/createBlog"
-                    style={{ textDecoration: "none", color: "inherit" }}
+                    style={{ textDecoration: "none", color: "inherit",fontSize: 18, fontWeight: 400 }}
                   >
-                    Create Blog
+                    Post Blog
                   </Link>
                 </MenuItem>}
 

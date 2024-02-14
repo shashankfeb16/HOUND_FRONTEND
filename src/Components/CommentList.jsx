@@ -4,7 +4,7 @@ import Comment from './Comment'
 function CommentList({comments,currentUser,onEdit,onDelete,blogId}) {
   
   return (
-    <div>
+    <div style={{maxHeight:'400px',overflow:"auto"}}>
         {
             comments?.map((el)=>(
                 <Comment

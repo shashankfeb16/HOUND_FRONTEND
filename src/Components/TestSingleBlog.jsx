@@ -4,8 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CommentList from './CommentList';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import {Box, Button, IconButton, TextareaAutosize,CircularProgress  } from '@mui/material';
+import CommentIcon from '@mui/icons-material/Comment';
+import {Box, Button, IconButton,CircularProgress, Avatar, Typography, TextField  } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios'
+import moment from 'moment';
+import { toast } from 'react-toastify';
 
 function TestSingleBlog() {
     axios.defaults.withCredentials = true;
@@ -46,7 +51,6 @@ function TestSingleBlog() {
         } catch (error) {
             console.log(error) 
         }finally{
-            setLoading(false)
         }
     },[id])
 
@@ -75,14 +79,13 @@ function TestSingleBlog() {
 
     useEffect(() => {
         const fetchData = async() => {
-            setLoading(true)
             try{
+                
                  dispatch(getSingleBlogData(id))
                  
             } catch(error){
                 console.log(error.message)
             } finally {
-                setLoading(false);
             }
         }
         fetchData()
@@ -154,8 +157,10 @@ function TestSingleBlog() {
 
       const handlePost = async (event) => {
         event.preventDefault();
-        // console.log(newComment)
-        setLoading(true)
+            if(!content){
+                toast.error("Please enter a comment")
+                return
+            }
         try {
             const data = await postComment(id,{content})
             console.log(data)
@@ -165,74 +170,84 @@ function TestSingleBlog() {
         } catch (error) {
             console.error(error.message)
         }finally {
-            setLoading(false)
         }
 
       } 
-      const handleBack = () => {
-        navigate(-1)
-      }
-
-      if(loading) {
-           return (<>
-                <CircularProgress/>
-            </>)
-      }
-
-//       if(likeLoading) {
-//         return (<>
-//              <CircularProgress/>
-//          </>)
-//    }
   return (
     <div>
-        <div>
-            <Button onClick={handleBack}>back</Button>
-        </div>
-        <div>
-            <h1>{blogData?.title}</h1>
-            <div style={{width:'70%',border: "1px solid black", padding:"40px", margin:"30px",}} dangerouslySetInnerHTML={{ __html: blogData?.description }}/>
-            <Link to={`/user/${blogData?.owner?._id}`} style={{textDecoration:'none'}}>
-                <h3>Owner: {blogData?.owner?.userName}</h3>
-            </Link>
-            <p>Likes:{blogData?.totalLikes}</p>
-                <div>
-                    <IconButton onClick={handleLikeClick}>
-                        <FavoriteIcon style={{ color: isLiked ? 'red' : 'grey' }}/>
-                    </IconButton>
-                </div>
-                {isBlogOwner && 
+        <div style={{width:"80%",margin:'auto',marginTop:"50px"}}>
+            <div style={{padding:'30px 0px', background:"#fff", boxShadow:"0px 0px 12px 0px rgba(0, 0, 0, 0.1)"}}>
+                    <Typography style={{fontSize:"35px", marginLeft:"30px"}}>{blogData?.title}</Typography>
+                    <Typography style={{ marginLeft:"30px",color:"grey"}}>Category :- {blogData?.category}</Typography>
+                    {/* <h1>{blogData?.title}</h1> */}
+                    <div style={{ padding:"40px"}} dangerouslySetInnerHTML={{ __html: blogData?.description }}/>
+                    <Link to={`/user/${blogData?.owner?._id}`} 
+                    style={{
+                        marginLeft:"40px",
+                        textDecoration:'none',
+                        display:"flex",
+                        alignItems:"center",
+                        gap:"15px",
+                        boxShadow:'rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset',
+                        padding:'8px',
+                        borderRadius:"5px",
+                        width:"300px"
+                        }}>
+                        
+                        <Avatar sx={{ height: '70px', width: '70px', marginLeft:"15px" }} src={blogData?.owner?.profileImage} />
+                        {/* <Typography variant='h6'>{blogData?.owner?.fullName}</Typography> */}
                     <Box>
-                        <Button onClick={()=> navigate(`/updateBlog/${id}`)} variant="contained"
-                color="primary">Edit</Button>
-                        <Button onClick={handleDelete}>Delete</Button>
+                        <Typography variant="h6" fontWeight="bold">
+                        {blogData?.owner?.fullName}
+                        </Typography>
+                        <Typography variant='subtitle2' color="textSecondary">
+                            Published {moment(blogData?.createdAt).fromNow()}
+                        </Typography>
                     </Box>
-                }
+                    </Link>
+                        {/* <p>Likes:{blogData?.totalLikes}</p> */}
+                        <div style={{display:"flex",alignItems:"center",marginTop:"15px", marginLeft:'30px',}}>
+                            <IconButton onClick={handleLikeClick}>
+                                <FavoriteIcon sx={{width:35, height:35}} style={{ color: isLiked ? 'red' : 'grey' }}/>
+                            </IconButton>
+                            <Typography variant="h5" >{blogData?.totalLikes}</Typography>
+                            <CommentIcon  sx={{width:35, height:35, marginLeft:"25px", marginRight:"10px"}}/>
+                            <Typography variant="h5" >{blogData?.commentsCount}</Typography>
+                        </div>
+                    {isBlogOwner && 
+                        <Box sx={{marginLeft:"40px",display:"flex", gap:"25px"}}>
+                            <Button onClick={()=> navigate(`/updateBlog/${id}`)} variant="contained" startIcon={<EditIcon/>} 
+                    color="primary">Edit</Button>
+                            <Button  variant="outlined"  startIcon={<DeleteIcon />} onClick={handleDelete}>Delete</Button>
+                        </Box>
+                    }
+            </div>
+                    <Typography style={{fontSize:"25px",marginLeft:"30px"}}>Add a Comment</Typography>
+                    <Box sx={{display:"flex",gap:"25px",marginLeft:"30px"}}>
+                        <TextField
+                            placeholder="Write your comment..."
+                            minRows={3}
+                            style={{ width: '400px' }}
+                            value={content}
+                            onChange={(e) => setNewContent(e.target.value)}
+                                />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handlePost}>
+                                Post Comment
+                        </Button>
+                </Box>
+                <Typography sx={{marginLeft:3, marginsTop:1}}>Comments {blogData?.commentsCount}</Typography>
+                {/* {error && <div>Error: {error}</div>} */}
+                {loading ? (<CircularProgress />) :(<CommentList 
+                    comments={commentsData}
+                    currentUser={user?._id}
+                    onDelete={handleDeleteComment}
+                    blogId={id}
+                    onEdit ={handleUpdateComment}
+                    />) }
         </div>
-        <Box>
-            <TextareaAutosize
-                placeholder="Write your comment..."
-                minRows={3}
-                style={{ maxWidth: '400px' }}
-                value={content}
-                onChange={(e) => setNewContent(e.target.value)}
-                    />
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handlePost}>
-                    Post Comment
-            </Button>
-       </Box>
-       {/* {error && <div>Error: {error}</div>} */}
-       {loading ? (<CircularProgress />) :(<CommentList 
-        comments={commentsData}
-        currentUser={user?._id}
-        onDelete={handleDeleteComment}
-        blogId={id}
-        onEdit ={handleUpdateComment}
-        />) }
-        
     </div>
   )
 }

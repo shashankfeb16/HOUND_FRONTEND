@@ -13,11 +13,14 @@ import TestSingleBlog from './TestSingleBlog'
 import VisitedUser from './VisitedUser'
 import UpdateBlog from '../Pages/UpdateBlog'
 import MyAccount from '../Pages/MyAccount'
+import Footer from './Footer'
+import MobileFilter from './MobileFilter'
 
 function AllRoutes() {
+  
   return (
     <>
-    <Navbar/>
+    <Navbar />
         <Routes>
             <Route path='/' element={<Homepage/>}/>
             <Route path='/login' element={<Login/>}/>
@@ -32,9 +35,11 @@ function AllRoutes() {
             <Route path='/user' element={<PrivateRoute Component={TestUser}/>} />
               {/* <Route path='/user' element={<TestUser/>}/> */}
             <Route path='/my-account' element={<MyAccount/>}/>
+            <Route path='/loader' element={<MobileFilter/>}/>
             {/* <Route path='/blogs/:id' element={<TestSingleBlog/>}/> */}
             <Route path='/blogs/:id' element={<PrivateRoute Component={TestSingleBlog}/>}/>
         </Routes>
+      <Footer/>
     </>
   )
 }

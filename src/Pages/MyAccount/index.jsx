@@ -30,6 +30,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, logOutAPI, updateUserData, updateUserImage } from "../../Redux/Auth/auth.actions";
 import { persistor } from "../../Redux/store";
+import { toast } from "react-toastify";
 
 export default function MyAccount() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -61,7 +62,7 @@ export default function MyAccount() {
       email:  exisitingUser?.email,
       fullName:  exisitingUser?.fullName,
       github:  exisitingUser?.github,
-      linkedln: exisitingUser?.linkedln,
+      linkedIn: exisitingUser?.linkedIn,
       youtube: exisitingUser?.youtube,
       website: exisitingUser?.website,
       twitter: exisitingUser?.twitter,
@@ -70,7 +71,8 @@ export default function MyAccount() {
     try {
       dispatch(updateUserData(updateData))
       // await axios.patch("http://localhost:8000/api/v1/user/update-account-details", updateData,{withCredentials: true});
-      alert("successfully Updated");
+      // alert("successfully Updated");
+      toast.success("successfully Updated User Details");
       navigate("/")
       
     } catch (error) {}
@@ -377,7 +379,7 @@ export default function MyAccount() {
                     id="linkedIn"
                     name="linkedIn"
                     label="Linkdin"
-                    value={exisitingUser?.linkedln}
+                    value={exisitingUser?.linkedIn}
                     onChange={handleInputChange}
                   />
                   <TextField
