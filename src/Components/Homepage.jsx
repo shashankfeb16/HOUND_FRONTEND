@@ -7,6 +7,7 @@ import styled from "styled-components"
 import moment from 'moment';
 import NoBlogFound from './NoBlogFound';
 import MobileFilter from './MobileFilter';
+import Loader from './Loader/Loader';
 
 function Homepage() {
   const {isAuth,user} = useSelector(state=>state.auth);
@@ -39,9 +40,9 @@ function Homepage() {
     return <NoBlogFound/>
   }
 
-  if(showLoading){
-    return (<MobileFilter/>)
-  }
+  // if(showLoading){
+  //   return (<MobileFilter/>)
+  // }
 
   // const cookieValue = document.cookie.split('; ').find((row) => row.startsWith('accessToken='))?.split('=')[1]
   return (
@@ -125,7 +126,7 @@ function Homepage() {
           color="primary"
         />
       </Stack>
-    
+    {showLoading && <Loader/>}
     </>
   )
 }
