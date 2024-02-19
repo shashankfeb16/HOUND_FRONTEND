@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios'
 import moment from 'moment';
 import { toast } from 'react-toastify';
+import Loader from './Loader/Loader';
 
 function TestSingleBlog() {
     axios.defaults.withCredentials = true;
@@ -31,6 +32,7 @@ function TestSingleBlog() {
     const [commentsData, setcommentsData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [likeLoading, setLikeLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     // const newLikeStatus = dispatch(getLikeStatus(id));
     // console.log("newLikeStatus",newLikeStatus)
   
@@ -60,10 +62,13 @@ function TestSingleBlog() {
     
     const handleDelete=async()=>{
         try {
+            setIsLoading(true);
             deleteBlog(id)
         } catch (error) {
+            setIsLoading(false);
             console.log(error.message)
         }finally {
+            setIsLoading(false);
             alert("Blog successfully deleted")
             navigate("/")
         }
@@ -80,12 +85,14 @@ function TestSingleBlog() {
     useEffect(() => {
         const fetchData = async() => {
             try{
-                
+                setIsLoading(true);
                  dispatch(getSingleBlogData(id))
                  
             } catch(error){
+                setIsLoading(false);
                 console.log(error.message)
             } finally {
+                setIsLoading(false);
             }
         }
         fetchData()
@@ -248,6 +255,7 @@ function TestSingleBlog() {
                     onEdit ={handleUpdateComment}
                     />) }
         </div>
+        {isLoading && <Loader/>}
     </div>
   )
 }

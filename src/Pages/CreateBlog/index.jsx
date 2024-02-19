@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { postBlog } from "../../Redux/blogs/blog.action";
 import { toast } from "react-toastify";
+import Loader from "../../Components/Loader/Loader";
 
 
 function CreateBlog({ placeholder }) {
@@ -13,7 +14,8 @@ function CreateBlog({ placeholder }) {
   const [title, setTitle] = useState("");
   const attachmentInputRef = useRef(null);
   const [category, setCategory] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const config = useMemo(
     () => ({
       readonly: false,
@@ -46,13 +48,17 @@ function CreateBlog({ placeholder }) {
         return;
       }
       try {
+        setIsLoading(true);
         const formData = new FormData();
         formData.append("image", file);
         const res = await axios.post("http://localhost:8000/api/v1/blog/uploadJodit-images",formData);
         console.log(res?.data);
         setContent(prevContent => `${prevContent}<img src="${res.data}" alt="Uploaded Image" />`);
       } catch (error) {
+        setIsLoading(false);
         alert("Error uploading file. Please try again.")
+      } finally {
+        setIsLoading(false);
       }
     } else {
       alert("No file selected.")
@@ -72,14 +78,17 @@ function CreateBlog({ placeholder }) {
       category: category
     }
    try{
+    setIsLoading(true);
     // await axios.post("http://localhost:8000/api/v1/blog/create", data, {withCredentials: true});
     await postBlog(data)
     toast.success("Blog Created Successfully");
    }
    catch(error){
+    setIsLoading(false);
     toast.error(error);
    }finally{
     navigate("/")
+    setIsLoading(false);
    }
   }
   return (
@@ -124,6 +133,7 @@ function CreateBlog({ placeholder }) {
             <Button variant="contained" onClick={handlePublish}>Publish</Button>
         </Box>
       </Stack>
+      {isLoading && <Loader/>}
     </Box>
   );
 }
