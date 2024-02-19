@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { updateBlog } from "../../Redux/blogs/blog.action";
 import { toast } from "react-toastify";
+import Loader from "../../Components/Loader/Loader";
 
 // const API_KEY = "50938726ed5b1dc3e275abc4759bf1bc";
 
@@ -14,6 +15,7 @@ function UpdateBlog({ placeholder }) {
   const [title, setTitle] = useState("");
   const attachmentInputRef = useRef(null);
   const [category, setCategory] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { blogId } = useParams();
   const config = useMemo(
@@ -67,13 +69,17 @@ function UpdateBlog({ placeholder }) {
         return;
       }
       try {
+        setIsLoading(true);
         const formData = new FormData();
         formData.append("image", file);
         const res = await axios.post("http://localhost:8000/api/v1/blog/uploadJodit-images",formData);
         console.log(res?.data);
         setContent(prevContent => `${prevContent}<img src="${res.data}" alt="Uploaded Image" />`);
       } catch (error) {
+        setIsLoading(false);
         alert("Error uploading file. Please try again.")
+      } finally {
+        setIsLoading(false);
       }
     } else {
       alert("No file selected.")
@@ -88,13 +94,17 @@ function UpdateBlog({ placeholder }) {
 
   const getSingleBlog = async () =>{
     try{
+      setIsLoading(true);
        const response =  await axios.get(`http://localhost:8000/api/v1/blog/allBlogs/${blogId}`,{withCredentials: true});
        console.log(response);
        setContent(response?.data?.description);
        setTitle(response?.data?.title);
        setCategory(response?.data?.category)
     } catch(err){
+      setIsLoading(false);
         console.log(err)
+    } finally {
+      setIsLoading(false);
     }
   }
   const handlePublish = async() =>{
@@ -104,6 +114,7 @@ function UpdateBlog({ placeholder }) {
       category: category
     }
    try{
+    setIsLoading(true);
     // await axios.patch(`http://localhost:8000/api/v1/blog/update/${blogId}`, data, {withCredentials: true});
     const res= await updateBlog(blogId, data);
     if(res.sucess===true){
@@ -113,7 +124,9 @@ function UpdateBlog({ placeholder }) {
    }
    catch(error){
     alert(error);
+    setIsLoading(false);
    }finally{
+    setIsLoading(false);
     navigate(`/blogs/${blogId}`)
    }
   }
@@ -160,6 +173,7 @@ function UpdateBlog({ placeholder }) {
             <Button variant="contained" onClick={handlePublish}>Update Blog</Button>
         </Box>
       </Stack>
+      {isLoading && <Loader/>}
     </Box>
   );
 }

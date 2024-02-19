@@ -31,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser, logOutAPI, updateUserData, updateUserImage } from "../../Redux/Auth/auth.actions";
 import { persistor } from "../../Redux/store";
 import { toast } from "react-toastify";
+import Loader from "../../Components/Loader/Loader";
 
 export default function MyAccount() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -42,6 +43,7 @@ export default function MyAccount() {
   const [newPassword, setNewPassword] = useState('');
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -69,13 +71,18 @@ export default function MyAccount() {
       bio: exisitingUser?.bio,
     };
     try {
+      setIsLoading(true)
       dispatch(updateUserData(updateData))
       // await axios.patch("http://localhost:8000/api/v1/user/update-account-details", updateData,{withCredentials: true});
       // alert("successfully Updated");
       toast.success("successfully Updated User Details");
       navigate("/")
       
-    } catch (error) {}
+    } catch (error) {
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleUploadPhoto = async()=>{
@@ -84,12 +91,16 @@ export default function MyAccount() {
     formData.append("profileImage", selectedFile);
     console.log(formData);
     try{
+      setIsLoading(true);
       // await axios.post("http://localhost:8000/api/v1/user/upload-images", formData, {withCredentials: true});
       await updateUserImage(formData)
       alert("Profile Photo Uploaded Successfully");
     }
     catch(error){
+      setIsLoading(false);
       alert(error);
+    } finally{
+      setIsLoading(false);
     }
     // finally{
     //   dispatch(getUser());
@@ -103,6 +114,7 @@ export default function MyAccount() {
     const data = {oldPassword, newPassword}
 
     try{
+      setIsLoading(true);
        const res=  await axios.post("http://localhost:8000/api/v1/user/current-user/change-password",data,{withCredentials: true})
       console.log(res);
       dispatch(getUser());
@@ -115,7 +127,10 @@ export default function MyAccount() {
         // }
       // }
     }catch(error){
+      setIsLoading(false);
       console.log(error.message)
+    } finally {
+      setIsLoading(false);
     }
    }
 
@@ -123,12 +138,16 @@ export default function MyAccount() {
 
   const getUser1 = async () =>{
     try {
+      setIsLoading(true)
       const res = await axios.get("http://localhost:8000/api/v1/user/current-user",{withCredentials: true});
       console.log(res);
       const {data} = res;
       setExistingUser(data?.user);
     } catch (error) {
+      setIsLoading(false)
       console.log(error);
+    } finally {
+      setIsLoading(false)
     }
   }
   const handleInputChange = (event) => {
@@ -460,6 +479,7 @@ export default function MyAccount() {
           </Grid>
         </Grid>
       </Container>
+      {isLoading && <Loader/>}
     </Box>
   );
 }

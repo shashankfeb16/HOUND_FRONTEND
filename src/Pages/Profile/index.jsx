@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import BarChart from '../../Components/BarChart';
 import styled from 'styled-components';
 import PieChart from '../../Components/PieChart';
+import Loader from '../../Components/Loader/Loader';
 
 function Profile() {
     const dispatch  = useDispatch()
@@ -16,9 +17,11 @@ function Profile() {
     const {currentUserBlogs} =  useSelector(state=>state.blog)
     const [followersData, setFollowersData] = useState([])
     const [followingData, setFollowingData] = useState([])
+    const [isLoading, setIsLoading] = useState(false);
 
     const fetchData=async()=>{
         try {
+            setIsLoading(true);
             const res = await userFollowerAndFollowing()
             // console.log(res.data)
             // if(res.data.valid===true) {
@@ -28,6 +31,9 @@ function Profile() {
             setFollowingData(res.data.following)
         } catch (error) {
             console.log(error.message)
+            setIsLoading(false);
+        } finally{
+            setIsLoading(false);
         }
     }
 
@@ -197,6 +203,7 @@ function Profile() {
    <OuterContainerStyles marginTop="25px">
     <BarChart/>
    </OuterContainerStyles>
+   {isLoading && <Loader/>}
     </>
   )
 }
