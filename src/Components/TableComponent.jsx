@@ -17,14 +17,14 @@ function TableComponent({currentUserBlogs}) {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   return (
-    <Box sx={{textAlign:"center", justifyContent:"center"}}>
+    <Box sx={{textAlign:"center", justifyContent:"center",overflow:"hidden"}}>
             <Typography variant="h6" sx={{overflow:"hidden"}} >Recent Posts</Typography>
                     <TableContainer 
                     component={Paper} 
                     sx={{ 
                         maxHeight: 440,  
                         overflow: 'auto',
-                        ...(isSmallScreen && { width: '60%',margin:"auto", overflowX: 'auto' })
+                        ...(isSmallScreen && { width: '80%',margin:"auto", overflowX: 'auto' })
                     }}>
                         <Table sx={{ 
                             minWidth: 650,
