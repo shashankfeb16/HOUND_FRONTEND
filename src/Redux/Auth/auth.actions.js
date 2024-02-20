@@ -1,5 +1,5 @@
 import axios from "axios"
-import { AUTH_GETUSER, AUTH_GET_VISITED_USER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP, AUTH_UPDATE_USER } from "./auth.types.js"
+import { AUTH_GETUSER, AUTH_GET_VISITED_USER, AUTH_LOGIN, AUTH_LOGOUT, AUTH_SIGNUP, AUTH_UPDATE_USER, START_LOADING, STOP_LOADING } from "./auth.types.js"
 import { persistor } from "../store.js"
 axios.defaults.withCredentials = true;
 
@@ -76,6 +76,9 @@ export const getUser=()=>async(dispatch)=>{
 
 export const getUserData=(userId)=>async(dispatch)=>{
     try {
+        dispatch({
+            type: START_LOADING
+        })
         const response = await axios.get(`http://localhost:8000/api/v1/user/userdata/${userId}`,{withCredentials: true})
         console.log(response.data)
         if(response.data.valid===true) {
@@ -89,6 +92,13 @@ export const getUserData=(userId)=>async(dispatch)=>{
         return response.data
     } catch (error) {
         console.log(error.message)
+        dispatch({
+            type: STOP_LOADING
+        })
+    } finally{
+        dispatch({
+            type: STOP_LOADING
+        })
     }
 }
 

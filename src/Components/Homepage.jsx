@@ -6,7 +6,6 @@ import { getAllBlogs } from '../Redux/blogs/blog.action';
 import styled from "styled-components"
 import moment from 'moment';
 import NoBlogFound from './NoBlogFound';
-import MobileFilter from './MobileFilter';
 import Loader from './Loader/Loader';
 
 function Homepage() {
@@ -118,7 +117,7 @@ function Homepage() {
         ))
       }
 
-<Stack spacing={2} justifyContent="center" alignItems="center" mt={3}>
+<Stack spacing={2} justifyContent="center" alignItems="center" mt={3} pb={5}>
         <Pagination
           count={totalPages}
           page={currentPage}
@@ -142,3 +141,5 @@ const OuterContainerStyles = styled.div`
   margin-top: ${(props) => props.marginTop ?? "0px"};
   margin-bottom: ${(props) => props.marginBottom ?? "0px"};
 `;
+
+

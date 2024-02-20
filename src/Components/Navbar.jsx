@@ -243,6 +243,18 @@ export default function PrimarySearchAppBar() {
                     </IconButton>
                   <p>Profile</p></MenuItem>
                   </Link>
+                  <Link to="/my-account" style={{textDecoration:"none", color:"inherit"}}>
+                  <MenuItem onClick={handleMenuClose}><IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="primary-search-account-menu"
+                      aria-haspopup="true"
+                      color="inherit"
+                    >
+                      < PortraitOutlinedIcon />
+                    </IconButton>
+                  <p>My Account</p></MenuItem>
+                  </Link>
                 <MenuItem onClick={handleLogout}>
                     <IconButton
                         size="large"
@@ -257,10 +269,13 @@ export default function PrimarySearchAppBar() {
               </Box>
             ) : (
               <Box>
-                <MenuItem>
+                <MenuItem sx={{
+                  
+                }}>
                   <Link
                     to="/signup"
-                    style={{ textDecoration: "none", color: "inherit" }}
+                    style={{ textDecoration: "none", color: "inherit" , 
+                  }}
                   >
                     SIGNUP
                   </Link>
@@ -299,7 +314,12 @@ export default function PrimarySearchAppBar() {
             variant="h6"
             
             component="div"
-            sx={{ display: {  sm: "block" } }}
+            sx={{ 
+              display: {  sm: "block" },
+              fontSize:{xs: '1.2rem',md: '1.8rem', lg: '2.0rem'},
+              padding:{xs: "10px"}
+            
+            }}
           >
             <Link to="/" style={{textDecoration:"none", color:"inherit"}}>HOUND</Link>
             
@@ -329,7 +349,11 @@ export default function PrimarySearchAppBar() {
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
-            <MenuItem>
+            <MenuItem sx={{
+              '&:hover':{
+                backgroundColor: '#3da2f9'
+            } 
+            }}>
               <Typography>
                 <Link
                   to="/"
@@ -341,12 +365,12 @@ export default function PrimarySearchAppBar() {
             </MenuItem>
 
             {isAuth && <MenuItem>
-                  <Link
+                  {/* <Link
                     to="/user"
                     style={{ textDecoration: "none", color: "inherit",fontSize: 18, fontWeight: 400 }}
                   >
                     UserDetails
-                  </Link>
+                  </Link> */}
                 </MenuItem>}
                 {isAuth && <MenuItem>
                   <Link
@@ -382,7 +406,11 @@ export default function PrimarySearchAppBar() {
 
             {!isAuth && (
               <>
-              <MenuItem>
+              <MenuItem sx={{
+                '&:hover':{
+                  backgroundColor: '#3da2f9'
+              } 
+              }}>
                 <Link
                   to="/signup"
                   style={{ textDecoration: "none", color: "inherit" }}
@@ -390,7 +418,11 @@ export default function PrimarySearchAppBar() {
                   SIGNUP
                 </Link>
               </MenuItem>
-              <MenuItem>
+              <MenuItem sx={{
+                '&:hover':{
+                  backgroundColor: '#3da2f9'
+              } 
+              }}>
                 <Link
                   to="/login"
                   style={{ textDecoration: "none", color: "inherit" }}

@@ -69,7 +69,8 @@ function TestSingleBlog() {
             console.log(error.message)
         }finally {
             setIsLoading(false);
-            alert("Blog successfully deleted")
+            toast.success("Successfully Deleted Blog");
+            // alert("Blog successfully deleted")
             navigate("/")
         }
     }
@@ -205,7 +206,7 @@ function TestSingleBlog() {
                         {/* <Typography variant='h6'>{blogData?.owner?.fullName}</Typography> */}
                     <Box>
                         <Typography variant="h6" fontWeight="bold">
-                        {blogData?.owner?.fullName}
+                            {blogData?.owner?.fullName}
                         </Typography>
                         <Typography variant='subtitle2' color="textSecondary">
                             Published {moment(blogData?.createdAt).fromNow()}
@@ -245,7 +246,7 @@ function TestSingleBlog() {
                                 Post Comment
                         </Button>
                 </Box>
-                <Typography sx={{marginLeft:3, marginsTop:1}}>Comments {blogData?.commentsCount}</Typography>
+                <Typography sx={{marginLeft:3, marginsTop:1}}>Comments:</Typography>
                 {/* {error && <div>Error: {error}</div>} */}
                 {loading ? (<CircularProgress />) :(<CommentList 
                     comments={commentsData}

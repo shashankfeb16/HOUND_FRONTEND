@@ -22,6 +22,7 @@ import { persistor } from "../Redux/store";
 import { toast } from "react-toastify";
 import { InputAdornment } from "@mui/material";
 import { useState } from "react";
+import signIn from "../Components/Images/signIn.svg"
 
 function Copyright(props) {
   return (
@@ -103,8 +104,8 @@ export default function LoginPage() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundImage:`url(${signIn})`,
+              // "url(https://source.unsplash.com/random?wallpapers)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -112,6 +113,8 @@ export default function LoginPage() {
                 : t.palette.grey[900],
             backgroundSize: "cover",
             backgroundPosition: "center",
+            backgroundmaxWidth: "100%",
+            backgroundHeight:"auto"
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>

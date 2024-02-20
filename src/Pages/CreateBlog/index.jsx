@@ -53,7 +53,7 @@ function CreateBlog({ placeholder }) {
         formData.append("image", file);
         const res = await axios.post("http://localhost:8000/api/v1/blog/uploadJodit-images",formData);
         console.log(res?.data);
-        setContent(prevContent => `${prevContent}<img src="${res.data}" alt="Uploaded Image" />`);
+        setContent(prevContent => `${prevContent}<img src="${res.data}" style="height:400px; width:400px;" alt="Uploaded Image" />`);
       } catch (error) {
         setIsLoading(false);
         alert("Error uploading file. Please try again.")
