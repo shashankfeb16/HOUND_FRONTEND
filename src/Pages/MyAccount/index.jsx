@@ -94,13 +94,18 @@ export default function MyAccount() {
       setIsLoading(true);
       // await axios.post("http://localhost:8000/api/v1/user/upload-images", formData, {withCredentials: true});
       await updateUserImage(formData)
-      alert("Profile Photo Uploaded Successfully");
+      
+      // alert("Profile Photo Uploaded Successfully");
+      
     }
     catch(error){
       setIsLoading(false);
       alert(error);
     } finally{
       setIsLoading(false);
+      await getUser1()
+      toast.success("Profile Photo Uploaded Successfully");
+      navigate("/profile")
     }
     // finally{
     //   dispatch(getUser());
@@ -115,7 +120,7 @@ export default function MyAccount() {
 
     try{
       setIsLoading(true);
-       const res=  await axios.post("http://localhost:8000/api/v1/user/current-user/change-password",data,{withCredentials: true})
+       const res=  await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/current-user/change-password`,data,{withCredentials: true})
       console.log(res);
       dispatch(getUser());
       // if(res.data.sucess===true){
@@ -139,7 +144,7 @@ export default function MyAccount() {
   const getUser1 = async () =>{
     try {
       setIsLoading(true)
-      const res = await axios.get("http://localhost:8000/api/v1/user/current-user",{withCredentials: true});
+      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/current-user`,{withCredentials: true});
       console.log(res);
       const {data} = res;
       setExistingUser(data?.user);
@@ -209,7 +214,7 @@ export default function MyAccount() {
   };
   useEffect(()=>{
     getUser1();
-  },[]);
+  },[selectedFile]);
   return (
     <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
       <Container maxWidth="lg" sx={{ mt: 3 }}>

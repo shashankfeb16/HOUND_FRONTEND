@@ -73,9 +73,9 @@ function UpdateBlog({ placeholder }) {
         setIsLoading(true);
         const formData = new FormData();
         formData.append("image", file);
-        const res = await axios.post("http://localhost:8000/api/v1/blog/uploadJodit-images",formData);
+        const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/blog/uploadJodit-images`,formData);
         console.log(res?.data);
-        setContent(prevContent => `${prevContent}<img src="${res.data}" alt="Uploaded Image" />`);
+        setContent(prevContent => `${prevContent}<img src="${res.data}" style="width:400px; height:400px" alt="Uploaded Image" />`);
       } catch (error) {
         setIsLoading(false);
         alert("Error uploading file. Please try again.")
@@ -96,7 +96,7 @@ function UpdateBlog({ placeholder }) {
   const getSingleBlog = async () =>{
     try{
       setIsLoading(true);
-       const response =  await axios.get(`http://localhost:8000/api/v1/blog/allBlogs/${blogId}`,{withCredentials: true});
+       const response =  await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/blog/allBlogs/${blogId}`,{withCredentials: true});
        console.log(response);
        setContent(response?.data?.description);
        setTitle(response?.data?.title);

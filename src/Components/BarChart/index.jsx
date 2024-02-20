@@ -39,7 +39,7 @@ function BarChart({ contData}) {
   const getLikesAndComments = async(firstDate, lastDate) =>{
     try {
         if(firstDate && lastDate){
-          const res = await axios.get(`http://localhost:8000/api/v1/user/current-user/likesAndComments?${constructQueryParameters(firstDate, lastDate)}`, {withCredentials: true});
+          const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/current-user/likesAndComments?${constructQueryParameters(firstDate, lastDate)}`, {withCredentials: true});
           console.log(res);
         setLikesAndCommentData(res?.data)
         }

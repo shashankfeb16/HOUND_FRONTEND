@@ -5,8 +5,8 @@ axios.defaults.withCredentials = true;
 
 export const loginAPI =(formData)=>async(dispatch)=>{
     try {
-        const response = await axios.post("http://localhost:8000/api/v1/user/login", formData, {withCredentials: true})
-        console.log(response)
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/login`, formData, {withCredentials: true})
+        console.log("login",response)
         if(response.status===200){
             dispatch({
                 type: AUTH_LOGIN,
@@ -25,7 +25,7 @@ export const loginAPI =(formData)=>async(dispatch)=>{
 
     export const signUpAPI =(formData)=>async(dispatch)=>{
         try {
-            const response = await axios.post("http://localhost:8000/api/v1/user/register", formData);
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/register`, formData);
             if(response.status===201){
                 dispatch({
                     type: AUTH_SIGNUP,
@@ -45,7 +45,7 @@ export const loginAPI =(formData)=>async(dispatch)=>{
 export const logOutAPI=()=>async(dispatch)=>{
     try {
         // await axios.post("http://localhost:8000/api/v1/user/logout",id,{withCredentials: true})
-        await axios.post("http://localhost:8000/api/v1/user/logout",{withCredentials: true})
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/logout`,{withCredentials: true})
         dispatch({
             type: AUTH_LOGOUT,
         })
@@ -57,7 +57,7 @@ export const logOutAPI=()=>async(dispatch)=>{
 
 export const getUser=()=>async(dispatch)=>{
     try {
-        const response = await axios.get("http://localhost:8000/api/v1/user/current-user",{withCredentials: true}) 
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/current-user`,{withCredentials: true}) 
         // if(response.data.valid===true) {
         //     return window.location.reload();
         // }else{
@@ -79,7 +79,7 @@ export const getUserData=(userId)=>async(dispatch)=>{
         dispatch({
             type: START_LOADING
         })
-        const response = await axios.get(`http://localhost:8000/api/v1/user/userdata/${userId}`,{withCredentials: true})
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/userdata/${userId}`,{withCredentials: true})
         console.log(response.data)
         if(response.data.valid===true) {
             return window.location.reload();
@@ -104,7 +104,7 @@ export const getUserData=(userId)=>async(dispatch)=>{
 
 export const follow =async(userId)=>{
     try {
-        const response = await axios.post(`http://localhost:8000/api/v1/user/userdata/${userId}`,{withCredentials: true})
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/userdata/${userId}`,{withCredentials: true})
         // console.log(response.data.userStatus)
         return response.data.userStatus
     } catch (error) {
@@ -113,7 +113,7 @@ export const follow =async(userId)=>{
 }
 export const unfollow =async(userId)=>{
     try {
-        const response = await axios.delete(`http://localhost:8000/api/v1/user/userdata/${userId}`,{withCredentials: true})
+        const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/userdata/${userId}`,{withCredentials: true})
         console.log(response.data.userStatus)
         return response.data.userStatus
     } catch (error) {
@@ -123,7 +123,7 @@ export const unfollow =async(userId)=>{
 
 export const currentFollowStatus = async(userId)=>{
     try {
-        const response = await axios.get(`http://localhost:8000/api/v1/user/userdata/${userId}/follow-status`,{withCredentials: true})
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/userdata/${userId}/follow-status`,{withCredentials: true})
         return response
     } catch (error) {
         console.log(error.message)
@@ -132,7 +132,7 @@ export const currentFollowStatus = async(userId)=>{
 
 export const userFollowerAndFollowing = async(userId)=>{
     try {
-        const response = await axios.get(`http://localhost:8000/api/v1/user/userdata/${userId}/followdata`,{withCredentials: true})
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/userdata/${userId}/followdata`,{withCredentials: true})
         console.log(response.data)
         return response
     } catch (error) {
@@ -143,7 +143,7 @@ export const userFollowerAndFollowing = async(userId)=>{
 
 export const updateUserData = (updateData)=>async(dispatch)=>{
     try {
-        const response = await axios.patch(`http://localhost:8000/api/v1/user/update-account-details`,updateData,{withCredentials: true})
+        const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/update-account-details`,updateData,{withCredentials: true})
         console.log(response.data.user)
         dispatch({
             type: AUTH_UPDATE_USER,
@@ -158,7 +158,7 @@ export const updateUserData = (updateData)=>async(dispatch)=>{
 
 export const updateUserImage=async(formData)=>{
     try {
-        const response = await axios.post("http://localhost:8000/api/v1/user/upload-images", formData, {withCredentials: true});
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/upload-images`, formData, {withCredentials: true});
         return response
     } catch (error) {
         console.log(error.message)
