@@ -1,4 +1,5 @@
-import { Avatar, Box, Button, Container, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Avatar, Box, Button, Container, Grid,useMediaQuery,
+    useTheme,  IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import { Facebook, Twitter, GitHub, LinkedIn } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +10,7 @@ import BarChart from '../../Components/BarChart';
 import styled from 'styled-components';
 import PieChart from '../../Components/PieChart';
 import Loader from '../../Components/Loader/Loader';
+import TableComponent from '../../Components/TableComponent';
 
 function Profile() {
     const dispatch  = useDispatch()
@@ -18,6 +20,8 @@ function Profile() {
     const [followersData, setFollowersData] = useState([])
     const [followingData, setFollowingData] = useState([])
     const [isLoading, setIsLoading] = useState(false);
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     const fetchData=async()=>{
         try {
@@ -52,6 +56,7 @@ function Profile() {
       }
     console.log("followers Data", followersData);
     console.log("following Data", followingData);
+    console.log("currentUserBlogs", currentUserBlogs);
   return (
     <>
     <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
@@ -64,14 +69,18 @@ function Profile() {
             <Box>
                 <Avatar alt="User Avatar" src={user?.profileImage} sx={{ width: 100, height: 100 }} />
             </Box>
-            <Box sx={{ display: 'flex',alignItems:"center"}}>
+            <Box sx={{ display: 'flex',alignItems:"center",
+                        // ...(isSmallScreen && {flexWrap: 'wrap', })
+                    }}>
                 <Box>
                     <Box>
                         <Typography variant="h5">{user?.fullName}</Typography>
                         {/* <Typography variant="subtitle1">Full Stack Web Developer</Typography> */}
-                        <Box sx={{ display: 'flex',gap:"15px"}}>
-                                <Typography variant="subtitle1">Followers: {user?.followersCount}</Typography>
-                                <Typography variant="subtitle1">Following: {user?.followingCount}</Typography>
+                        <Box sx={{ display: 'flex',gap:"15px",
+                            ...(isSmallScreen && {flexDirection:"column",gap:0 })
+                    }}>
+                                <Typography variant="subtitle1" sx={{...(isSmallScreen && {fontSize: '14px', })}}>Followers: {user?.followersCount}</Typography>
+                                <Typography variant="subtitle1" sx={{...(isSmallScreen && {fontSize: '14px', })}}>Following: {user?.followingCount}</Typography>
                             </Box>
                     </Box>
                 </Box>
@@ -83,20 +92,22 @@ function Profile() {
                 </Box>
             </Box>
         </Box>
-        <Box sx={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+        <Box sx={{display:"flex", alignItems:"center", justifyContent:"center",
+                ...(isSmallScreen && {flexDirection:"column",gap:1,mb:1 })
+                }}>
             <Box>
-            <IconButton href="https://www.facebook.com/yourusername" target="_blank">
-          <Facebook />
-        </IconButton>
-        <IconButton href="https://twitter.com/yourusername" target="_blank">
-          <Twitter />
-        </IconButton>
-        <IconButton href="https://github.com/yourusername" target="_blank">
-          <GitHub />
-        </IconButton>
-        <IconButton href="https://www.linkedin.com/in/yourusername" target="_blank">
-          <LinkedIn />
-        </IconButton>
+                <IconButton href="https://www.facebook.com/yourusername" target="_blank">
+                    <Facebook />
+                </IconButton>
+                <IconButton href="https://twitter.com/yourusername" target="_blank">
+                    <Twitter />
+                </IconButton>
+                <IconButton href="https://github.com/yourusername" target="_blank">
+                    <GitHub />
+                </IconButton>
+                <IconButton href="https://www.linkedin.com/in/yourusername" target="_blank">
+                    <LinkedIn />
+                </IconButton>
             </Box>
             <Box>
                 <Typography variant="subtitle">Member Since: {new Date(user?.createdAt).toLocaleDateString()}</Typography>
@@ -110,16 +121,15 @@ function Profile() {
         </Box>
     </Grid>
     <Box sx={{display:"flex",justifyContent:"center", alignItems:"center",  mt:"1rem",gap:"50px"}}>
-        <Box sx={{textAlign:"center"}}>
+        {/* <Box sx={{textAlign:"center"}}>
             <Typography variant="h6" >Recent Posts</Typography>
-                {/* {currentUserBlogs?.map((el,index)=>( */}
-
                     <TableContainer component={Paper} sx={{ maxHeight: 440,  overflow: 'hidden' }}>
-                        <Table sx={{ minWidth: 650 }}  stickyHeader aria-label="sticky table">
+                        <Table sx={{ minWidth: 650}}  stickyHeader aria-label="sticky table">
                         <TableHead >
                             <TableRow >
                             <TableCell sx={{backgroundColor:"#87CEEB", color:"black", borderRight:"1px solid white"}}>S.No</TableCell>
                             <TableCell sx={{backgroundColor:"#87CEEB", color:"black",borderRight:"1px solid white"}}>Blog Title</TableCell>
+                            <TableCell sx={{backgroundColor:"#87CEEB", color:"black",borderRight:"1px solid white"}}>Category</TableCell>
                             <TableCell sx={{backgroundColor:"#87CEEB", color:"black",borderRight:"1px solid white"}}>Published Date</TableCell>
                             </TableRow>
                         </TableHead>
@@ -133,33 +143,20 @@ function Profile() {
                                   {index+1}
                                 </TableCell>
                                 <TableCell ><Link style={{color:"inherit", textDecoration:"none"}} to={`/blogs/${el._id}`}>{el.title}</Link></TableCell>
+                                <TableCell >{el.category}</TableCell>
                                 <TableCell >{new Date(el.updatedAt).toLocaleDateString()}</TableCell>
                             </TableRow>
                             ))}
                         </TableBody>
                         </Table>
                         </TableContainer>
-
-                    
-
-
-
-
-
-
-                        <>
-                    {/* // <Box key={el._id} sx={{display:"flex", flexDirection:"row",gap:"20px"}}>
-                    //     <Typography variant="subtitle">Blog {index+1}</Typography>
-                    //     <Link to={`/blogs/${el._id}`}>   <Typography variant='subtitle'>{el.title}</Typography></Link>
-                    //     <Typography variant='subtitle'>{new Date(el.updatedAt).toLocaleDateString()}</Typography>
-                    // </Box> */}
-                    </>
-                {/* ))} */}
-        </Box>
+        </Box> */}
         
+
+        <TableComponent currentUserBlogs={currentUserBlogs} />
     </Box>
-    <Box sx={{display:"flex", justifyContent: "space-around", marginTop: "25px", paddingBottom: "25px"}}>
-            <Box sx={{display:"flex",gap:"30px",textAlign:"center"}}>
+    <Box sx={{display:"flex",flexWrap:"wrap",gap:"15px", justifyContent: "space-around", marginTop: "25px", paddingBottom: "25px"}}>
+            <Box sx={{display:"flex",gap:"30px",textAlign:"center",flexWrap:"wrap",justifyContent:"center"}}>
                 <Box>
                     <Typography variant="h6">Followers</Typography>
                     <Paper style={{ width: 250, height: 200, overflow: 'auto',padding:"10px" }}>
@@ -193,9 +190,13 @@ function Profile() {
                     </Paper>   
                 </Box>
             </Box>
-            <Box >
-                 <PieChart followers={user?.followersCount} following={user?.followingCount}/>
-            </Box>
+                <Box 
+                sx={{width:"40%",
+                    ...(isSmallScreen && {width:"90%",height:"50%",margin:"auto" })
+                }}
+                >
+                    <PieChart followers={user?.followersCount} following={user?.followingCount}/>
+                </Box>
         </Box>
 
     </Box>

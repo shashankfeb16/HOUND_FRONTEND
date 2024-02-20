@@ -16,6 +16,8 @@ function PieChart({ followers, following }) {
       Highcharts.chart(chartRef.current, {
         chart: {
           type: "pie",
+          // width:600,
+          // height:400
         },
         title: {
           text: 'Followers/Following',
@@ -41,7 +43,7 @@ function PieChart({ followers, following }) {
     }
   }, [formattedData]);
 
-  return <div ref={chartRef} style={{borderRadius: "5px"}}/>;
+  return <div ref={chartRef} style={{borderRadius: "5px",maxWidth:"100%"}}/>;
 }
 
 export default PieChart;

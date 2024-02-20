@@ -23,6 +23,7 @@ function UpdateBlog({ placeholder }) {
       readonly: false,
     //   placeholder: placeholder || "Start typing...",
       height: "500px",
+      resize: 'auto'
       // uploader: {
       //   // insertImageAsBase64URI: true,
       //   url: "https://api.imgbb.com/1/upload",

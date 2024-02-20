@@ -15,6 +15,8 @@ import UpdateBlog from '../Pages/UpdateBlog'
 import MyAccount from '../Pages/MyAccount'
 import Footer from './Footer'
 import MobileFilter from './MobileFilter'
+import NoBlogFound from './NoBlogFound'
+import PageNotFound from './PageNotFound'
 
 function AllRoutes() {
   
@@ -34,10 +36,11 @@ function AllRoutes() {
             {/* <Route path='/user/:id' element={<VisitedUser/>}/> */}
             <Route path='/user' element={<PrivateRoute Component={TestUser}/>} />
               {/* <Route path='/user' element={<TestUser/>}/> */}
-            <Route path='/my-account' element={<MyAccount/>}/>
+            <Route path='/my-account' element={<PrivateRoute Component={MyAccount}/>}/>
             <Route path='/loader' element={<MobileFilter/>}/>
             {/* <Route path='/blogs/:id' element={<TestSingleBlog/>}/> */}
             <Route path='/blogs/:id' element={<PrivateRoute Component={TestSingleBlog}/>}/>
+            <Route path='*' element={<PageNotFound/>} />
         </Routes>
       <Footer/>
     </>
