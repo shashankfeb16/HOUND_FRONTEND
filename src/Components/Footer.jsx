@@ -11,7 +11,7 @@ const Footer = () => {
           <Typography variant="body2" color="inherit" sx={{ flexGrow: 1,...(isSmallScreen && {fontSize:"12px",flexDirection:"row",pb:1 }) }}>
             © {new Date().getFullYear()} HOUND All Rights Reserved
           </Typography>
-          <Box sx={{display:"flex",pb:2,
+          <Box sx={{display:"flex",
             }}>
               <Box sx={{display:"flex",...(isSmallScreen && {alignItems:"baseline" })}}>
             <Typography variant="body2" color="inherit" sx={{ marginRight: 2,...(isSmallScreen && {fontSize:"12px",flexDirection:"row",pb:1 }) }}>

@@ -133,8 +133,8 @@ function VisitedUser() {
             </Box>
         </Box>
     </Grid>
-    <Box sx={{display:"flex",justifyContent:"center", alignItems:"center",  mt:"1rem",overflow:"hidden"}}>
-        <Box >
+    <Box sx={{display:"flex",justifyContent:"center", alignItems:"center",  mt:"1rem"}}>
+        <Box sx={{overflow:"hidden"}}>
         {/* <Typography variant="h6">Recent Posts</Typography> */}
             {/* {blogs?.map((el,index)=>(
                 <Box key={el._id} sx={{display:"flex", flexDirection:"row",gap:"20px"}}>
