@@ -1,10 +1,12 @@
-import { Avatar, Box, Button, Card, CardContent, TextField, Typography } from '@mui/material'
+import { Avatar, Box,useTheme,useMediaQuery, Button, Card, CardContent, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import moment from 'moment';
 import { updateComment } from '../Redux/blogs/blog.action.js';
 
@@ -12,6 +14,8 @@ function Comment({comment,onEdit,currentUser,onDelete,blogId}) {
   const {user} = useSelector(state=>state.auth);
   const [editMode, setEditMode] = useState(false);
   const [content, setContent] = useState(comment.content);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   console.log(comment._id);
   // console.log(comment.profileImage);
   // console.log({"user._id":user._id, "comment.commentBy._id":comment.commentBy._id});
@@ -50,11 +54,33 @@ function Comment({comment,onEdit,currentUser,onDelete,blogId}) {
         ) : (
           <Typography>{comment.content}</Typography>
         )}
-            <Typography style={{ fontSize: '13px',paddingTop:"5px" }}> Posted   {moment(comment.updatedAt).fromNow()}</Typography>
+            <Typography style={{ fontSize: '13px',paddingTop:"5px",
+              ...(isSmallScreen && {fontSize: '10px'})
+          }}> Posted   {moment(comment.updatedAt).fromNow()}</Typography>
             {isOwner &&( <Box sx={{display:"flex",gap:"10px"}}>
-                <Button variant="outlined" color="primary" onClick={()=>handleEdit(comment._id)}>Edit</Button>
-                <Button variant="outlined" color="secondary" onClick={()=>onDelete(blogId,comment._id)}>Delete</Button>
-            </Box>)}
+
+              {isSmallScreen ? (
+              <>
+                  <EditIcon
+                  color="primary"
+                  sx={{ fontSize: '20px', cursor: 'pointer' }}
+                  onClick={() => handleEdit(comment._id)}
+                  />
+                  <DeleteIcon
+                  color="secondary"
+                  sx={{ fontSize: '20px', cursor: 'pointer' }}
+                  onClick={() => onDelete(blogId, comment._id)}
+                  /> 
+              </>
+              ):(
+                <>
+                  <Button variant="outlined" color="primary"
+                  onClick={()=>handleEdit(comment._id)}>Edit</Button>
+                  <Button variant="outlined" color="secondary"
+                  onClick={()=>onDelete(blogId,comment._id)}>Delete</Button>
+                </>
+              )}
+              </Box>)}
           </Box>
             
             {/* {isOwner &&( <div>

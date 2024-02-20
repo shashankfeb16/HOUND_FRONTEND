@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import CommentList from './CommentList';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
-import {Box, Button, IconButton,CircularProgress, Avatar, Typography, TextField  } from '@mui/material';
+import {Box, Button,useTheme,useMediaQuery, IconButton,CircularProgress, Avatar, Typography, TextField  } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios'
@@ -25,6 +25,8 @@ function TestSingleBlog() {
     const { id } = useParams();
     const {user} =  useSelector(state=>state.auth)
     const [isLiked, setIsLiked] = useState(like);
+    const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     
     console.log("current lIke state",isLiked) //result : false
     const [allLikes, setAllLikes] = useState(blogData?.totalLikes);
@@ -185,7 +187,7 @@ function TestSingleBlog() {
     <div>
         <div style={{width:"80%",margin:'auto',marginTop:"50px"}}>
             <div style={{padding:'30px 0px', background:"#fff", boxShadow:"0px 0px 12px 0px rgba(0, 0, 0, 0.1)"}}>
-                    <Typography style={{fontSize:"35px", marginLeft:"30px"}}>{blogData?.title}</Typography>
+                    <Typography style={{fontSize:"35px", marginLeft:"30px",...(isSmallScreen && {fontSize:"25px"})}}>{blogData?.title}</Typography>
                     <Typography style={{ marginLeft:"30px",color:"grey"}}>Category :- {blogData?.category}</Typography>
                     {/* <h1>{blogData?.title}</h1> */}
                     <div style={{ padding:"40px"}} dangerouslySetInnerHTML={{ __html: blogData?.description }}/>
@@ -199,19 +201,20 @@ function TestSingleBlog() {
                         boxShadow:'rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset',
                         padding:'8px',
                         borderRadius:"5px",
-                        width:"300px"
+                        width:"300px",
+                        ...(isSmallScreen && {width:"250px"})
                         }}>
                         
-                        <Avatar sx={{ height: '70px', width: '70px', marginLeft:"15px" }} src={blogData?.owner?.profileImage} />
+                        <Avatar sx={{ height: '70px', width: '70px', marginLeft:"15px",...(isSmallScreen && {height: '55px', width: '55px'}) }} src={blogData?.owner?.profileImage} />
                         {/* <Typography variant='h6'>{blogData?.owner?.fullName}</Typography> */}
-                    <Box>
-                        <Typography variant="h6" fontWeight="bold">
-                            {blogData?.owner?.fullName}
-                        </Typography>
-                        <Typography variant='subtitle2' color="textSecondary">
-                            Published {moment(blogData?.createdAt).fromNow()}
-                        </Typography>
-                    </Box>
+                            <Box>
+                                <Typography variant="h6" fontWeight="bold" sx={{...(isSmallScreen && {fontSize:"1rem"})}}>
+                                    {blogData?.owner?.fullName}
+                                </Typography>
+                                <Typography variant='subtitle2' color="textSecondary" sx={{...(isSmallScreen && {fontSize:"10px"})}}>
+                                    Published {moment(blogData?.createdAt).fromNow()}
+                                </Typography>
+                            </Box>
                     </Link>
                         {/* <p>Likes:{blogData?.totalLikes}</p> */}
                         <div style={{display:"flex",alignItems:"center",marginTop:"15px", marginLeft:'30px',}}>
@@ -230,8 +233,8 @@ function TestSingleBlog() {
                         </Box>
                     }
             </div>
-                    <Typography style={{fontSize:"25px",marginLeft:"30px"}}>Add a Comment</Typography>
-                    <Box sx={{display:"flex",gap:"25px",marginLeft:"30px"}}>
+                    <Typography style={{fontSize:"25px",marginLeft:"30px",...(isSmallScreen && {fontSize:"15px"})}}>Add a Comment</Typography>
+                    <Box sx={{display:"flex",gap:"25px"}}>
                         <TextField
                             placeholder="Write your comment..."
                             minRows={3}
@@ -242,7 +245,8 @@ function TestSingleBlog() {
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={handlePost}>
+                            onClick={handlePost}
+                            sx={{...(isSmallScreen && {fontSize:"12px"})}}>
                                 Post Comment
                         </Button>
                 </Box>
