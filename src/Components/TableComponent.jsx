@@ -18,7 +18,7 @@ function TableComponent({currentUserBlogs}) {
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <Box sx={{textAlign:"center", justifyContent:"center"}}>
-            <Typography variant="h6" >Recent Posts</Typography>
+            <Typography variant="h6" sx={{overflow:"hidden"}} >Recent Posts</Typography>
                     <TableContainer 
                     component={Paper} 
                     sx={{ 
