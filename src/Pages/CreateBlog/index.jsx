@@ -44,7 +44,7 @@ function CreateBlog({ placeholder }) {
     const file = event.target.files[0];
     if (file) {
       if (!allowedFileTypes.includes(file.type)) {
-        alert("Selected file format is not supported");
+        toast.error("Selected file format is not supported");
         return;
       }
       try {
@@ -56,12 +56,12 @@ function CreateBlog({ placeholder }) {
         setContent(prevContent => `${prevContent}<img src="${res.data}" style="height:400px; width:400px;" alt="Uploaded Image" />`);
       } catch (error) {
         setIsLoading(false);
-        alert("Error uploading file. Please try again.")
+        toast.error("Error uploading file. Please try again.")
       } finally {
         setIsLoading(false);
       }
     } else {
-      alert("No file selected.")
+      toast.error("No file selected.")
     }
   };
   const handleChangeTitle = (e) =>{

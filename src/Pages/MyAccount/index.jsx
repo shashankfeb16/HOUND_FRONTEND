@@ -124,7 +124,7 @@ export default function MyAccount() {
       console.log(res);
       dispatch(getUser());
       // if(res.data.sucess===true){
-        alert("Password Changed")
+        
         dispatch(logOutAPI());
         // if(isAuth===false){
           persistor.purge();
@@ -135,6 +135,7 @@ export default function MyAccount() {
       setIsLoading(false);
       console.log(error.message)
     } finally {
+      toast.success("Password Changed")
       setIsLoading(false);
     }
    }

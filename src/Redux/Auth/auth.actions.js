@@ -5,6 +5,9 @@ axios.defaults.withCredentials = true;
 
 export const loginAPI =(formData)=>async(dispatch)=>{
     try {
+        dispatch({
+            type: START_LOADING
+        })
         const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/login`, formData, {withCredentials: true})
         console.log("login",response)
         if(response.status===200){
@@ -18,13 +21,23 @@ export const loginAPI =(formData)=>async(dispatch)=>{
             return { data:null, error:response}
         }
     } catch (error) {
+        dispatch({
+            type: STOP_LOADING
+        })
         console.log(error.response.data.error)
         return { data: null, error: error.response.data.error };
+    } finally{
+        dispatch({
+            type: STOP_LOADING
+        })
     }
 }
 
     export const signUpAPI =(formData)=>async(dispatch)=>{
         try {
+            dispatch({
+                type: START_LOADING
+            })
             const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/register`, formData);
             if(response.status===201){
                 dispatch({
@@ -37,8 +50,15 @@ export const loginAPI =(formData)=>async(dispatch)=>{
                 return { data:null, error:response}
             }
         } catch (error) {
+            dispatch({
+                type: STOP_LOADING
+            })
             console.log(error.message)
             return { data: null, error: error.response.data.error };
+        } finally {
+            dispatch({
+                type: STOP_LOADING
+            })
         }
     }
 

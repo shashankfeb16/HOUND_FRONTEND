@@ -47,7 +47,14 @@ function TableComponent({currentUserBlogs}) {
                                 <TableCell component="th" scope="row">
                                   {index+1}
                                 </TableCell>
-                                <TableCell ><Link style={{color:"inherit", textDecoration:"none"}} to={`/blogs/${el._id}`}>{el.title}</Link></TableCell>
+                                <TableCell sx={{"&:hover":{
+                                                fontWeight:"800",
+                                            }}}>
+                                        <Link style={{
+                                            color:"inherit", 
+                                            textDecoration:"none",
+                                            
+                                            }} to={`/blogs/${el._id}`}>{el.title}</Link></TableCell>
                                 <TableCell >{el.category}</TableCell>
                                 <TableCell >{new Date(el.updatedAt).toLocaleDateString()}</TableCell>
                             </TableRow>

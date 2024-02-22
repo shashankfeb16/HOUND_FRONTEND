@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import { InputAdornment } from "@mui/material";
 import { useState } from "react";
 import signIn from "../Components/Images/signIn.svg"
+import Loader from "../Components/Loader/Loader";
 
 function Copyright(props) {
   return (
@@ -33,8 +34,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://hound-frontend-service.vercel.app/">
+        HOUND
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -49,7 +50,7 @@ const defaultTheme = createTheme();
 export default function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth,showLoading } = useSelector((state) => state.auth);
   const [password, setPassword] = useState('');
   const [showPassword, setshowPassword] = useState(false);
 
@@ -69,6 +70,11 @@ export default function LoginPage() {
     }
     if (!formData.email || !formData.password) {
       alert("Please fill in both email and password.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("Please type a valid email address")
       return;
     }
     // try {
@@ -197,6 +203,7 @@ export default function LoginPage() {
           </Box>
         </Grid>
       </Grid>
+      {showLoading && <Loader/>}
     </ThemeProvider>
   );
 }

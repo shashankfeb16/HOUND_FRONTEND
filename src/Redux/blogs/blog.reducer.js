@@ -1,5 +1,5 @@
 import { AUTH_GET_VISITED_USER } from "../Auth/auth.types"
-import { GET_BLOGS, GET_Blog_COMMENTS, GET_CURRENTUSER_BLOGS, GET_LIKE_STATUS, GET_SINGLE_BLOG_DETAILS,  POST_Blog_COMMENTS_FAILURE,  POST_Blog_COMMENTS_REQUEST,  POST_Blog_COMMENTS_SUCCESS, START_LOADING, STOP_LOADING, UPDATE_LIKES } from "./blog.types"
+import { GET_BLOGS, GET_Blog_COMMENTS, GET_CURRENTUSER_BLOGS, GET_LIKE_STATUS, GET_SINGLE_BLOG_DETAILS,  POST_Blog_COMMENTS_FAILURE,  POST_Blog_COMMENTS_REQUEST,  POST_Blog_COMMENTS_SUCCESS, START_LIKE_LOADING, START_LOADING, STOP_LIKE_LOADING, STOP_LOADING, UPDATE_LIKES } from "./blog.types"
 
 
 const intialState={
@@ -96,6 +96,18 @@ export const blogReducer =(state=intialState,{type,payload}) =>{
             return{
                 ...state,
                 blogs:payload.blogs
+            }
+        }
+        case START_LIKE_LOADING:{
+            return{
+                ...state,
+                showLoading: true
+            }
+        }
+        case STOP_LIKE_LOADING:{
+            return{
+                ...state,
+                showLoading: false
             }
         }
         default :{

@@ -15,7 +15,7 @@ import Loader from './Loader/Loader';
 
 function TestSingleBlog() {
     axios.defaults.withCredentials = true;
-    const {blogData,like} = useSelector(state=>state.blog)
+    const {blogData,like,showLoading} = useSelector(state=>state.blog)
     // const {loading,comments,error} = useSelector(state=>state.blog)
     // const {like} = useSelector(state=>state.blog)
     console.log(like)   //result : true
@@ -155,12 +155,15 @@ function TestSingleBlog() {
       };
 
       const handleDeleteComment = async(id,commentId) => {
+        setIsLoading(true);
         try {
             const data = await deleteComment(id,commentId)
             console.log(data)
         } catch (error) {
+            setIsLoading(false);
             console.log(error.message)
         } finally {
+            setIsLoading(false);
             fetchComments(id)
         }
       }
@@ -171,6 +174,7 @@ function TestSingleBlog() {
                 toast.error("Please enter a comment")
                 return
             }
+            setIsLoading(true);
         try {
             const data = await postComment(id,{content})
             console.log(data)
@@ -178,8 +182,11 @@ function TestSingleBlog() {
             fetchComments(id)
             setNewContent("")
         } catch (error) {
+            setIsLoading(false);
+            toast.error(error.message)
             console.error(error.message)
         }finally {
+            setIsLoading(false);
         }
 
       } 
@@ -219,7 +226,12 @@ function TestSingleBlog() {
                         {/* <p>Likes:{blogData?.totalLikes}</p> */}
                         <div style={{display:"flex",alignItems:"center",marginTop:"15px", marginLeft:'30px',}}>
                             <IconButton onClick={handleLikeClick}>
-                                <FavoriteIcon sx={{width:35, height:35}} style={{ color: isLiked ? 'red' : 'grey' }}/>
+                                {showLoading ? (
+                                     <CircularProgress />   
+                                ) :(
+                                    <FavoriteIcon sx={{width:35, height:35}} style={{ color: isLiked ? 'red' : 'grey' }}/>
+                                )}
+                                
                             </IconButton>
                             <Typography variant="h5" >{blogData?.totalLikes}</Typography>
                             <CommentIcon  sx={{width:35, height:35, marginLeft:"25px", marginRight:"10px"}}/>

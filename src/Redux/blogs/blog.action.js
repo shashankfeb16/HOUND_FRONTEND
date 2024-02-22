@@ -1,5 +1,5 @@
 import axios from "axios"
-import { GET_BLOGS, GET_Blog_COMMENTS, GET_CURRENTUSER_BLOGS, GET_LIKE_STATUS, GET_SINGLE_BLOG_DETAILS, POST_Blog_COMMENTS, POST_Blog_COMMENTS_FAILURE, POST_Blog_COMMENTS_REQUEST, POST_Blog_COMMENTS_SUCCESS, START_LOADING, STOP_LOADING, UPDATE_LIKES } from "./blog.types"
+import { GET_BLOGS, GET_Blog_COMMENTS, GET_CURRENTUSER_BLOGS, GET_LIKE_STATUS, GET_SINGLE_BLOG_DETAILS, POST_Blog_COMMENTS, POST_Blog_COMMENTS_FAILURE, POST_Blog_COMMENTS_REQUEST, POST_Blog_COMMENTS_SUCCESS, START_LIKE_LOADING, START_LOADING, STOP_LIKE_LOADING, STOP_LOADING, UPDATE_LIKES } from "./blog.types"
 
 
 export const getAllBlogs =(page,category)=> async(dispatch) =>{
@@ -135,6 +135,9 @@ export const deleteComment=async(blogId,commentId)=>{
 export const likeAndUnlike =(blogId)=>async(dispatch)=>{
     try {
         console.log(blogId)
+        dispatch({
+            type: START_LIKE_LOADING
+        })
         const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/api/v1/blog/currrent-blog/${blogId}`,{withCredentials: true})
         // console.log(response)
         dispatch({
@@ -143,6 +146,10 @@ export const likeAndUnlike =(blogId)=>async(dispatch)=>{
         })
     } catch (error) {
         console.log(error.message)
+    } finally{
+        dispatch({
+            type: STOP_LIKE_LOADING
+        })
     }
 }
 

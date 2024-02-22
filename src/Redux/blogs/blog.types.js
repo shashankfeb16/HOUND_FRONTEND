@@ -18,3 +18,5 @@ export const POST_Blog_COMMENTS_FAILURE = "post_blog_comments";
 //likes actions
 export const UPDATE_LIKES = "update_likes";
 export const GET_LIKE_STATUS = "get_likes_status";
+export const START_LIKE_LOADING = 'START_LIKE_LOADING';
+export const STOP_LIKE_LOADING = 'STOP_LIKE_LOADING';

@@ -96,16 +96,16 @@ function Profile() {
                 ...(isSmallScreen && {flexDirection:"column",gap:1,mb:1 })
                 }}>
             <Box>
-                <IconButton href="https://www.facebook.com/yourusername" target="_blank">
+                <IconButton href={user?.facebook} target="_blank" rel="noopener noreferrer">
                     <Facebook />
                 </IconButton>
-                <IconButton href="https://twitter.com/yourusername" target="_blank">
+                <IconButton href={user?.twitter} target="_blank" rel="noopener noreferrer">
                     <Twitter />
                 </IconButton>
-                <IconButton href="https://github.com/yourusername" target="_blank">
+                <IconButton href={user?.github} target="_blank" rel="noopener noreferrer">
                     <GitHub />
                 </IconButton>
-                <IconButton href="https://www.linkedin.com/in/yourusername" target="_blank">
+                <IconButton href={user?.linkedIn} target="_blank" rel="noopener noreferrer">
                     <LinkedIn />
                 </IconButton>
             </Box>

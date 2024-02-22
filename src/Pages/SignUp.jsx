@@ -17,10 +17,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { signUpAPI } from "../Redux/Auth/auth.actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { InputAdornment } from "@mui/material";
+import Loader from "../Components/Loader/Loader";
 
 function Copyright(props) {
   return (
@@ -31,8 +32,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://hound-frontend-service.vercel.app/">
+        HOUND
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -40,7 +41,7 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 
 const defaultTheme = createTheme();
 
@@ -49,24 +50,47 @@ export default function SignUpPage() {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [showPassword, setshowPassword] = useState(false);
+  const {showLoading} = useSelector(state=>state.auth);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      fullName: data.get("fullName"),
-      userName: data.get("userName"),  
-      email: data.get("email"),
-      password: data.get("password")
-    });
+    // console.log({
+    //   fullName: data.get("fullName"),
+    //   userName: data.get("userName"),  
+    //   email: data.get("email"),
+    //   password: data.get("password")
+    // });
+    
+  const ToUpperFullName =(str)=>{
+    var arr = str.split(" ")
+    var res = arr.map((el)=>{
+        return el.replace(el.charAt(0), el.charAt(0).toUpperCase())
+    })
+    return res.join(" ")
+  }
+  const capitalizedFullName = ToUpperFullName(data.get("fullName"));
+  // console.log(capitalizedFullName)
     const formData = {
-      fullName: data.get("fullName"),
+      fullName: capitalizedFullName,
       userName: data.get("userName"),  
       email: data.get("email"),
       password: data.get("password")
     }
+    console.log("fullName",formData.fullName)
+    console.log(formData)
 
     if (!formData.email || !formData.password || !formData.fullName || !formData.userName) {
       toast.error("Please fill in all fields.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("Please type a valid email address")
+      return;
+    }
+    if (formData.password.length <=5) {
+      toast.error("Password must be at least 5 characters")
       return;
     }
     // try {
@@ -78,7 +102,8 @@ export default function SignUpPage() {
     try {
       const result = await dispatch(signUpAPI(formData))
       if(result.error){
-        toast.error(result.error)
+        console.log(result.error)
+        toast.warn(result.error)
         navigate("/signup")
       }else{
         toast.success("Successfully Registered")
@@ -209,6 +234,7 @@ export default function SignUpPage() {
           </Box>
         </Grid>
       </Grid>
+      {showLoading && <Loader/>}
     </ThemeProvider>
   );
 }

@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import moment from 'moment';
 import { updateComment } from '../Redux/blogs/blog.action.js';
+import { Link } from 'react-router-dom';
 
 function Comment({comment,onEdit,currentUser,onDelete,blogId}) {
   const {user} = useSelector(state=>state.auth);
@@ -41,22 +42,42 @@ function Comment({comment,onEdit,currentUser,onDelete,blogId}) {
       }
     };
   return (
-    <Card>
-        <CardContent>
+    <Card >
+        <CardContent sx={{...(isSmallScreen && {padding: '8px'})}}>
           <Box sx={{display:"flex", alignItems:"center",gap:"10px"}}>
             <Avatar src={comment?.commentBy?.profileImage} alt={comment?.commentBy?.userName}/>
-            {editMode ? (
-          <TextField
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            style={{ width: '30%' }}
-          />
-        ) : (
-          <Typography>{comment.content}</Typography>
-        )}
-            <Typography style={{ fontSize: '13px',paddingTop:"5px",
-              ...(isSmallScreen && {fontSize: '10px'})
-          }}> Posted   {moment(comment.updatedAt).fromNow()}</Typography>
+            <Box sx={{display:"flex",flexDirection:"column"}}>
+              <Box sx={{display:"flex", gap:"10px", alignItems:"center"}}>
+              <Link to={`/user/${comment?.commentBy?._id}`}
+              style={{
+                textDecoration:'none',
+                color:'inherit',
+                // ':hover':{
+                //   color:'grey'
+                // }
+                // ...(isSmallScreen && {width:"250px"})
+                }}>
+                <Typography 
+                    fontWeight="700" 
+                    sx={{  '&:hover': {
+                      color: 'gray',
+                    }}}
+                    >{comment?.commentBy?.fullName}</Typography>
+                </Link>
+                {editMode ? (
+              <TextField
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                style={{ width: '30%' }}
+              />
+            ) : (
+              <Typography  variant='subtitle2'>{comment.content}</Typography>
+            )}
+              </Box>
+                <Typography style={{ fontSize: '13px',paddingTop:"5px",
+                  ...(isSmallScreen && {fontSize: '10px'})
+              }}> Posted   {moment(comment.updatedAt).fromNow()}</Typography>
+          </Box>
             {isOwner &&( <Box sx={{display:"flex",gap:"10px"}}>
 
               {isSmallScreen ? (
