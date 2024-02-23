@@ -22,7 +22,7 @@ function VisitedUser() {
     // console.log(id);
     // console.log(blogs);
     const isSelfUserPage = user._id === id
-    console.log(isSelfUserPage)
+    // console.log(isSelfUserPage)
         const currentStatus = async()=>{
             const res = await currentFollowStatus(id)
             // console.log(res)

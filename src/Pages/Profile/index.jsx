@@ -1,5 +1,5 @@
-import { Avatar, Box, Button, Container, Grid,useMediaQuery,
-    useTheme,  IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Avatar, Box, Button, Grid,useMediaQuery,
+    useTheme,  IconButton, Paper, Typography } from '@mui/material'
 import { Facebook, Twitter, GitHub, LinkedIn } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,10 +27,7 @@ function Profile() {
         try {
             setIsLoading(true);
             const res = await userFollowerAndFollowing()
-            // console.log(res.data)
-            // if(res.data.valid===true) {
-            //     return window.location.reload();
-            // }
+            
             setFollowersData(res.data.followers)
             setFollowingData(res.data.following)
         } catch (error) {
@@ -50,13 +47,11 @@ function Profile() {
         // userFollowerAndFollowing()
         fetchData()
        },[])
-    //    console.log(followersData)
+    
        const handleBack = () => {
         navigate(-1)
       }
-    console.log("followers Data", followersData);
-    console.log("following Data", followingData);
-    console.log("currentUserBlogs", currentUserBlogs);
+    
   return (
     <>
     <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)" }}>
@@ -75,7 +70,7 @@ function Profile() {
                 <Box>
                     <Box>
                         <Typography variant="h5">{user?.fullName}</Typography>
-                        {/* <Typography variant="subtitle1">Full Stack Web Developer</Typography> */}
+                        
                         <Box sx={{ display: 'flex',gap:"15px",
                             ...(isSmallScreen && {flexDirection:"column",gap:0 })
                     }}>
@@ -85,7 +80,7 @@ function Profile() {
                     </Box>
                 </Box>
                 <Box sx={{pl:"30px"}}>
-                    {/* <Button variant='contained'> Follow</Button> */}
+                    
                     <Link to="/my-account">
                         <Button variant='contained'> Update</Button>
                     </Link>
@@ -121,36 +116,7 @@ function Profile() {
         </Box>
     </Grid>
     <Box sx={{display:"flex",justifyContent:"center", alignItems:"center",  mt:"1rem",gap:"50px"}}>
-        {/* <Box sx={{textAlign:"center"}}>
-            <Typography variant="h6" >Recent Posts</Typography>
-                    <TableContainer component={Paper} sx={{ maxHeight: 440,  overflow: 'hidden' }}>
-                        <Table sx={{ minWidth: 650}}  stickyHeader aria-label="sticky table">
-                        <TableHead >
-                            <TableRow >
-                            <TableCell sx={{backgroundColor:"#87CEEB", color:"black", borderRight:"1px solid white"}}>S.No</TableCell>
-                            <TableCell sx={{backgroundColor:"#87CEEB", color:"black",borderRight:"1px solid white"}}>Blog Title</TableCell>
-                            <TableCell sx={{backgroundColor:"#87CEEB", color:"black",borderRight:"1px solid white"}}>Category</TableCell>
-                            <TableCell sx={{backgroundColor:"#87CEEB", color:"black",borderRight:"1px solid white"}}>Published Date</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                {currentUserBlogs?.map((el,index)=>(
-                            <TableRow
-                                key={el._id}
-                                // sx={{ '&:last-child td, &:last-child th': { border: 0 },}}
-                            >
-                                <TableCell component="th" scope="row">
-                                  {index+1}
-                                </TableCell>
-                                <TableCell ><Link style={{color:"inherit", textDecoration:"none"}} to={`/blogs/${el._id}`}>{el.title}</Link></TableCell>
-                                <TableCell >{el.category}</TableCell>
-                                <TableCell >{new Date(el.updatedAt).toLocaleDateString()}</TableCell>
-                            </TableRow>
-                            ))}
-                        </TableBody>
-                        </Table>
-                        </TableContainer>
-        </Box> */}
+        
         
 
         <TableComponent currentUserBlogs={currentUserBlogs} />
@@ -161,7 +127,7 @@ function Profile() {
                     <Typography variant="h6">Followers</Typography>
                     <Paper style={{ width: 250, height: 200, overflow: 'auto',padding:"10px" }}>
                         {followersData?.map((el)=>(
-                        <Link to={`/user/${el?.follower._id}`} style={{color:"inherit", textDecoration:"none"}} > 
+                        <Link to={`/user/${el?.follower._id}`} key={el?.follower._id} style={{color:"inherit", textDecoration:"none"}} > 
                             <Box key={el?.follower._id} sx={{display:"flex",alignItems:"center",mb:"10px",padding:"10px",gap:"10px",boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;",":hover": {
           backgroundColor: "#87CEEB",
           color: "black",
@@ -177,7 +143,7 @@ function Profile() {
                     <Typography variant="h6">Following</Typography>
                     <Paper style={{ width: 250, height: 200, overflow: 'auto',padding:"10px"  }}>
                     {followingData?.map((el)=>(
-                            <Link to={`/user/${el?.following._id}`} style={{color:"inherit", textDecoration:"none"}} > 
+                            <Link to={`/user/${el?.following._id}`} key={el?.following._id} style={{color:"inherit", textDecoration:"none"}} > 
                             <Box key={el?.following._id}  sx={{display:"flex",alignItems:"center",mb:"10px",padding:"10px",gap:"10px",boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px",":hover": {
           backgroundColor: "#87CEEB",
           color: "black",

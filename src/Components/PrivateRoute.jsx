@@ -5,14 +5,12 @@ import { getUser } from '../Redux/Auth/auth.actions';
 import { toast } from 'react-toastify';
 
 export default function PrivateRoute({Component}) {
-  // const dispatch  = useDispatch()
+  
     const { isAuth } = useSelector((state) => state.auth);
-    // useEffect(()=>{
-    //   dispatch(getUser());
-    //  },[])
+    
 
-    if(!isAuth) {
-      toast.warning("Please Login");
-    }
-    return isAuth ? <Component /> : <Navigate to='/login' />;
+    // if(!isAuth) {
+    //   toast.warning("Please Login");
+    // }
+    return isAuth ? <Component /> : <Navigate to='/' />;
   }

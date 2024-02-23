@@ -9,7 +9,7 @@ export const loginAPI =(formData)=>async(dispatch)=>{
             type: START_LOADING
         })
         const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/login`, formData, {withCredentials: true})
-        console.log("login",response)
+        
         if(response.status===200){
             dispatch({
                 type: AUTH_LOGIN,
@@ -17,14 +17,14 @@ export const loginAPI =(formData)=>async(dispatch)=>{
             })
             return {data:response.data.LoggedInUser, error:null}
         }else{
-            console.log(response)
+            
             return { data:null, error:response}
         }
     } catch (error) {
         dispatch({
             type: STOP_LOADING
         })
-        console.log(error.response.data.error)
+        // console.log(error.response.data.error)
         return { data: null, error: error.response.data.error };
     } finally{
         dispatch({
@@ -43,10 +43,10 @@ export const loginAPI =(formData)=>async(dispatch)=>{
                 dispatch({
                     type: AUTH_SIGNUP,
                 })
-                console.log(response)
+                // console.log(response)
                 return {data:response, error:null}
             }else{
-                console.log(response)
+                // console.log(response)
                 return { data:null, error:response}
             }
         } catch (error) {
@@ -86,7 +86,7 @@ export const getUser=()=>async(dispatch)=>{
             payload: response.data.user
         })
     
-        console.log(response.data.user)
+        // console.log(response.data.user)
         return response.data.user
         
     } catch (error) {
@@ -100,7 +100,7 @@ export const getUserData=(userId)=>async(dispatch)=>{
             type: START_LOADING
         })
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/userdata/${userId}`,{withCredentials: true})
-        console.log(response.data)
+        // console.log(response.data)
         if(response.data.valid===true) {
             return window.location.reload();
         }else{
@@ -134,7 +134,7 @@ export const follow =async(userId)=>{
 export const unfollow =async(userId)=>{
     try {
         const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/userdata/${userId}`,{withCredentials: true})
-        console.log(response.data.userStatus)
+        // console.log(response.data.userStatus)
         return response.data.userStatus
     } catch (error) {
         console.log(error.message)
@@ -153,7 +153,7 @@ export const currentFollowStatus = async(userId)=>{
 export const userFollowerAndFollowing = async(userId)=>{
     try {
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/userdata/${userId}/followdata`,{withCredentials: true})
-        console.log(response.data)
+        // console.log(response.data)
         return response
     } catch (error) {
         console.log(error.message)
@@ -164,7 +164,7 @@ export const userFollowerAndFollowing = async(userId)=>{
 export const updateUserData = (updateData)=>async(dispatch)=>{
     try {
         const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/update-account-details`,updateData,{withCredentials: true})
-        console.log(response.data.user)
+        // console.log(response.data.user)
         dispatch({
             type: AUTH_UPDATE_USER,
             payload: response.data.user

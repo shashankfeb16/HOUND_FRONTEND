@@ -1,4 +1,3 @@
-import { Image } from '@mui/icons-material'
 import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -14,9 +13,6 @@ function PageNotFound() {
       height="100vh"
       paddingBottom="30px"
     >
-      {/* <Typography variant="h1" color="primary" gutterBottom>
-        404
-      </Typography> */}
       <Box>
 
       <img src={image} alt='404 Page Not Found' style={{ width:"400px" }}/>

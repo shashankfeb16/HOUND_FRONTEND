@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { deleteBlog, deleteComment, getBlogComments, getLikeStatus, getSingleBlogData, likeAndUnlike, postComment } from '../Redux/blogs/blog.action'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import CommentList from './CommentList';
+import CommentList from '../Components/CommentList';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
 import {Box, Button,useTheme,useMediaQuery, IconButton,CircularProgress, Avatar, Typography, TextField  } from '@mui/material';
@@ -11,14 +11,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios'
 import moment from 'moment';
 import { toast } from 'react-toastify';
-import Loader from './Loader/Loader';
+import Loader from '../Components/Loader/Loader';
 
-function TestSingleBlog() {
+function SingleBlog() {
     axios.defaults.withCredentials = true;
     const {blogData,like,showLoading} = useSelector(state=>state.blog)
     // const {loading,comments,error} = useSelector(state=>state.blog)
     // const {like} = useSelector(state=>state.blog)
-    console.log(like)   //result : true
+    // console.log(like)   //result : true
     
     const navigate = useNavigate()
     const dispatch = useDispatch()  
@@ -28,7 +28,7 @@ function TestSingleBlog() {
     const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     
-    console.log("current lIke state",isLiked) //result : false
+    // console.log("current lIke state",isLiked) //result : false
     const [allLikes, setAllLikes] = useState(blogData?.totalLikes);
     const [content, setNewContent] = useState('');
     const [commentsData, setcommentsData] = useState([]);
@@ -59,7 +59,7 @@ function TestSingleBlog() {
     },[id])
 
     const isBlogOwner = blogData?.owner?._id === user?._id
-    console.log("isBlogOwner",isBlogOwner)
+    // console.log("isBlogOwner",isBlogOwner)
     // console.log(blogData?.owner._id,user?._id)
     
     const handleDelete=async()=>{
@@ -277,4 +277,4 @@ function TestSingleBlog() {
   )
 }
 
-export default TestSingleBlog
+export default SingleBlog

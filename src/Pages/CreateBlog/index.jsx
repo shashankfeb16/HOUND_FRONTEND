@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from "react";
 import JoditEditor from "jodit-react";
-import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { postBlog } from "../../Redux/blogs/blog.action";
@@ -52,7 +52,7 @@ function CreateBlog({ placeholder }) {
         const formData = new FormData();
         formData.append("image", file);
         const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/blog/uploadJodit-images`,formData);
-        console.log(res?.data);
+        
         setContent(prevContent => `${prevContent}<img src="${res.data}" style="height:400px; width:400px;" alt="Uploaded Image" />`);
       } catch (error) {
         setIsLoading(false);
@@ -69,7 +69,7 @@ function CreateBlog({ placeholder }) {
   }
   const handleChangeCategory = (e) =>{
     setCategory(e.target.value);
-    console.log(e.target.value);
+    
   }
   const handlePublish = async() =>{
     const data = {
@@ -112,7 +112,6 @@ function CreateBlog({ placeholder }) {
               <MenuItem value={"Travel"}>Travel</MenuItem>
               <MenuItem value={"Coding"}>Coding</MenuItem>
             </Select>
-            {/* <FormHelperText>Required</FormHelperText> */}
           </FormControl>
       </Box>
         <JoditEditor

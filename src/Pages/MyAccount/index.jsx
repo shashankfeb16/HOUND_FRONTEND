@@ -93,10 +93,7 @@ export default function MyAccount() {
     try{
       setIsLoading(true);
       // await axios.post("http://localhost:8000/api/v1/user/upload-images", formData, {withCredentials: true});
-      await updateUserImage(formData)
-      
-      // alert("Profile Photo Uploaded Successfully");
-      
+      await updateUserImage(formData) 
     }
     catch(error){
       setIsLoading(false);
@@ -146,7 +143,7 @@ export default function MyAccount() {
     try {
       setIsLoading(true)
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/current-user`,{withCredentials: true});
-      console.log(res);
+      
       const {data} = res;
       setExistingUser(data?.user);
     } catch (error) {
@@ -253,18 +250,7 @@ export default function MyAccount() {
                     },
                   }}
                 />)}
-                {/* <Avatar
-                  alt="Remy Sharp"
-                  src="/static/images/avatar/2.jpg"
-                  sx={{
-                    width: 120,
-                    height: 120,
-                    mt: 2,
-                    "& .MuiAvatar-root": {
-                      margin: "0 auto",
-                    },
-                  }}
-                /> */}
+                
                 <label htmlFor="file-input">
                   <input
                     id="file-input"

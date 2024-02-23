@@ -19,7 +19,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUser, logOutAPI } from "../Redux/Auth/auth.actions";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { persistor } from "../Redux/store.js";
-import { useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -67,7 +66,7 @@ export default function PrimarySearchAppBar() {
   axios.defaults.withCredentials = true;
   const { isAuth } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
+  // console.log(user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -108,17 +107,11 @@ export default function PrimarySearchAppBar() {
     } catch (error) {
       console.log(error);
     } finally {
-      console.log(isAuth)
+      navigate("/");
+      // console.log(isAuth)
     }
   };
-
-  // useEffect(()=>{
-  //   if(isAuth) {
-  //     dispatch(getUser());
-  //   }
-   
-  //  },[])
-  console.log(isAuth)
+  // console.log(isAuth)
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -141,22 +134,8 @@ export default function PrimarySearchAppBar() {
 
 
       
-      {/* <Link to="/profile" style={{textDecoration:"none", color:"inherit"}}><MenuItem onClick={handleMenuClose}> Profile </MenuItem></Link> 
-      <Link to="/my-account" style={{textDecoration:"none", color:"inherit"}}><MenuItem onClick={handleMenuClose}>My account</MenuItem></Link> */}
-      
+     
       {isAuth && (   <Box>
-                {/* <MenuItem onClick={handleProfileMenuOpen}>
-                    <IconButton
-                      size="large"
-                      aria-label="account of current user"
-                      aria-controls="primary-search-account-menu"
-                      aria-haspopup="true"
-                      color="inherit"
-                    >
-                      <AccountCircle />
-                    </IconButton>
-                  <p>Profile</p>
-                </MenuItem> */}
                 <Link to="/profile" style={{textDecoration:"none", color:"inherit"}}>
                   <MenuItem onClick={handleMenuClose}><IconButton
                       size="large"
@@ -219,18 +198,6 @@ export default function PrimarySearchAppBar() {
 
       
 {isAuth ? (   <Box>
-                {/* <MenuItem onClick={handleProfileMenuOpen}>
-                    <IconButton
-                      size="large"
-                      aria-label="account of current user"
-                      aria-controls="primary-search-account-menu"
-                      aria-haspopup="true"
-                      color="inherit"
-                    >
-                      <AccountCircle />
-                    </IconButton>
-                  <p>Profile</p>
-                </MenuItem> */}
                 <Link to="/profile" style={{textDecoration:"none", color:"inherit"}}>
                   <MenuItem onClick={handleMenuClose}><IconButton
                       size="large"
@@ -299,17 +266,7 @@ export default function PrimarySearchAppBar() {
         position="static"
         sx={{ background: "linear-gradient(to left, #87CEEB, #1E90FF);" }}
       >
-        <Toolbar>
-          {/* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
-          
+        <Toolbar>      
           <Typography
             variant="h6"
             
@@ -335,20 +292,6 @@ export default function PrimarySearchAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton> */}
-            {/* <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
             <MenuItem sx={{
               '&:hover':{
                 backgroundColor: '#3da2f9'
@@ -365,12 +308,6 @@ export default function PrimarySearchAppBar() {
             </MenuItem>
 
             {isAuth && <MenuItem>
-                  {/* <Link
-                    to="/user"
-                    style={{ textDecoration: "none", color: "inherit",fontSize: 18, fontWeight: 400 }}
-                  >
-                    UserDetails
-                  </Link> */}
                 </MenuItem>}
                 {isAuth && <MenuItem>
                   <Link
@@ -381,28 +318,7 @@ export default function PrimarySearchAppBar() {
                   </Link>
                 </MenuItem>}
 
-            {/* {isAuth ? (
-              <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>
-            ) : (
-              <>
-                <MenuItem>
-                  <Link
-                    to="/signup"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    SIGNUP
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <Link
-                    to="/login"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    LOGIN
-                  </Link>
-                </MenuItem>
-              </>
-            )} */}
+           
 
             {!isAuth && (
               <>
@@ -442,9 +358,9 @@ export default function PrimarySearchAppBar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              {/* <AccountCircle /> */}
+             
               {user?.profileImage ? (<Avatar alt="Remy Sharp" src={user.profileImage} />):(<AccountCircleIcon style={{ fontSize: 30 }} />)}
-              {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+             
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

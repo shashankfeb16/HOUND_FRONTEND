@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -14,7 +12,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { signUpAPI } from "../Redux/Auth/auth.actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -93,11 +90,7 @@ export default function SignUpPage() {
       toast.error("Password must be at least 5 characters")
       return;
     }
-    // try {
-    //   await axios.post("http://localhost:8000/api/v1/user/register", formData);
-    //   alert("successfully Registered");
-    //   navigate("/");
-    // } catch (error) {}
+    
 
     try {
       const result = await dispatch(signUpAPI(formData))
@@ -205,10 +198,7 @@ export default function SignUpPage() {
                 autoComplete="current-password"
                 onChange={(e)=>setPassword(e.target.value)}
               />
-              {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
+              
               <Button
                 type="submit"
                 fullWidth
@@ -217,18 +207,7 @@ export default function SignUpPage() {
               >
                 Sign Up
               </Button>
-              {/* <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid> */}
+              
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>

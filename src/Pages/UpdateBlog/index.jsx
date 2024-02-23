@@ -7,7 +7,7 @@ import { updateBlog } from "../../Redux/blogs/blog.action";
 import { toast } from "react-toastify";
 import Loader from "../../Components/Loader/Loader";
 
-// const API_KEY = "50938726ed5b1dc3e275abc4759bf1bc";
+
 
 function UpdateBlog({ placeholder }) {
   const editor = useRef(null);
@@ -24,26 +24,7 @@ function UpdateBlog({ placeholder }) {
     //   placeholder: placeholder || "Start typing...",
       height: "500px",
       resize: 'auto'
-      // uploader: {
-      //   // insertImageAsBase64URI: true,
-      //   url: "https://api.imgbb.com/1/upload",
-      //   format: "json",
-      //   method: "POST",
-      //   headers: {
-      //     Authorization: `Bearer ${API_KEY}`,
-      //   },
-      //   isSuccess: function (resp) {
-      //     return resp.success === true;
-      //   },
-      //   getMsg: function (resp) {
-      //     return resp.message;
-      //   },
-      //   process: function (resp) {
-      //     // Customize the HTML output for the uploaded image
-      //     return `<img style="float:right; margin: 10px;width:300px; height: 200px;" src="${resp.data.url}" alt="${resp.data.name}">`;
-      //   },
-      //   files: "files[0]",
-      // },
+      
     }),
     [placeholder]
   );
@@ -74,7 +55,7 @@ function UpdateBlog({ placeholder }) {
         const formData = new FormData();
         formData.append("image", file);
         const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/blog/uploadJodit-images`,formData);
-        console.log(res?.data);
+        // console.log(res?.data);
         setContent(prevContent => `${prevContent}<img src="${res.data}" style="width:400px; height:400px" alt="Uploaded Image" />`);
       } catch (error) {
         setIsLoading(false);
@@ -97,7 +78,7 @@ function UpdateBlog({ placeholder }) {
     try{
       setIsLoading(true);
        const response =  await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/blog/allBlogs/${blogId}`,{withCredentials: true});
-       console.log(response);
+      //  console.log(response);
        setContent(response?.data?.description);
        setTitle(response?.data?.title);
        setCategory(response?.data?.category)

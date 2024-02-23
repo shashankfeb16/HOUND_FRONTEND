@@ -42,7 +42,6 @@ function TableComponent({currentUserBlogs}) {
                 {currentUserBlogs?.map((el,index)=>(
                             <TableRow
                                 key={el._id}
-                                // sx={{ '&:last-child td, &:last-child th': { border: 0 },}}
                             >
                                 <TableCell component="th" scope="row">
                                   {index+1}

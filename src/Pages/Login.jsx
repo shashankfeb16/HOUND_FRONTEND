@@ -14,11 +14,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
-import { getUser, loginAPI } from "../Redux/Auth/auth.actions";
+import {  loginAPI } from "../Redux/Auth/auth.actions";
 import { useDispatch, useSelector } from "react-redux";
-import { persistor } from "../Redux/store";
 import { toast } from "react-toastify";
 import { InputAdornment } from "@mui/material";
 import { useState } from "react";
@@ -43,7 +41,6 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
@@ -60,10 +57,10 @@ export default function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
     const formData = {
       email: data.get("email"),
       password: data.get("password")
@@ -77,11 +74,7 @@ export default function LoginPage() {
       toast.error("Please type a valid email address")
       return;
     }
-    // try {
-    //   await axios.post("http://localhost:8000/api/v1/user/login", formData, {withCredentials: true});
-    //   alert("successfully logged in");
-    //   navigate("/");
-    // } catch (error) {}
+    
 
     try {
       const result = await dispatch(loginAPI(formData));
@@ -174,10 +167,7 @@ export default function LoginPage() {
                 autoComplete="current-password"
                 onChange={(e)=>setPassword(e.target.value)}
               />
-              {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
+              
               <Button
                 type="submit"
                 fullWidth
@@ -188,9 +178,6 @@ export default function LoginPage() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  {/* <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link> */}
                 </Grid>
                 <Grid item>
                   <Link href="/signup" variant="body2">

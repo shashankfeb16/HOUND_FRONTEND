@@ -11,17 +11,12 @@ import Loader from './Loader/Loader';
 function Homepage() {
   const {isAuth,user} = useSelector(state=>state.auth);
   const { blogs, count, totalPages, currentPage, showLoading } = useSelector(state => state.blog);
-  console.log( isAuth )
-  // const [data, setData]= useState([])
+  // console.log( isAuth )
+
   const dispatch = useDispatch()
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState('');
   const [isActive, setIsActive] = useState(false);
-  // const getData = async()=>{
-  //       const res = await axios.get("http://localhost:8000/api/v1/blog/allBlogs")
-  //       setData(res.data.blogs)
-  //       console.log(res)
-  // }
   const handleChangeCategory = (cat)=>{
     setCategory(cat)
     setIsActive(!isActive);
@@ -32,16 +27,11 @@ function Homepage() {
     dispatch(getAllBlogs(page,category));
     // dispatch(getUser());
     // (isAuth && dispatch(getUser()))
-    // console.log(data)
   },[dispatch,page,category])
 
   if(blogs.length<= 0 ){
     return <NoBlogFound/>
   }
-
-  // if(showLoading){
-  //   return (<MobileFilter/>)
-  // }
 
   // const cookieValue = document.cookie.split('; ').find((row) => row.startsWith('accessToken='))?.split('=')[1]
   return (
@@ -58,42 +48,16 @@ function Homepage() {
 
       {
         blogs?.map((el)=>(
-         
-          // <div key={el?._id} style={{width:"80%",margin:'auto',marginTop:"50px"}}>
-          //    <Link to={`/blogs/${el?._id}`} style={{textDecoration:"none",color:'black'}} >
-          //     <div key={el?._id} style={{border:"1px solid black", marginBottom:"30px"}}>
-          //         <div style={{margin:"30px"}}>
-          //           <h3>Title: {el?.title}</h3>
-          //           {/* <p>Description:-  {el?.description}</p> */}
-          //           <div style={{width:'80%', padding:"20px",maxHeight:"250px",overflow:"hidden"}} dangerouslySetInnerHTML={{ __html: el?.description }}/>
-          //           <p>{el?.totalLikes} Likes</p>
-          //           </div>
-                    
-          //         <div style={{display:"flex",margin:"30px"}}>
-          //           <img style={{width:"50px", height:"50px"}} src={el?.owner?.profileImage} alt="" />
-          //           <p>Author:-  {el?.owner?.userName}</p>
-          //       </div>
-          //       </div>
-          //       </Link>
-          // </div>
           <div key={el?._id} style={{width:"80%",margin:'auto',marginTop:"50px"}}>
              <Link to={`/blogs/${el?._id}`} style={{textDecoration:"none",color:'black'}} >
               <OuterContainerStyles key={el?._id} style={{padding: "30px 0px"}}>
                   <div style={{margin:"30px"}}>
                     <h3>Title: {el?.title}</h3>
-                    {/* <p>Description:-  {el?.description}</p> */}
                     <div style={{width:'80%', padding:"20px",maxHeight:"300px",overflow:"hidden"}} dangerouslySetInnerHTML={{ __html: el?.description }}/>
-                      {/* <div style={{display:"flex",gap:"2%",}}> 
-                      
-                          <span style={{display:"flex",alignItems:"center", fontSize:"20px"}}>  <FavoriteBorderIcon /> {el?.totalLikes} </span>
-                          
-                          <span style={{display:"flex",alignItems:"center"}}><TextsmsOutlinedIcon/> <p>{el?.commentsCount}</p></span>
-                      </div> */}
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px',marginLeft:"20px",marginTop:"10px" }}>
                               <Typography variant="body2" color="textSecondary">
                               {el?.totalLikes} Likes
                               </Typography>
-
                               <Typography variant="body2" color="textSecondary">
                               {el?.commentsCount} Comments
                               </Typography>
