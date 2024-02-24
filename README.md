@@ -1,4 +1,4 @@
-# HOUND Blog Website using MERN stack
+# "Discover the World of HOUND: A MERN-Stack Blogging Platform for Your Adventures"
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
