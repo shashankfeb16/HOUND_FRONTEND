@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Avatar, Box, Button, Container, Grid, IconButton,useTheme,useMediaQuery, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Avatar, Box, Button, Container, Grid, IconButton,useTheme,useMediaQuery, Typography } from '@mui/material'
 import { Facebook, Twitter, GitHub, LinkedIn } from '@mui/icons-material';
 import { currentFollowStatus, follow, getUserData, unfollow } from '../Redux/Auth/auth.actions.js'
 import { useParams } from 'react-router';
@@ -59,7 +59,9 @@ function VisitedUser() {
     const handleBack = () => {
         navigate(-1)
       }
+
     // console.log(visitedUser)
+   
   return (
     <>
      <Box sx={{ background: "linear-gradient(#f0f0f0, #e0e0e0)", paddingBottom:"65px" }}>

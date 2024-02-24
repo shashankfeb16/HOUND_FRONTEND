@@ -9,7 +9,7 @@ import InputBase from "@mui/material/InputBase";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import LogoutIcon from '@mui/icons-material/Logout';
-import SearchIcon from "@mui/icons-material/Search";
+// import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import PortraitOutlinedIcon from '@mui/icons-material/PortraitOutlined';
 import MoreIcon from "@mui/icons-material/MoreVert";
@@ -281,7 +281,7 @@ export default function PrimarySearchAppBar() {
             <Link to="/" style={{textDecoration:"none", color:"inherit"}}>HOUND</Link>
             
           </Typography>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -289,7 +289,7 @@ export default function PrimarySearchAppBar() {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
             />
-          </Search>
+          </Search> */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <MenuItem sx={{
