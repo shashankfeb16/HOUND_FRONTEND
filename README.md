@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# "Discover the World of HOUND: A MERN-Stack Blogging Platform for Your Adventures"
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
