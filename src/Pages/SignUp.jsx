@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { InputAdornment } from "@mui/material";
 import Loader from "../Components/Loader/Loader";
+import SignUp from "../Components/Images/SignUp.svg"
 
 function Copyright(props) {
   return (
@@ -117,15 +118,17 @@ export default function SignUpPage() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundImage:`url(${SignUp})`,
+              // "url(https://source.unsplash.com/random?wallpapers)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
                 ? t.palette.grey[50]
                 : t.palette.grey[900],
-            backgroundSize: "cover",
+            backgroundSize: "auto",
             backgroundPosition: "center",
+            backgroundmaxWidth: "100%",
+            backgroundHeight:"auto"
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>

@@ -8,9 +8,11 @@ export default function PrivateRoute({Component}) {
   
     const { isAuth } = useSelector((state) => state.auth);
     
-
-    // if(!isAuth) {
-    //   toast.warning("Please Login");
-    // }
+  useEffect(()=>{
+    if(!isAuth) {
+      toast.warning("To Explore more, Please Login");
+    }
+  },[isAuth]);
+    
     return isAuth ? <Component /> : <Navigate to='/' />;
   }

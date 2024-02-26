@@ -343,7 +343,7 @@ export default function PrimarySearchAppBar() {
                   to="/login"
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  LOGIN
+                  SIGN IN
                 </Link>
               </MenuItem>
             </>
