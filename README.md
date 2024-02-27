@@ -7,7 +7,12 @@
 
 
 ## Blogging Application
-This is a full-stack shopping application built using MERN stack by a team of 2. The application loads data from a MongoDB database and displays them using **_React and MUI_** ( front-end ), **_NodeJs and ExpressJS_** ( back-end ).
+This is a full-stack Blogging application built using MERN stack by a team of 2. The application loads data from a MongoDB database and displays them using **_React and MUI_** ( front-end ), **_NodeJs and ExpressJS_** ( back-end ).
+
+**Vercel link of our project**:  https://hound-frontend-service.vercel.app/
+- **Note:**
+  - The website may experience a delay in loading, especially if it has been inactive for a while. The backend is deployed in a free-tier environment, and due to inactivity, the server may take a few seconds to spin up. We appreciate your patience.
+  - Thank you for your understanding and support!
 
 
 ## Tech Stack
@@ -28,7 +33,7 @@ Here are screenshots that show the application in use.
 <br/>
 <h2 align="center">Sign Up Page</h2>
 <p align="center">Welcome to Our Sign Up page, </p>
-<img src="Assets/SignUp.png" />
+<img src="Assets/SIgnUp.png" />
 
 <br/>
 <h2 align="center">Sign In Page</h2>
