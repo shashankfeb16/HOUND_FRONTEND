@@ -111,16 +111,16 @@ function VisitedUser() {
                  ...(isSmallScreen && {flexDirection:"column",gap:1,mb:1 })
     }}>
             <Box>
-            <IconButton href="https://www.facebook.com/yourusername" target="_blank">
+            <IconButton href={visitedUser?.facebook} target="_blank" rel="noopener noreferrer">
           <Facebook />
         </IconButton>
-        <IconButton href="https://twitter.com/yourusername" target="_blank">
+        <IconButton href={visitedUser?.twitter} target="_blank" rel="noopener noreferrer">
           <Twitter />
         </IconButton>
-        <IconButton href="https://github.com/yourusername" target="_blank">
+        <IconButton href={visitedUser?.github} target="_blank" rel="noopener noreferrer">
           <GitHub />
         </IconButton>
-        <IconButton href="https://www.linkedin.com/in/yourusername" target="_blank">
+        <IconButton href={visitedUser?.linkedIn} target="_blank" rel="noopener noreferrer">
           <LinkedIn />
         </IconButton>
             </Box>
@@ -131,7 +131,7 @@ function VisitedUser() {
         <Box sx={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
             <Typography variant="h6">About Me</Typography>
             <Box>
-                <Typography variant="subtitle">I love Writing Code </Typography>
+                <Typography variant="subtitle">{visitedUser?.bio } </Typography>
             </Box>
         </Box>
     </Grid>

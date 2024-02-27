@@ -70,6 +70,27 @@ export default function MyAccount() {
       twitter: exisitingUser?.twitter,
       bio: exisitingUser?.bio,
     };
+
+    const linkedInRegex = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/;
+    if (!linkedInRegex.test(updateData.linkedIn)) {
+      toast.error("Please type a valid LinkedIn Profile URL")
+      return;
+    }
+    const githubRegex = /^https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$/;
+    if (!githubRegex.test(updateData.github)) {
+      toast.error("Please type a valid Github Profile URL")
+      return;
+    }
+    const twitterRegex = /^https?:\/\/(www\.)?twitter\.com\/[a-zA-Z0-9_]+\/?$/;
+    if (!twitterRegex.test(updateData.twitter)) {
+      toast.error("Please type a valid Twitter Profile URL")
+      return;
+    }
+    const youtubeRegex = /^https?:\/\/(www\.)?youtube\.com\/(c\/|channel\/|user\/)?[a-zA-Z0-9_-]+\/?$/;
+    if (!youtubeRegex.test(updateData.youtube)) {
+      toast.error("Please type a valid Youtube Profile URL")
+      return;
+    }
     try {
       setIsLoading(true)
       dispatch(updateUserData(updateData))

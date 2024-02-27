@@ -11,12 +11,13 @@ const Footer = () => {
           <Typography variant="body2" color="inherit" sx={{ flexGrow: 1,...(isSmallScreen && {fontSize:"12px",flexDirection:"row",pb:1 }) }}>
             © {new Date().getFullYear()} HOUND All Rights Reserved
           </Typography>
-          <Box sx={{display:"flex",
+          <Box sx={{display:"flex",justifyContent:"center",alignItems:"center",...(isSmallScreen && {flexDirection:"column" })
             }}>
-              <Box sx={{display:"flex",...(isSmallScreen && {alignItems:"baseline" })}}>
-            <Typography variant="body2" color="inherit" sx={{ marginRight: 2,...(isSmallScreen && {fontSize:"12px",flexDirection:"row",pb:1 }) }}>
+              <Box sx={{display:"flex",...(isSmallScreen && {alignItems:"center",flexDirection:"column",pb:1 })}}>
+            <Typography variant="body2" color="inherit" sx={{ marginRight: 2,...(isSmallScreen && {fontSize:"12px",pb:0.2 }) }}>
               Created by Team Members:
             </Typography>
+            <Box sx={{display:"flex",...(isSmallScreen && {flexDirection:'column' })}}>
             <Link  href="https://www.linkedin.com/in/vivek-nemade/" target="_blank" rel="noopener noreferrer" color="inherit" sx={{textDecoration:"none", marginLeft: 1 }}>
                <Typography sx={{...(isSmallScreen && {fontSize:"10px" })}} variant="body2" color="inherit">
                Vivek Nemade
@@ -29,7 +30,8 @@ const Footer = () => {
               </Typography>
             </Link>
             </Box>
-              <Box sx={{display:"flex"}}>
+            </Box>
+              <Box sx={{display:"flex",...(isSmallScreen && { })}}>
                 <Link href="#" color="inherit" sx={{ marginLeft: 2,textDecoration:"none" }}>
                   <Typography sx={{...(isSmallScreen && {fontSize:"10px" })}} variant="body2" color="inherit">
                     Privacy Policy

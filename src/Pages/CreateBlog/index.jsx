@@ -72,6 +72,14 @@ function CreateBlog({ placeholder }) {
     
   }
   const handlePublish = async() =>{
+    if (!title || !content) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+    if (!category) {
+      toast.error("Please select a category")
+      return;
+    }
     const data = {
       title: title,
       description: content,

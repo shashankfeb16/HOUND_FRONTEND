@@ -261,7 +261,7 @@ export default function PrimarySearchAppBar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, position:"sticky",top:0, zIndex:100 }}>
       <AppBar
         position="static"
         sx={{ background: "linear-gradient(to left, #87CEEB, #1E90FF);" }}
