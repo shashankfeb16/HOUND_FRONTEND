@@ -75,8 +75,8 @@ export default function SignUpPage() {
       email: data.get("email"),
       password: data.get("password")
     }
-    console.log("fullName",formData.fullName)
-    console.log(formData)
+    
+    // console.log(formData)
 
     if (!formData.email || !formData.password || !formData.fullName || !formData.userName) {
       toast.error("Please fill in all fields.");

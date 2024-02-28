@@ -72,22 +72,22 @@ export default function MyAccount() {
     };
 
     const linkedInRegex = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/;
-    if (!linkedInRegex.test(updateData.linkedIn)) {
+    if (updateData.linkedIn && !linkedInRegex.test(updateData.linkedIn)) {
       toast.error("Please type a valid LinkedIn Profile URL")
       return;
     }
     const githubRegex = /^https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$/;
-    if (!githubRegex.test(updateData.github)) {
+    if (updateData.github && !githubRegex.test(updateData.github)) {
       toast.error("Please type a valid Github Profile URL")
       return;
     }
     const twitterRegex = /^https?:\/\/(www\.)?twitter\.com\/[a-zA-Z0-9_]+\/?$/;
-    if (!twitterRegex.test(updateData.twitter)) {
+    if (updateData.twitter && !twitterRegex.test(updateData.twitter)) {
       toast.error("Please type a valid Twitter Profile URL")
       return;
     }
     const youtubeRegex = /^https?:\/\/(www\.)?youtube\.com\/(c\/|channel\/|user\/)?[a-zA-Z0-9_-]+\/?$/;
-    if (!youtubeRegex.test(updateData.youtube)) {
+    if (updateData.youtube && !youtubeRegex.test(updateData.youtube)) {
       toast.error("Please type a valid Youtube Profile URL")
       return;
     }
@@ -133,28 +133,46 @@ export default function MyAccount() {
 
   const handleSubmitPassword = async(e)=>{
     e.preventDefault();
-    console.log(oldPassword, newPassword)
+    // console.log(oldPassword, newPassword)
     const data = {oldPassword, newPassword}
-
+    if(oldPassword === newPassword){
+      toast.warn("Current and new password should be different")
+      return
+    }
+    if (newPassword <=5) {
+      toast.warn("Password must be at least 5 characters")
+      return;
+    }
     try{
       setIsLoading(true);
        const res=  await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/current-user/change-password`,data,{withCredentials: true})
-      console.log(res);
-      dispatch(getUser());
+      // console.log(res);
+      if(res.sucess===false){
+        toast.warn("Invalid Credentials");
+        // alert(result.error)
+      }else{
+        dispatch(getUser());
+        dispatch(logOutAPI());
+        persistor.purge();
+        navigate("/login")
+        toast.success("Password Changed Successfully")
+        setIsLoading(false);
+      }
+      
       // if(res.data.sucess===true){
         
-        dispatch(logOutAPI());
+        
         // if(isAuth===false){
-          persistor.purge();
-          navigate("/login")
+         
         // }
       // }
     }catch(error){
       setIsLoading(false);
-      console.log(error.message)
+      console.log(error)
+      toast.error(error.response.data.error)
     } finally {
-      toast.success("Password Changed")
-      setIsLoading(false);
+      
+      
     }
    }
 
@@ -167,6 +185,7 @@ export default function MyAccount() {
       
       const {data} = res;
       setExistingUser(data?.user);
+      console.log(data?.user);
     } catch (error) {
       setIsLoading(false)
       console.log(error);
@@ -381,7 +400,7 @@ export default function MyAccount() {
                     id="email"
                     name="email"
                     label="Email"
-                    value={exisitingUser?.fullName}
+                    value={exisitingUser?.email}
                     onChange={handleInputChange}
                   />
                   <TextField

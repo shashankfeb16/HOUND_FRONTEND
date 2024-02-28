@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -14,14 +12,22 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Navigate, useNavigate } from "react-router-dom";
-import {  loginAPI } from "../Redux/Auth/auth.actions";
+import { useNavigate } from "react-router-dom";
+import { signUpAPI } from "../Redux/Auth/auth.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { InputAdornment } from "@mui/material";
 import { useState } from "react";
-import signIn from "../Components/Images/signIn.svg"
+import { InputAdornment } from "@mui/material";
 import Loader from "../Components/Loader/Loader";
+import SignUp from "../Components/Images/SignUp.svg"
+import {useFormik} from "formik";
+
+const initialValues={
+    fullName:"",
+    userName:"",
+    email:"",
+    password:"",
+}
 
 function Copyright(props) {
   return (
@@ -42,32 +48,57 @@ function Copyright(props) {
 }
 
 
+
 const defaultTheme = createTheme();
 
-export default function LoginPage() {
-  const navigate = useNavigate();
+export default function YupSignup() {
   const dispatch = useDispatch();
-  const { isAuth,showLoading } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [showPassword, setshowPassword] = useState(false);
+  const {showLoading} = useSelector(state=>state.auth);
 
-  if(isAuth) {
-    return <Navigate to='/' />
-  }
+
+    const { values, handleBlur, handleChange, errors, touched } = useFormik({
+        initialValues:initialValues,
+        onSubmit:(values) => {
+            console.log(values);
+        }
+    })
+
+
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // console.log({
+    //   fullName: data.get("fullName"),
+    //   userName: data.get("userName"),  
     //   email: data.get("email"),
-    //   password: data.get("password"),
+    //   password: data.get("password")
     // });
+    
+  const ToUpperFullName =(str)=>{
+    var arr = str.split(" ")
+    var res = arr.map((el)=>{
+        return el.replace(el.charAt(0), el.charAt(0).toUpperCase())
+    })
+    return res.join(" ")
+  }
+  const capitalizedFullName = ToUpperFullName(data.get("fullName"));
+  // console.log(capitalizedFullName)
     const formData = {
+      fullName: capitalizedFullName,
+      userName: data.get("userName"),  
       email: data.get("email"),
       password: data.get("password")
     }
-    if (!formData.email || !formData.password) {
-      // alert("Please fill in both email and password.");
-      toast.error("Please fill in both email and password.");
+    console.log("fullName",formData.fullName)
+    console.log(formData)
+
+    if (!formData.email || !formData.password || !formData.fullName || !formData.userName) {
+      toast.error("Please fill in all fields.");
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -75,23 +106,25 @@ export default function LoginPage() {
       toast.error("Please type a valid email address")
       return;
     }
+    if (formData.password.length <=5) {
+      toast.error("Password must be at least 5 characters")
+      return;
+    }
     
 
     try {
-      const result = await dispatch(loginAPI(formData));
-        if(result.error){
-          toast.warn(result.error);
-          // alert(result.error)
-          navigate("/login")
-        }else{
-          toast.success("Successfully logged in");
-          // alert("Successfully logged in")
-          navigate("/")
-        }
-     } catch (error) {
-        console.log(error);
-     } 
-    
+      const result = await dispatch(signUpAPI(formData))
+      if(result.error){
+        console.log(result.error)
+        toast.warn(result.error)
+        navigate("/signup")
+      }else{
+        toast.success("Successfully Registered")
+        navigate("/login")
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -104,14 +137,14 @@ export default function LoginPage() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage:`url(${signIn})`,
+            backgroundImage:`url(${SignUp})`,
               // "url(https://source.unsplash.com/random?wallpapers)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
                 ? t.palette.grey[50]
                 : t.palette.grey[900],
-            backgroundSize: "cover",
+            backgroundSize: "auto",
             backgroundPosition: "center",
             backgroundmaxWidth: "100%",
             backgroundHeight:"auto"
@@ -131,7 +164,7 @@ export default function LoginPage() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign Up
             </Typography>
             <Box
               component="form"
@@ -139,6 +172,26 @@ export default function LoginPage() {
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
+                <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="fullName"
+                label="Full Name"
+                name="fullName"
+                autoComplete="fullName"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="userName"
+                label="User Name"
+                name="userName"
+                autoComplete="userName"
+                // autoFocus
+              />
               <TextField
                 margin="normal"
                 required
@@ -147,7 +200,7 @@ export default function LoginPage() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                autoFocus
+                // autoFocus
               />
               <TextField
               InputProps={{
@@ -164,7 +217,6 @@ export default function LoginPage() {
                 label="Password"
                 type={showPassword ? "text" : "password"}
                 id="password"
-                value={password}
                 autoComplete="current-password"
                 onChange={(e)=>setPassword(e.target.value)}
               />
@@ -175,17 +227,9 @@ export default function LoginPage() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Sign Up
               </Button>
-              <Grid container>
-                <Grid item xs>
-                </Grid>
-                <Grid item>
-                  <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+              
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
