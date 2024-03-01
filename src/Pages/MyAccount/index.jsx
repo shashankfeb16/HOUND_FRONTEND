@@ -110,7 +110,7 @@ export default function MyAccount() {
    if(selectedFile){
     const formData = new FormData();
     formData.append("profileImage", selectedFile);
-    console.log(formData);
+    // console.log(formData);
     try{
       setIsLoading(true);
       // await axios.post("http://localhost:8000/api/v1/user/upload-images", formData, {withCredentials: true});
@@ -182,10 +182,13 @@ export default function MyAccount() {
     try {
       setIsLoading(true)
       const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/current-user`,{withCredentials: true});
-      
+      // console.log(res)
+      if(res.data.valid1===true) {
+        return window.location.reload();
+    }
       const {data} = res;
       setExistingUser(data?.user);
-      console.log(data?.user);
+      // console.log(data?.user);
     } catch (error) {
       setIsLoading(false)
       console.log(error);

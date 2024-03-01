@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import JoditEditor from "jodit-react";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
 import axios from "axios";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { postBlog } from "../../Redux/blogs/blog.action";
 import { toast } from "react-toastify";
 import Loader from "../../Components/Loader/Loader";
+import { useDispatch } from "react-redux";
+import { getUser } from "../../Redux/Auth/auth.actions";
 
 
 function CreateBlog({ placeholder }) {
@@ -15,6 +17,7 @@ function CreateBlog({ placeholder }) {
   const attachmentInputRef = useRef(null);
   const [category, setCategory] = useState("");
   const navigate = useNavigate();
+  const dispatch  = useDispatch()
   const [isLoading, setIsLoading] = useState(false);
   const config = useMemo(
     () => ({
@@ -99,6 +102,10 @@ function CreateBlog({ placeholder }) {
     setIsLoading(false);
    }
   }
+
+  useEffect(() => {
+    dispatch(getUser());
+  },[])
   return (
     <Box>
       <Stack spacing={2} sx={{ padding: "30px" }}>

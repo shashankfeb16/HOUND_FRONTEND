@@ -11,7 +11,7 @@ import moment from "moment";
 function BarChart({ contData}) {
   const chartContainer = useRef(null);
   const [selectedDate, setSelectedDate] = useState(dayjs().startOf("month"));
-  const [likesAndCommentData, setLikesAndCommentData] = useState(null);
+  const [likesAndCommentData, setLikesAndCommentData] = useState([]);
 
   const constructQueryParameters = (
     firstDate,

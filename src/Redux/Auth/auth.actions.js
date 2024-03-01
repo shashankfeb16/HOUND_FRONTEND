@@ -64,6 +64,7 @@ export const loginAPI =(formData)=>async(dispatch)=>{
 
 export const logOutAPI=()=>async(dispatch)=>{
     try {
+        await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/current-user`,{withCredentials: true}) 
         // await axios.post("http://localhost:8000/api/v1/user/logout",id,{withCredentials: true})
         await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/v1/user/logout`,{withCredentials: true})
         dispatch({
@@ -81,10 +82,15 @@ export const getUser=()=>async(dispatch)=>{
         // if(response.data.valid===true) {
         //     return window.location.reload();
         // }else{
+            // console.log(response.data.valid)
+            if(response.data.valid1===true) {
+                return window.location.reload();
+            }
         dispatch({
             type: AUTH_GETUSER,
             payload: response.data.user
         })
+    // }
     
         // console.log(response.data.user)
         return response.data.user

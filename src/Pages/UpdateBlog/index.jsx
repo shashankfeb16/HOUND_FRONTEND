@@ -79,6 +79,9 @@ function UpdateBlog({ placeholder }) {
       setIsLoading(true);
        const response =  await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/blog/allBlogs/${blogId}`,{withCredentials: true});
       //  console.log(response);
+      if(response.data.valid1===true) {
+        return window.location.reload();
+    } 
        setContent(response?.data?.description);
        setTitle(response?.data?.title);
        setCategory(response?.data?.category)

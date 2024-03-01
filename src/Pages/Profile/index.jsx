@@ -22,14 +22,17 @@ function Profile() {
     const [isLoading, setIsLoading] = useState(false);
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
+    // console.log("user",user)
+    // console.log("currentUserBlogs",currentUserBlogs)
     const fetchData=async()=>{
         try {
             setIsLoading(true);
-            const res = await userFollowerAndFollowing()
+            const res = await userFollowerAndFollowing(user?._id)
+            if(res.data){
+                setFollowersData(res?.data?.followers)
+                setFollowingData(res?.data?.following)
+            }
             
-            setFollowersData(res.data.followers)
-            setFollowingData(res.data.following)
         } catch (error) {
             console.log(error.message)
             setIsLoading(false);

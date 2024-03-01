@@ -58,7 +58,7 @@ export const getSingleBlogData=(blogId)=>async(dispatch)=>{
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/v1/blog/allBlogs/${blogId}`,{withCredentials: true})
         // console.log(response.data)
 
-        if(response.data.valid===true) {
+        if(response.data.valid1===true) {
             return window.location.reload();
         } else{
             dispatch({
